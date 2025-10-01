@@ -1,24 +1,24 @@
 project:
-  name: 'ISII-2526-GrupoX-Team'
-  owner: 'GrupoX'
-  teamId: 'Team'
+  name: 'ISII-2526-GrupoA-RockerosCiberneticos'
+  owner: 'GrupoA'
+  teamId: 'RockerosCiberneticos'
   identities: {}
   notifications:
-    email: 'member1@alu.uclm.es,member2@alu.uclm.es,member3@alu.uclm.es,member4@alu.uclm.es'
+    email: 'jaime.lopez16@alu.uclm.es,jesus.tercero3@alu.uclm.es,daniel.garcia69@alu.uclm.es,daniel.balan@alu.uclm.es'
   members:
     member1:
-      name: 'Name1'
-      surname: 'Surname1' 
-      githubUsername: 'Name1gitUserName1'
+      name: 'Jaime'
+      surname: 'López Moreno' 
+      githubUsername: 'Blaizculo'
     member2:
-      name: 'Name2'
-      surname: 'Surname2' 
-      githubUsername: 'Name1gitUserName2'
+      name: 'Jesús'
+      surname: 'Tercero Vergara.' 
+      githubUsername: 'Jesusteve'
     member3:
-      name: 'Name3'
-      surname: 'Surname3' 
-      githubUsername: 'Name1gitUserName3'
+      name: 'Daniel'
+      surname: 'García Rodenas' 
+      githubUsername: 'Daankk17'
     member4:
-      name: 'Name4'
-      surname: 'Surname4' 
-      githubUsername: 'Name1gitUserName4'
+      name: 'Daniel'
+      surname: 'Balán Hangan' 
+      githubUsername: 'Daniel2004755'
