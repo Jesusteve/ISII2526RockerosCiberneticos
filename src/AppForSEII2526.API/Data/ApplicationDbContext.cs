@@ -5,4 +5,6 @@ using AppForSEII2526.API.Models;
 namespace AppForSEII2526.API.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
+    DbSet<Alquiler> Alquiler { get; set; }
+    DbSet<AlquilarItem> AlquilarItem { get; set; }
 }
