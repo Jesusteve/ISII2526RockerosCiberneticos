@@ -1,10 +1,9 @@
-﻿using RabbitMQ.Client;
-using System;
+﻿namespace AppForSEII2526.API.Models;
 
 public class AlquilarItem
 {
 	public AlquilarItem() { }
-	public AlquilarItem(int idHerramienta, int idAlquiler, double precio, int cantidad)
+	public AlquilarItem(int idHerramienta, int idAlquiler, float precio, int cantidad)
     {
 		this.idHerramienta = idHerramienta;
 		this.idAlquiler = idAlquiler;
