@@ -2,6 +2,7 @@
 {
     public class Fabricante
     {
+        
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Display(Name = "Nombre")]
@@ -14,10 +15,11 @@
         }
         public Fabricante(int id, string nombre, List<Herramienta> herramientas)
         {
-            this.Id = id;
+            Id = id;
             this.nombre = nombre;
             this.herramientas = herramientas;
         }
-        public List<Herramienta> herramientas { get; set; }
+        public List<Herramienta> Herramientas { get; set; }
+        
     }
 }

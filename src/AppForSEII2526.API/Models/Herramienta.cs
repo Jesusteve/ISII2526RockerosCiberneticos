@@ -2,7 +2,8 @@
 
 namespace AppForSEII2526.API.Models;
 
-public class Herramienta {
+public class Herramienta
+{
 
     public Herramienta()
     {
@@ -12,7 +13,7 @@ public class Herramienta {
         tiempoReparacion = 0;
         fabricante = new Fabricante();
     }
-    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
+    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion)
     {
         Id = id;
         material = Material;
@@ -24,10 +25,10 @@ public class Herramienta {
 
     public int Id { get; set; }
 
-    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength=10)]
+    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string material { get; set; }
 
-    [StringLength(50, ErrorMessage = "El nombre de la herramienta debe de tener minimo 10 caracteres y máximo 50", MinimumLength=10)]
+    [StringLength(50, ErrorMessage = "El nombre de la herramienta debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string nombre { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]

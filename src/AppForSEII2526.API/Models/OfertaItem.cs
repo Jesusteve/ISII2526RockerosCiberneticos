@@ -2,7 +2,7 @@
 {
     public class OfertaItem
     {
-        [Key]
+        
         [Display(Name = "ID Herramienta")]
         public int idHerramienta { get; set; }
         [Key]
@@ -27,5 +27,8 @@
             this.porcentaje = porcentaje;
             this.precioFinal = precioFinal;
         }
+        public Herramienta herramienta { get; set; }
+        public Oferta oferta { get; set; }
+
     }
 }

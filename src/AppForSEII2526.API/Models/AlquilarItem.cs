@@ -26,5 +26,7 @@ public class AlquilarItem
 	[Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima es 1")]
 	[Display(Name = "Cantidad")]
     public int cantidad { get; set; }
+	public Herramienta herramienta { get; set; }
+	public Alquiler alquiler { get; set; }
 
-    }
+}

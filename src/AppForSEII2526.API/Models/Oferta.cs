@@ -15,6 +15,10 @@
         public int Id { get; set; }
         [Display(Name = "Tipo de oferta")]
         public tiposDirigidaOferta dirigidaA { get; set; }
+       
+        public enum metodoPago { TarjetaCredito, PayPal, Efectivo }
+        public metodoPago metodopago { get; set; }
+        public List<OfertaItem> ofertaItems { get; set; }
 
 
         public Oferta()
@@ -36,6 +40,7 @@
             Socios,
             Clientes
         }
-    
+   
+
 
 }
