@@ -34,5 +34,9 @@
 
         [StringLength(100, ErrorMessage = "La descripción debe de tener minimo 10 caracteres y máximo 500", MinimumLength = 10)]
         public string descripcion { get; set; }
+        public Herramienta herramienta { get; set; }
+        public Compra compra { get; set; }
+
+       
     }
 }

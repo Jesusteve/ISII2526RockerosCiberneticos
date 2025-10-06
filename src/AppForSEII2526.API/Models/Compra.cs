@@ -1,4 +1,6 @@
-﻿namespace AppForSEII2526.API.Models
+﻿using static AppForSEII2526.API.Models.Alquiler;
+
+namespace AppForSEII2526.API.Models
 {
     public class Compra
     {
@@ -46,5 +48,12 @@
 
         [Range(1, int.MaxValue, ErrorMessage = "El precio del material debe de ser mayor a 0")]
         public float precioTotal { get; set; }
+
+        [Display(Name = "Método de pago")]
+        public métodoPago métodoDePago { get; set; }
+
+        public List<CompraItem> compraItems { get; set; }
+
+
     }
 }

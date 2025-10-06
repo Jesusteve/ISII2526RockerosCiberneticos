@@ -10,14 +10,16 @@ public class Herramienta {
         nombre = "ninguno";
         precio = 0;
         tiempoReparacion = 0;
-
+        fabricante = new Fabricante();
     }
-    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion) {
+    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
+    {
         Id = id;
         material = Material;
         nombre = Nombre;
         precio = Precio;
         tiempoReparacion = TiempoReparacion;
+        this.fabricante = fabricante;
     }
 
     public int Id { get; set; }
@@ -33,4 +35,9 @@ public class Herramienta {
 
     [Range(0, int.MaxValue, ErrorMessage = "El tiempo no puede ser negativo")]
     public float tiempoReparacion { get; set; }
+    public Fabricante fabricante { get; set; }
+    public List<CompraItem> compraItems { get; set; }
+    public List<OfertaItem> OfertaItem { get; set; }
+    public List<CompraItem> CompraItems { get; set; }
+    public List<AlquilarItem> AlquilarItems { get; set; }
 }
