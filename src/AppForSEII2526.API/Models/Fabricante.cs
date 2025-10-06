@@ -11,13 +11,13 @@
         public Fabricante()
         {
             nombre = "ninguno";
-            herramientas = new List<Herramienta>();
+            Herramientas = new List<Herramienta>();
         }
         public Fabricante(int id, string nombre, List<Herramienta> herramientas)
         {
             Id = id;
             this.nombre = nombre;
-            this.herramientas = herramientas;
+            this.Herramientas = herramientas;
         }
         public List<Herramienta> Herramientas { get; set; }
         

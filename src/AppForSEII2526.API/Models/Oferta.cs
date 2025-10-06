@@ -4,13 +4,13 @@
     {
         [Display(Name = "Fecha Final")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public int fechaFinal { get; set; }
+        public DateTime fechaFinal { get; set; }
         [Display(Name = "Fecha Inicio")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public int fechaInicio { get; set; }
+        public DateTime fechaInicio { get; set; }
         [Display(Name = "Fecha Oferta")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public int fechaOferta { get; set; }
+        public DateTime fechaOferta { get; set; }
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Display(Name = "Tipo de oferta")]
@@ -25,7 +25,7 @@
         {
 
         }
-        public Oferta(int fechaFinal, int fechaInicio, int fechaOferta, int id, tiposDirigidaOferta dirigidaA)
+        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, int id, tiposDirigidaOferta dirigidaA)
         {
             this.fechaFinal = fechaFinal;
             this.fechaInicio = fechaInicio;

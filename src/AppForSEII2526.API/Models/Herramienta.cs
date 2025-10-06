@@ -37,7 +37,6 @@ public class Herramienta
     [Range(0, int.MaxValue, ErrorMessage = "El tiempo no puede ser negativo")]
     public float tiempoReparacion { get; set; }
     public Fabricante fabricante { get; set; }
-    public List<CompraItem> compraItems { get; set; }
     public List<OfertaItem> OfertaItem { get; set; }
     public List<CompraItem> CompraItems { get; set; }
     public List<AlquilarItem> AlquilarItems { get; set; }

@@ -45,11 +45,11 @@ namespace AppForSEII2526.API.Models
 
         [Required(ErrorMessage = "La fecha de entrega es obligatoria")]
         [Display(Name = "Fecha de entrega")]
-        [DataType(DataType.Date)]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
         public DateTime fechaEntrega { get; set; }
 
         [Display(Name = "Fecha de recogida")]
-        [DataType(DataType.Date)]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
         public DateTime fechaRecogida { get; set; }
 
         [Range(0.1, double.MaxValue, ErrorMessage = "El precio total debe ser mayor que 0")]
@@ -62,7 +62,7 @@ namespace AppForSEII2526.API.Models
 
         
 
-        public Lista<ReparaciónItem> ReparaciónItem { get; set; }
+        public List<ReparaciónItem> ReparaciónItem { get; set; }
 
         public enum TiposMetodosPago
         {

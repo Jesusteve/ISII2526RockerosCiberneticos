@@ -47,6 +47,6 @@ namespace AppForSEII2526.API.Models
         public Herramienta herramienta { get; set; }
 
         [ForeignKey(nameof(idReparacion))]
-        public Reparacion reparacion { get; set; }
+        public Reparación reparacion { get; set; }
     }
 }

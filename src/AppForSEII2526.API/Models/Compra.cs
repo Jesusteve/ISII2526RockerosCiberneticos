@@ -50,7 +50,7 @@ namespace AppForSEII2526.API.Models
         public float precioTotal { get; set; }
 
         [Display(Name = "Método de pago")]
-        public métodoPago métodoDePago { get; set; }
+        public metodoPago métodoDePago { get; set; }
 
         public List<CompraItem> compraItems { get; set; }
 

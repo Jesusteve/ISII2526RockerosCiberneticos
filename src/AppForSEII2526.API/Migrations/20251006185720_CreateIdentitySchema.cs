@@ -85,27 +85,12 @@ namespace AppForSEII2526.API.Migrations
                     correoElectonico = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     fechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     teléfono = table.Column<int>(type: "int", nullable: false),
-                    precioTotal = table.Column<float>(type: "real", nullable: false)
+                    precioTotal = table.Column<float>(type: "real", nullable: false),
+                    métodoDePago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Compra", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompraItem",
-                columns: table => new
-                {
-                    idCompra = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    idHerramienta = table.Column<int>(type: "int", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false),
-                    precio = table.Column<float>(type: "real", nullable: false),
-                    descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompraItem", x => x.idCompra);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,15 +112,34 @@ namespace AppForSEII2526.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    fechaFinal = table.Column<int>(type: "int", nullable: false),
-                    fechaInicio = table.Column<int>(type: "int", nullable: false),
-                    fechaOferta = table.Column<int>(type: "int", nullable: false),
+                    fechaFinal = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    fechaOferta = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dirigidaA = table.Column<int>(type: "int", nullable: false),
                     metodopago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Oferta", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reparación",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    apellidoCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    telefono = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
+                    fechaEntrega = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    fechaRecogida = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    precioTotal = table.Column<float>(type: "real", nullable: false),
+                    metodoPago = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reparación", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -297,6 +301,36 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompraItem",
+                columns: table => new
+                {
+                    idCompra = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    idHerramienta = table.Column<int>(type: "int", nullable: false),
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    precio = table.Column<float>(type: "real", nullable: false),
+                    descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    herramientaId = table.Column<int>(type: "int", nullable: false),
+                    compraId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompraItem", x => x.idCompra);
+                    table.ForeignKey(
+                        name: "FK_CompraItem_Compra_compraId",
+                        column: x => x.compraId,
+                        principalTable: "Compra",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompraItem_Herramienta_herramientaId",
+                        column: x => x.herramientaId,
+                        principalTable: "Herramienta",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OfertaItem",
                 columns: table => new
                 {
@@ -322,6 +356,35 @@ namespace AppForSEII2526.API.Migrations
                         column: x => x.ofertaId,
                         principalTable: "Oferta",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReparaciónItem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    idReparacion = table.Column<int>(type: "int", nullable: false),
+                    idHerramienta = table.Column<int>(type: "int", nullable: false),
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    precio = table.Column<float>(type: "real", nullable: false),
+                    descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReparaciónItem", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ReparaciónItem_Herramienta_idHerramienta",
+                        column: x => x.idHerramienta,
+                        principalTable: "Herramienta",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReparaciónItem_Reparación_idReparacion",
+                        column: x => x.idReparacion,
+                        principalTable: "Reparación",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -375,6 +438,16 @@ namespace AppForSEII2526.API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompraItem_compraId",
+                table: "CompraItem",
+                column: "compraId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompraItem_herramientaId",
+                table: "CompraItem",
+                column: "herramientaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Herramienta_fabricanteId",
                 table: "Herramienta",
                 column: "fabricanteId");
@@ -388,6 +461,16 @@ namespace AppForSEII2526.API.Migrations
                 name: "IX_OfertaItem_ofertaId",
                 table: "OfertaItem",
                 column: "ofertaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReparaciónItem_idHerramienta",
+                table: "ReparaciónItem",
+                column: "idHerramienta");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReparaciónItem_idReparacion",
+                table: "ReparaciónItem",
+                column: "idReparacion");
         }
 
         /// <inheritdoc />
@@ -412,13 +495,13 @@ namespace AppForSEII2526.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Compra");
-
-            migrationBuilder.DropTable(
                 name: "CompraItem");
 
             migrationBuilder.DropTable(
                 name: "OfertaItem");
+
+            migrationBuilder.DropTable(
+                name: "ReparaciónItem");
 
             migrationBuilder.DropTable(
                 name: "Alquiler");
@@ -430,10 +513,16 @@ namespace AppForSEII2526.API.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Herramienta");
+                name: "Compra");
 
             migrationBuilder.DropTable(
                 name: "Oferta");
+
+            migrationBuilder.DropTable(
+                name: "Herramienta");
+
+            migrationBuilder.DropTable(
+                name: "Reparación");
 
             migrationBuilder.DropTable(
                 name: "Fabricante");
