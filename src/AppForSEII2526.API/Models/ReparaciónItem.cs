@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppForSEII2526.API.Models
 {
-    public class ReparacionItem
+    public class ReparaciónItem
     {
-        public ReparacionItem()
+        public ReparaciónItem()
         {
             cantidad = 0;
             precio = 0;
@@ -14,7 +14,7 @@ namespace AppForSEII2526.API.Models
             idHerramienta = 0;
         }
 
-        public ReparacionItem(int reparacionId, int herramientaId, int cantidad, float precio, string descripcion)
+        public ReparaciónItem(int reparacionId, int herramientaId, int cantidad, float precio, string descripcion)
         {
             this.idReparacion = reparacionId;
             this.idHerramienta = herramientaId;
@@ -41,5 +41,12 @@ namespace AppForSEII2526.API.Models
         [StringLength(200, ErrorMessage = "La descripción debe tener entre 5 y 200 caracteres", MinimumLength = 5)]
         public string? descripcion { get; set; }
 
+        
+
+        [ForeignKey(nameof(idHerramienta))]
+        public Herramienta herramienta { get; set; }
+
+        [ForeignKey(nameof(idReparacion))]
+        public Reparacion reparacion { get; set; }
     }
 }

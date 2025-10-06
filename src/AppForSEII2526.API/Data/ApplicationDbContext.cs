@@ -12,5 +12,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     DbSet<Herramienta> Herramienta { get; set; }
     DbSet<Compra> Compra { get; set; }
     DbSet<CompraItem> CompraItem { get; set; }
-
+    DbSet<ReparaciónItem> ReparaciónItem { get; set; }
+    DbSet<Reparación> Reparación { get; set; }
 }

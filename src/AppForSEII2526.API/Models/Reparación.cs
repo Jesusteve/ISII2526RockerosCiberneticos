@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppForSEII2526.API.Models
 {
-    public class Reparacion
+    public class Reparación
     {
-        public Reparacion()
+        public Reparación()
         {
             apellidoCliente = "";
             nombreCliente = "";
@@ -15,7 +15,7 @@ namespace AppForSEII2526.API.Models
             precioTotal = 0;
         }
 
-        public Reparacion(int id, string nombreCliente, string apellidoCliente, string telefono, DateTime fechaEntrega, DateTime fechaRecogida, float precioTotal, TiposMetodosPago metodoPago)
+        public Reparación(int id, string nombreCliente, string apellidoCliente, string telefono, DateTime fechaEntrega, DateTime fechaRecogida, float precioTotal, TiposMetodosPago metodoPago)
         {
             this.id = id;
             this.nombreCliente = nombreCliente;
@@ -60,5 +60,15 @@ namespace AppForSEII2526.API.Models
         [Display(Name = "Método de pago")]
         public TiposMetodosPago metodoPago { get; set; }
 
+        
+
+        public Lista<ReparaciónItem> ReparaciónItem { get; set; }
+
+        public enum TiposMetodosPago
+        {
+            TarjetaCredito,
+            PayPal,
+            Cash
+        }
     }
 }
