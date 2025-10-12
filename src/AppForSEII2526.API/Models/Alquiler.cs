@@ -2,33 +2,25 @@
 
 public class Alquiler
 {
-	public Alquiler() { }
+    public Alquiler() { }
 
-	public Alquiler(int id, string apellidoCliente, string correo, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, string nombreCliente, string numeroTelefono, string periodo, float precioTotal, metodoPago métodoDePago)
-	{
-		this.id = id;
-		this.apellidoCliente = apellidoCliente;
-		this.correo = correo;
-		this.direccionEnvio = direccionEnvio;
-		this.fechaAlquiler = fechaAlquiler;
-		this.fechaFin = fechaFin;
-		this.fechaInicio = fechaInicio;
-		this.nombreCliente = nombreCliente;
-		this.numeroTelefono = numeroTelefono;
-		this.periodo = periodo;
-		this.precioTotal = precioTotal;
-		this.métodoDePago = métodoDePago;
+    public Alquiler(int id, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoPago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
+    {
+        this.id = id;
+        this.direccionEnvio = direccionEnvio;
+        this.fechaAlquiler = fechaAlquiler;
+        this.fechaFin = fechaFin;
+        this.fechaInicio = fechaInicio;
+        this.precioTotal = precioTotal;
+        this.métodoDePago = métodoDePago;
+        this.applicationUser = applicationUser;
+        this.alquilarItems = alquilarItems;
     }
 
     public int id { get; set; }
 
-	[Display(Name = "Apellido del cliente")]
-	public string apellidoCliente { get; set; }
 
-	[Display(Name = "Correo electrónico")]
-	public string correo { get; set; }
-
-	[Display(Name = "Dirección de envío")]
+    [Display(Name = "Dirección de envío")]
     public string direccionEnvio { get; set; }
 
     [Display(Name = "Fecha alquiler")]
@@ -43,21 +35,20 @@ public class Alquiler
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime fechaInicio { get; set; }
 
-	[Display(Name = "Nombre del cliente")]
-    public string nombreCliente { get; set; }
+    [Display(Name = "Período de alquiler")]
+    public string periodo
+    {
+        get { return (fechaFin - fechaInicio).Days + " días"; }
+    }
 
-	[StringLength(12, ErrorMessage = "Número de teléfono no válido", MinimumLength = 9)]
-	public string numeroTelefono { get; set; }
-
-	[Display(Name = "Período de alquiler")]
-	public string periodo { get; set; }
-
-	[DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-	[Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+    [Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
     public float precioTotal { get; set; }
-	public enum metodoPago { TarjetaCredito, PayPal, Efectivo }
+    public enum metodoPago { TarjetaCredito, PayPal, Efectivo }
 
-	[Display(Name = "Método de pago")]
-	public metodoPago métodoDePago { get; set; }
-	public List<AlquilarItem> alquilarItems { get; set; }
+    [Display(Name = "Método de pago")]
+    public metodoPago métodoDePago { get; set; }
+    public List<AlquilarItem> alquilarItems { get; set; }
+
+    public ApplicationUser applicationUser { get; set; }
 }

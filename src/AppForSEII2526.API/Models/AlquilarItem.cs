@@ -1,22 +1,28 @@
-﻿namespace AppForSEII2526.API.Models;
-
+﻿namespace AppForSEII2526.API.Models
+{
+[PrimaryKey(nameof(alquilerId), nameof(herramientaId))]
 public class AlquilarItem
 {
 	public AlquilarItem() { }
-	public AlquilarItem(int idHerramienta, int idAlquiler, float precio, int cantidad)
-    {
-		this.idHerramienta = idHerramienta;
-		this.idAlquiler = idAlquiler;
-		this.precio = precio;
-		this.cantidad = cantidad;
-    }
+	
+		public AlquilarItem(Herramienta herramienta, Alquiler alquiler, float precio, int cantidad)
+        {
+			this.herramienta = herramienta;
+			herramientaId = herramienta.Id;
+			this.alquiler = alquiler;
+			alquilerId = alquiler.id;
+            this.precio = precio;
+			this.cantidad = cantidad;
+        }
 
-	[Display(Name = "ID Herramienta")]
-	public int idHerramienta { get; set; }
+        public Herramienta herramienta { get; set; }
+        public Alquiler alquiler { get; set; }
 
-	[Key]
+    [Display(Name = "ID Herramienta")]
+	public int herramientaId { get; set; }
+
 	[Display(Name = "ID Alquiler")]
-	public int	idAlquiler { get; set; }
+	public int alquilerId { get; set; }
 
 	[DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
 	[Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
@@ -26,7 +32,6 @@ public class AlquilarItem
 	[Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima es 1")]
 	[Display(Name = "Cantidad")]
     public int cantidad { get; set; }
-	public Herramienta herramienta { get; set; }
-	public Alquiler alquiler { get; set; }
-
+	
+	}
 }
