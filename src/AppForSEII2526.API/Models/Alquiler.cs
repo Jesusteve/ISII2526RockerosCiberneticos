@@ -51,4 +51,12 @@ public class Alquiler
     public List<AlquilarItem> alquilarItems { get; set; }
 
     public ApplicationUser applicationUser { get; set; }
+
+    public AlquilarItem AlquilarItem
+    {
+        get => default;
+        set
+        {
+        }
+    }
 }

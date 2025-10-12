@@ -41,7 +41,7 @@ public class Herramienta
     public List<CompraItem> CompraItems { get; set; }
     public List<AlquilarItem> AlquilarItems { get; set; }
 
-    public OfertaItem OfertaItems
+    public Fabricante Fabricante
     {
         get => default;
         set
@@ -49,7 +49,7 @@ public class Herramienta
         }
     }
 
-    public Fabricante Fabricante
+    public AlquilarItem AlquilarItem
     {
         get => default;
         set
