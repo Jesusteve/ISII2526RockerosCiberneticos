@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AppForSEII2526.API.Models.Oferta">
+    <Position X="7.5" Y="2.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="AppForSEII2526.API.Models.Oferta.metodoPago" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Oferta.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAEAAAAAAACACAIAAAAAAQBQAAAgAAAAAAgA=</HashCode>
+      <FileName>Models\Oferta.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OfertaItem" />
+      <Property Name="ParaSocio" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.OfertaItem">
+    <Position X="5.25" Y="2.75" Width="1.5" />
+    <AssociationLine Name="Herramienta" Type="AppForSEII2526.API.Models.Herramienta" ManuallyRouted="true">
+      <Path>
+        <Point X="5.25" Y="4.008" />
+        <Point X="4.75" Y="4.008" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAACAAAAAAAAAAAAgKAABIAgAAAAAAAA=</HashCode>
+      <FileName>Models\OfertaItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Herramienta" />
+      <Property Name="Oferta" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Herramienta">
+    <Position X="3.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAACAAAAAAAAAGAAQEAAAEAgAAABAEAA=</HashCode>
+      <FileName>Models\Herramienta.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OfertaItems" />
+      <Property Name="Fabricante" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.Fabricante">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Models\Fabricante.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Herramienta" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="AppForSEII2526.API.Models.tiposDirigidaOferta">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Models\Oferta.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

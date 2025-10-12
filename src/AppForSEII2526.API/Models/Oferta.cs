@@ -25,22 +25,40 @@
         {
 
         }
-        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, int id, tiposDirigidaOferta dirigidaA)
+        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, int id, tiposDirigidaOferta dirigidaA, ApplicationUser usuario)
         {
             this.fechaFinal = fechaFinal;
             this.fechaInicio = fechaInicio;
             this.fechaOferta = fechaOferta;
             Id = id;
             this.dirigidaA = dirigidaA;
+            this.usuario = usuario;
+        }
+        public ApplicationUser usuario { get; set; }
+
+        public OfertaItem OfertaItem
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public tiposDirigidaOferta ParaSocio
+        {
+            get => default;
+            set
+            {
+            }
         }
     }
- 
-        public enum tiposDirigidaOferta
+
+    public enum tiposDirigidaOferta
         {
             Socios,
             Clientes
         }
-   
+  
 
 
 }

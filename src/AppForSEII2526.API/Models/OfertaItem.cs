@@ -1,13 +1,14 @@
 ﻿namespace AppForSEII2526.API.Models
 {
+    [PrimaryKey(nameof(HerramientaId), nameof(OfertaId))]
     public class OfertaItem
     {
         
         [Display(Name = "ID Herramienta")]
-        public int idHerramienta { get; set; }
-        [Key]
+        public int HerramientaId { get; set; }
+        
         [Display(Name = "ID Oferta")]
-        public int idOferta { get; set; }
+        public int OfertaId { get; set; }
         [Display(Name = "Porcentaje")]
         public float porcentaje { get; set; }
 
@@ -21,8 +22,8 @@
         }
         public OfertaItem(int idHerramienta, int idOferta, float porcentaje, float precioFinal)
         {
-            this.idHerramienta = idHerramienta;
-            this.idOferta = idOferta;
+            this.HerramientaId = idHerramienta;
+            this.OfertaId = idOferta;
 
             this.porcentaje = porcentaje;
             this.precioFinal = precioFinal;
@@ -30,5 +31,20 @@
         public Herramienta herramienta { get; set; }
         public Oferta oferta { get; set; }
 
+        public Herramienta Herramienta
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Oferta Oferta
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

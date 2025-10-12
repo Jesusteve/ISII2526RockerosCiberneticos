@@ -20,6 +20,13 @@
             this.Herramientas = herramientas;
         }
         public List<Herramienta> Herramientas { get; set; }
-        
+
+        public Herramienta Herramienta
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

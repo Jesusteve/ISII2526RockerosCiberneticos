@@ -40,4 +40,20 @@ public class Herramienta
     public List<OfertaItem> OfertaItem { get; set; }
     public List<CompraItem> CompraItems { get; set; }
     public List<AlquilarItem> AlquilarItems { get; set; }
+
+    public OfertaItem OfertaItems
+    {
+        get => default;
+        set
+        {
+        }
+    }
+
+    public Fabricante Fabricante
+    {
+        get => default;
+        set
+        {
+        }
+    }
 }
