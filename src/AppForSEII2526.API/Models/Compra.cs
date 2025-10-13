@@ -54,6 +54,12 @@ namespace AppForSEII2526.API.Models
 
         public List<CompraItem> compraItems { get; set; }
 
-
+        public CompraItem CompraItem
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

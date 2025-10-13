@@ -28,5 +28,13 @@
             {
             }
         }
+
+        public Herramienta Herramienta1
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }

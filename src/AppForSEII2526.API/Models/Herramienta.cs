@@ -56,4 +56,20 @@ public class Herramienta
         {
         }
     }
+
+    public CompraItem CompraItem
+    {
+        get => default;
+        set
+        {
+        }
+    }
+
+    public Fabricante Fabricante1
+    {
+        get => default;
+        set
+        {
+        }
+    }
 }

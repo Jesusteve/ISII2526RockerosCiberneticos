@@ -37,6 +37,20 @@
         public Herramienta herramienta { get; set; }
         public Compra compra { get; set; }
 
-       
+        public Compra Compra
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Herramienta Herramienta
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }
