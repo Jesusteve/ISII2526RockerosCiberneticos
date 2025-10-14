@@ -33,6 +33,7 @@ public class AlquilarItem
 	[Display(Name = "Cantidad")]
     public int cantidad { get; set; }
 
+        [NotMapped]
         public Herramienta Herramienta
         {
             get => default;
@@ -40,7 +41,8 @@ public class AlquilarItem
             {
             }
         }
-
+           
+        [NotMapped]
         public Alquiler Alquiler
         {
             get => default;

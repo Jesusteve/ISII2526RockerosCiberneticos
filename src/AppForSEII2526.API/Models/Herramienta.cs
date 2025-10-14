@@ -41,6 +41,7 @@ public class Herramienta
     public List<CompraItem> CompraItems { get; set; }
     public List<AlquilarItem> AlquilarItems { get; set; }
 
+    [NotMapped]
     public Fabricante Fabricante
     {
         get => default;
@@ -49,23 +50,8 @@ public class Herramienta
         }
     }
 
+    [NotMapped]
     public AlquilarItem AlquilarItem
-    {
-        get => default;
-        set
-        {
-        }
-    }
-
-    public CompraItem CompraItem
-    {
-        get => default;
-        set
-        {
-        }
-    }
-
-    public Fabricante Fabricante1
     {
         get => default;
         set

@@ -31,6 +31,7 @@
         public Herramienta herramienta { get; set; }
         public Oferta oferta { get; set; }
 
+        [NotMapped]
         public Herramienta Herramienta
         {
             get => default;
@@ -39,6 +40,7 @@
             }
         }
 
+        [NotMapped]
         public Oferta Oferta
         {
             get => default;

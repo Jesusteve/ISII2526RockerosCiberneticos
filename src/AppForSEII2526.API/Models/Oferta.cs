@@ -36,6 +36,7 @@
         }
         public ApplicationUser usuario { get; set; }
 
+        [NotMapped]
         public OfertaItem OfertaItem
         {
             get => default;

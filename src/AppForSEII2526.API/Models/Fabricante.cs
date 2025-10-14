@@ -21,6 +21,7 @@
         }
         public List<Herramienta> Herramientas { get; set; }
 
+        [NotMapped]
         public Herramienta Herramienta
         {
             get => default;

@@ -52,6 +52,7 @@ public class Alquiler
 
     public ApplicationUser applicationUser { get; set; }
 
+    [NotMapped]
     public AlquilarItem AlquilarItem
     {
         get => default;
