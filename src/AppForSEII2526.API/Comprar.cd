@@ -1,30 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AppForSEII2526.API.Models.Fabricante">
-    <Position X="0.75" Y="2.25" Width="1.5" />
+    <Position X="1.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Models\Fabricante.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Herramienta1" />
+      <Property Name="Herramienta" />
     </ShowAsAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.Herramienta">
-    <Position X="3.5" Y="2.25" Width="1.5" />
+    <Position X="4.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIACAAAEAAAAAACAAAAAAABCCAAQEAAAEAgAAABAEAA=</HashCode>
+      <HashCode>AAACAAAEAAAAAACAAAAAAABACAAQEAAAEAgAAABAEAA=</HashCode>
       <FileName>Models\Herramienta.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CompraItem" />
-      <Property Name="Fabricante1" />
+      <Property Name="Fabricante" />
     </ShowAsAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.CompraItem">
-    <Position X="6.5" Y="2.25" Width="1.5" />
+    <Position X="8" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAEAEAAAAAAgEAQAIAAEAAAABAA=</HashCode>
+      <HashCode>AQAgAAAAAAAAAACAAAEAAAAAAAAgEAQAIAAEAAAAAAA=</HashCode>
       <FileName>Models\CompraItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -33,9 +33,9 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="AppForSEII2526.API.Models.Compra">
-    <Position X="9.5" Y="2.25" Width="1.5" />
+    <Position X="10.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABCCAAAEEAgAAAAAAAIAAABAAAAAAAgAAAAQAAAAACA=</HashCode>
+      <HashCode>ABACAAAAEAAAAAAAAAIAEABAAAAAAAgAAAAAAAAAACA=</HashCode>
       <FileName>Models\Compra.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

@@ -5,23 +5,36 @@ namespace AppForSEII2526.API.Models;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser {
 
-    public ApplicationUser() { }
-    public ApplicationUser(string nombreCliente, string apellidoCliente, string correo, string numeroTelefono) {
-        this.nombreCliente = nombreCliente;
+    public ApplicationUser()
+    {
+        apellidoCliente = "ninguno";
+        nombreCliente = "ninguno";
+        direccionEnvío = "ninguno";
+        correoElectonico = "ninguno";
+        teléfono = 0;
+    }
+    public ApplicationUser(string apellidoCliente, string nombreCliente, string direccionEnvío, string correoElectonico, int teléfono)
+    {
         this.apellidoCliente = apellidoCliente;
-        this.correo = correo;
-        this.numeroTelefono = numeroTelefono;
+        this.nombreCliente = nombreCliente;
+        this.direccionEnvío = direccionEnvío;
+        this.correoElectonico = correoElectonico;
+        this.teléfono = teléfono;
     }
 
-    [Display(Name = "Nombre")]
-    public string nombreCliente { get; set; }
-
-    [Display(Name = "Apellidos")]
+    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string apellidoCliente { get; set; }
 
-    [Display(Name = "Correo electrónico")]
-    public string correo { get; set; }
+    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+    public string nombreCliente { get; set; }
 
-    [StringLength(12, ErrorMessage = "Número de teléfono no válido", MinimumLength = 9)]
-    public string numeroTelefono { get; set; }
+    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+    public string direccionEnvío { get; set; }
+
+    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+    public string correoElectonico { get; set; }
+    public int teléfono { get; set; }
+
+    public List<Compra> Compras { get; set; }
+
 }

@@ -1,5 +1,7 @@
 ﻿namespace AppForSEII2526.API.Models
 {
+    [PrimaryKey(nameof(CompraId), nameof(HerramientaId))]
+
     public class CompraItem
     {
         public CompraItem()
@@ -7,24 +9,28 @@
             cantidad = 0;
             precio = 0;
             descripcion = "aún no existe descripción";
-            idCompra = 0;
-            idHerramienta = 0;
+            CompraId = 0;
+            HerramientaId = 0;
+            herramienta = new Herramienta();
+            compra = new Compra();
 
         }
-        public CompraItem(int compraId, int herramientaId, int cantidad, float precio, string descripcion)
+        public CompraItem(int compraId, int herramientaId, int cantidad, float precio, string descripcion, Herramienta herramienta, Compra compra)
         {
             
-            this.idCompra = compraId;
-            this.idHerramienta = herramientaId;
+            this.CompraId = compraId;
+            this.HerramientaId = herramientaId;
             this.cantidad = cantidad;
             this.precio = precio;
             this.descripcion = descripcion;
+            this.herramienta = herramienta;
+            this.compra = compra;
         }
 
-        [Key]
-        public int idCompra { get; set; }
+        public int CompraId { get; set; }
 
-        public int idHerramienta { get; set; }
+        public int HerramientaId { get; set; }
+       
 
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe de ser mayor a 0")]
         public int cantidad { get; set; }

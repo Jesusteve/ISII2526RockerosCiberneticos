@@ -6,40 +6,22 @@ namespace AppForSEII2526.API.Models
     {
         public Compra()
         {
-            apellidoCliente = "ninguno";
-            nombreCliente = "ninguno";
-            direccionEnvío = "ninguno";
-            correoElectonico = "ninguno";
             fechaCompra = DateTime.Now;
-            teléfono = 0;
             precioTotal = 0;
-
+            métodoDePago = new metodoPago();
+            compraItems = new List<CompraItem>();
         }
-        public Compra(int id, string apellidoCliente, string nombreCliente, string direccionEnvío, string correoElectonico, DateTime fechaCompra, int teléfono, float precioTotal)
+        public Compra( int id, DateTime fechaCompra,float precioTotal, metodoPago metodoPago)
         {
             Id = id;
-            this.apellidoCliente = apellidoCliente;
-            this.nombreCliente = nombreCliente;
-            this.direccionEnvío = direccionEnvío;
-            this.correoElectonico = correoElectonico;
             this.fechaCompra = fechaCompra;
-            this.teléfono = teléfono;
             this.precioTotal = precioTotal;
+            this.métodoDePago = metodoPago;
         }
 
         public int Id { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        public string apellidoCliente { get; set; }
-
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        public string nombreCliente { get; set; }
-
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        public string direccionEnvío { get; set; }
-
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        public string correoElectonico { get; set; }
+   
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime fechaCompra { get; set; }

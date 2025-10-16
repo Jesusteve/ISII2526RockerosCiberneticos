@@ -11,7 +11,7 @@ public class Herramienta
         nombre = "ninguno";
         precio = 0;
         tiempoReparacion = 0;
-        fabricante = new Fabricante();
+        
     }
     public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion)
     {
@@ -20,7 +20,6 @@ public class Herramienta
         nombre = Nombre;
         precio = Precio;
         tiempoReparacion = TiempoReparacion;
-        this.fabricante = fabricante;
     }
 
     public int Id { get; set; }
