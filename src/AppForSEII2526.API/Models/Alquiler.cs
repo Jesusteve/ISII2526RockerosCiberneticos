@@ -48,7 +48,7 @@ public class Alquiler
 
     [Display(Name = "Método de pago")]
     public metodoPago métodoDePago { get; set; }
-    public List<AlquilarItem> alquilarItems { get; set; }
+    public IList<AlquilarItem> alquilarItems { get; set; }
 
     public ApplicationUser applicationUser { get; set; }
 
