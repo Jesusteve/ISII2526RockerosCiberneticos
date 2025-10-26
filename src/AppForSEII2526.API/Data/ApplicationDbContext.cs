@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 namespace AppForSEII2526.API.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
-    public DbSet<Alquiler> Alquiler { get; set; }
-    public DbSet<AlquilarItem> AlquilarItem { get; set; }
-    public DbSet<Fabricante> Fabricante { get; set; }
-    public DbSet<Oferta> Oferta { get; set; }
-    public DbSet<OfertaItem> OfertaItem { get; set; }
+   public DbSet<Alquiler> Alquiler { get; set; }
+   public DbSet<AlquilarItem> AlquilarItem { get; set; }
+    DbSet<Fabricante> Fabricante { get; set; }
+    DbSet<Oferta> Oferta { get; set; }
+    DbSet<OfertaItem> OfertaItem { get; set; }
     public DbSet<Herramienta> Herramienta { get; set; }
-    public DbSet<Compra> Compra { get; set; }
-    public DbSet<CompraItem> CompraItem { get; set; }
-    public DbSet<ReparaciónItem> ReparaciónItem { get; set; }
-    public DbSet<Reparación> Reparación { get; set; }
+    DbSet<Compra> Compra { get; set; }
+    DbSet<CompraItem> CompraItem { get; set; }
+    DbSet<ReparaciónItem> ReparaciónItem { get; set; }
+    DbSet<Reparación> Reparación { get; set; }
 }

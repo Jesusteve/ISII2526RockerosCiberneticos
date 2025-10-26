@@ -5,16 +5,10 @@ namespace AppForSEII2526.API.Models;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser {
 
-    public ApplicationUser()
-    {
-        apellidoCliente = "ninguno";
-        nombreCliente = "ninguno";
-        direccionEnvío = "ninguno";
-        correoElectonico = "ninguno";
-        teléfono = 0;
-    }
-    public ApplicationUser(string apellidoCliente, string nombreCliente, string direccionEnvío, string correoElectonico, int teléfono)
-    {
+    public ApplicationUser() { }
+    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correo, string numeroTelefono) {
+        this.Id = id;
+        this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.nombreCliente = nombreCliente;
         this.direccionEnvío = direccionEnvío;
@@ -22,10 +16,9 @@ public class ApplicationUser : IdentityUser {
         this.teléfono = teléfono;
     }
 
-    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-    public string apellidoCliente { get; set; }
+    int Id { get; set; }
 
-    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+    [Display(Name = "Nombre")]
     public string nombreCliente { get; set; }
 
     [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]

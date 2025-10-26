@@ -36,6 +36,7 @@ namespace AppForSEII2526.API.Models
 
         public List<CompraItem> compraItems { get; set; }
 
+        [NotMapped]
         public CompraItem CompraItem
         {
             get => default;
