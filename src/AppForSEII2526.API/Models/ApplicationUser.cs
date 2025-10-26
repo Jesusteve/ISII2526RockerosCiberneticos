@@ -21,6 +21,9 @@ public class ApplicationUser : IdentityUser {
     [Display(Name = "Nombre")]
     public string nombreCliente { get; set; }
 
+    [Display(Name= "Apellidos"]
+    public string apellidoCliente {get; set; }
+
     [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string direccionEnvío { get; set; }
 
