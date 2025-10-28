@@ -8,7 +8,7 @@
 
         public AlquilerDetalleDTO(int id, DateTime fechaAlquiler, string nombreCliente, string apellidoCliente, 
             string direccionEnvio, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
-            : base(nombreCliente, apellidoCliente, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems)
+            : base(nombreCliente, apellidoCliente, direccionEnvio, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems)
         {
             this.id = id;
             this.fechaAlquiler = fechaAlquiler;

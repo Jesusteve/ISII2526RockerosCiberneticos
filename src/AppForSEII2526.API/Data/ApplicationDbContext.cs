@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AppForSEII2526.API.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
+    public DbSet<ApplicationUser> ApplicationUser { get; set; }
     public DbSet<Alquiler> Alquiler { get; set; }
     public DbSet<AlquilarItem> AlquilarItem { get; set; }
     public DbSet<Fabricante> Fabricante { get; set; }

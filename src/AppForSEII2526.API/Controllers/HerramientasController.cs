@@ -1,4 +1,4 @@
-﻿using AppForSEII2526.API.DTO;
+﻿using AppForSEII2526.API.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

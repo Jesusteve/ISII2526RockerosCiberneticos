@@ -3,8 +3,9 @@
     public class AlquilerCrearDTO
     {
 
-        public AlquilerCrearDTO(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
+        public AlquilerCrearDTO(string user,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
         {
+            this.user = user;
             this.nombreCliente = nombreCliente;
             this.apellidoCliente = apellidoCliente;
             this.direccionEnvio = direccionEnvio;
@@ -53,11 +54,17 @@
             }
         }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]
+        public string user { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]
         public string nombreCliente { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir tus apellidos")]
         public string apellidoCliente { get; set; }
+
+        public enum métodoPago { TarjetaCredito, PayPal, Efectivo }
+
+        public métodoPago metodoDePago { get; set; }
     }
 }

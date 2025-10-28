@@ -4,9 +4,9 @@ public class Alquiler
 {
     public Alquiler() { }
 
-    public Alquiler(int id, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoPago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
+    public Alquiler(string user, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoPago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
     {
-        this.id = id;
+        this.applicationUser.UserName=user;
         this.direccionEnvio = direccionEnvio;
         this.fechaAlquiler = fechaAlquiler;
         this.fechaFin = fechaFin;
