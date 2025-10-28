@@ -10,8 +10,6 @@
 
         public Fabricante()
         {
-            nombre = "ninguno";
-            Herramientas = new List<Herramienta>();
         }
         public Fabricante(int id, string nombre, List<Herramienta> herramientas)
         {
@@ -29,7 +27,6 @@
             {
             }
         }
-
         [NotMapped]
         public Herramienta Herramienta1
         {

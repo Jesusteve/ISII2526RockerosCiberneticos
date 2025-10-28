@@ -34,6 +34,7 @@ namespace AppForSEII2526.API.Models
         [Display(Name = "Método de pago")]
         public metodoPago métodoDePago { get; set; }
 
+        [NotMapped]
         public List<CompraItem> compraItems { get; set; }
 
         [NotMapped]
