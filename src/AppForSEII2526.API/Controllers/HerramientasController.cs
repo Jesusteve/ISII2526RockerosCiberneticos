@@ -5,6 +5,52 @@ using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
 namespace AppForSEII2526.API.Controllers
+{
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HerramientasController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<HerramientasController> _logger;
+
+        public HerramientasController(ApplicationDbContext context, ILogger<HerramientasController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaComprarDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetHerramienParaComprar(String? material , String? nombre)
+        {
+            if (_context.Herramienta == null)
+            {
+                _logger.LogWarning("No se encontraron herramientas en la base de datos.");
+                return NotFound();
+            }
+            _logger.LogInformation("Iniciando GetHerramienParaComprar");
+            var herramientas = await _context.Herramienta
+                .Include(h => h.fabricante)
+                .Where(h => (material == null || h.material.ToLower().Contains(material.ToLower())) &&
+                            (nombre == null || h.nombre.ToLower().Contains(nombre.ToLower())))
+                .Select(h => new HerramientaParaComprarDTO(
+                    h.material,
+                    h.nombre,
+                    h.precio,
+                    h.fabricante != null ? h.fabricante.nombre : string.Empty
+                ))
+                .ToListAsync();
+            _logger.LogInformation("Finalizando GetHerramienParaComprar");
+            return Ok(herramientas);
+        }
+
+
+
+    }
+}
     {
 
         [Route("api/[controller]")]
