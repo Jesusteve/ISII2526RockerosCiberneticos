@@ -42,7 +42,7 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramienParaAlquilarDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetHerramientasForRenting_DTO(string? nombre, string? material)
+        public async Task<ActionResult> GetHerramientasForRenting(string? nombre, string? material)
         {
             DateTime pasMñn = DateTime.Now.AddDays(2), semSig = DateTime.Now.AddDays(7);
 

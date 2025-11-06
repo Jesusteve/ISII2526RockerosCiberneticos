@@ -12,19 +12,26 @@ public class ApplicationUser : IdentityUser {
         nombreCliente = "ninguno";
         direccionEnvío = "ninguno";
         correoElectonico = "ninguno";
-        teléfono = 0;
+        teléfono =0;
     }
-    public ApplicationUser(string apellidoCliente, string nombreCliente, string direccionEnvío, string correoElectonico, int teléfono)
+    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correoElectonico, int numeroTelefono)
     {
-    public ApplicationUser() { }
-    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correo, string numeroTelefono) {
         this.Id = id;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.nombreCliente = nombreCliente;
         this.direccionEnvío = direccionEnvío;
         this.correoElectonico = correoElectonico;
-        this.teléfono = teléfono;
+        teléfono = numeroTelefono;
+    }
+    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correoElectonico, int numeroTelefono, string direccionEnvío) {
+        this.Id = id;
+        this.nombreCliente = nombreCliente;
+        this.apellidoCliente = apellidoCliente;
+        this.nombreCliente = nombreCliente;
+        this.direccionEnvío = direccionEnvío;
+        this.correoElectonico = correoElectonico;
+        teléfono = numeroTelefono;
     }
 
     int Id { get; set; }
@@ -42,5 +49,7 @@ public class ApplicationUser : IdentityUser {
     public int teléfono { get; set; }
 
     public List<Compra> Compras { get; set; }
+
+    public List<Alquiler> alquileres { get; set; }
 
 }

@@ -3,9 +3,9 @@
     public class AlquilerCrearDTO
     {
 
-        public AlquilerCrearDTO(string user,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
+        public AlquilerCrearDTO(int id,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
         {
-            this.user = user;
+            this.id=id;
             this.nombreCliente = nombreCliente;
             this.apellidoCliente = apellidoCliente;
             this.direccionEnvio = direccionEnvio;
@@ -55,7 +55,7 @@
         }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]
-        public string user { get; set; }
+        public int id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]
         public string nombreCliente { get; set; }
@@ -66,5 +66,38 @@
         public enum métodoPago { TarjetaCredito, PayPal, Efectivo }
 
         public métodoPago metodoDePago { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is AlquilerCrearDTO dTO &&
+                   EqualityComparer<IList<AlquilarItemDTO>>.Default.Equals(AlquilarItems, dTO.AlquilarItems) &&
+                   direccionEnvio == dTO.direccionEnvio &&
+                   fechaAlquiler == dTO.fechaAlquiler &&
+                   fechaFin == dTO.fechaFin &&
+                   fechaInicio == dTO.fechaInicio &&
+                   diasAlquiler == dTO.diasAlquiler &&
+                   precioTotal == dTO.precioTotal &&
+                   id == dTO.id &&
+                   nombreCliente == dTO.nombreCliente &&
+                   apellidoCliente == dTO.apellidoCliente &&
+                   metodoDePago == dTO.metodoDePago;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(AlquilarItems);
+            hash.Add(direccionEnvio);
+            hash.Add(fechaAlquiler);
+            hash.Add(fechaFin);
+            hash.Add(fechaInicio);
+            hash.Add(diasAlquiler);
+            hash.Add(precioTotal);
+            hash.Add(id);
+            hash.Add(nombreCliente);
+            hash.Add(apellidoCliente);
+            hash.Add(metodoDePago);
+            return hash.ToHashCode();
+        }
     }
 }

@@ -73,7 +73,7 @@ namespace AppForSEII2526.API.Controllers
 
              }
             //Validación de usuario
-            var usuario = _context.ApplicationUser.FirstOrDefault(u => u.UserName == crearAlquiler.user);
+            var usuario = _context.ApplicationUser.FirstOrDefault(u => u.UserName == crearAlquiler.nombreCliente);
             if (usuario == null)
                 ModelState.AddModelError("Usuario", "Error: El usuario no existe");
             
@@ -94,7 +94,7 @@ namespace AppForSEII2526.API.Controllers
             .ToList();
 
             //Tercer paso: Creamos el objeto
-            Alquiler alquiler = new Alquiler(crearAlquiler.user, crearAlquiler.direccionEnvio, DateTime.Now.Date,
+            Alquiler alquiler = new Alquiler(crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
                 crearAlquiler.fechaFin, crearAlquiler.fechaInicio, crearAlquiler.precioTotal, 
                 (AppForSEII2526.API.Models.Alquiler.metodoPago)crearAlquiler.metodoDePago, 
                 usuario, new List<AlquilarItem>());

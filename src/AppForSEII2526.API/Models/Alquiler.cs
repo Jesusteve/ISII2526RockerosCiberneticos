@@ -4,16 +4,16 @@ public class Alquiler
 {
     public Alquiler() { }
 
-    public Alquiler(string user, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoPago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
+    public Alquiler(string nombreCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoPago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
     {
-        this.applicationUser.UserName=user;
+        this.applicationUser = applicationUser ?? new ApplicationUser();
+        this.applicationUser.nombreCliente = nombreCliente;
         this.direccionEnvio = direccionEnvio;
         this.fechaAlquiler = fechaAlquiler;
         this.fechaFin = fechaFin;
         this.fechaInicio = fechaInicio;
         this.precioTotal = precioTotal;
         this.métodoDePago = métodoDePago;
-        this.applicationUser = applicationUser;
         this.alquilarItems = alquilarItems;
     }
 

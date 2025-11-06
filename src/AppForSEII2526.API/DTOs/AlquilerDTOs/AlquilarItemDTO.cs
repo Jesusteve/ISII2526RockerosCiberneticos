@@ -29,6 +29,15 @@
         [Display(Name = "Cantidad")]
         int cantidad { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is AlquilarItemDTO dTO &&
+                   herramientaId == dTO.herramientaId &&
+                   alquilerId == dTO.alquilerId &&
+                   precio == dTO.precio &&
+                   cantidad == dTO.cantidad;
+        }
+
         public override int GetHashCode()
         {
             return HashCode.Combine(herramientaId, alquilerId);
