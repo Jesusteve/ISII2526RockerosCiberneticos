@@ -30,7 +30,7 @@ namespace AppForSEII2526.API.Controllers
             [HttpGet]
             [Route("[action]")]
             [ProducesResponseType(typeof(IList<HerramienParaAlquilarDTO>), (int)HttpStatusCode.OK)]
-            public async Task<ActionResult> GetHerramientasForRenting_DTO(string? nombre, string? material)
+            public async Task<ActionResult> GetHerramientasForRenting(string? nombre, string? material)
             {
                 DateTime pasMñn= DateTime.Now.AddDays(2), semSig= DateTime.Now.AddDays(7);
    
@@ -49,7 +49,7 @@ namespace AppForSEII2526.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<HerramienParaComprarDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetHerramienParaComprar(String? material, String? nombre)
+        public async Task<IActionResult> GetHerramienParaComprar(string? material, string? nombre)
         {
             if (_context.Herramienta == null)
             {
