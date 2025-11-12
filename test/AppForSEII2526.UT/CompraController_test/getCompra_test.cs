@@ -24,7 +24,7 @@ namespace AppForSEII2526.UT.CompraController_test
 
             var Fabricante = new List<Fabricante>();
             {
-                new Fabricante(1, "Fabricante1", herramientas);
+                new Fabricante(1, "Fabricante1");
                 new Fabricante() { Id = 2, nombre = "Fabricante2" };
                 new Fabricante() { Id = 3, nombre = "Fabricante3" };
             }

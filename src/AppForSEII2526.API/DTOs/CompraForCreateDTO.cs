@@ -8,7 +8,7 @@
         }
 
         public CompraForCreateDTO(string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra, string direccionEnvío, 
-            List<CompraItemDTO> compraItems, métodoPago métodoDePago, string correoElectronico, int telefono)
+            List<CompraItemDTO> compraItems, metodoDePago metodoDePago, string correoElectronico, int telefono)
         {
             this.apellidoCliente = apellidoCliente ?? throw new ArgumentNullException(nameof(apellidoCliente)); ;
             this.nombreCliente = nombreCliente ?? throw new ArgumentNullException(nameof(nombreCliente)); ;
@@ -16,7 +16,7 @@
             this.fechaCompra = fechaCompra;
             this.direccionEnvío = direccionEnvío ?? throw new ArgumentNullException(nameof(direccionEnvío)); 
             this.compraItems = compraItems ?? throw new ArgumentNullException(nameof(compraItems)); ;
-            this.métodoDePago = métodoDePago;
+            this.metodoDePago = metodoDePago;
             this.correoElectonico = correoElectronico;
             this.teléfono = telefono;
 
@@ -41,10 +41,10 @@
         [StringLength(50, MinimumLength = 10, ErrorMessage = "La dirección debe de teer mínimo 10 caractéres")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu dirección")]
         public string direccionEnvío { get; set; }
-        public enum métodoPago { TarjetaCredito, PayPal, Efectivo }
+    
 
         [Display(Name = "Método de pago")]
-        public métodoPago métodoDePago { get; set; }
+        public metodoDePago metodoDePago { get; set; }
 
         public List<CompraItemDTO> compraItems { get; set; }
 
@@ -60,7 +60,7 @@
                    precioTotal == dTO.precioTotal &&
                    fechaCompra == dTO.fechaCompra &&
                    direccionEnvío == dTO.direccionEnvío &&
-                   métodoDePago == dTO.métodoDePago &&
+                   metodoDePago == dTO.metodoDePago &&
                    EqualityComparer<List<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems) &&
                    correoElectonico == dTO.correoElectonico &&
                    teléfono == dTO.teléfono;
@@ -74,7 +74,7 @@
             hash.Add(precioTotal);
             hash.Add(fechaCompra);
             hash.Add(direccionEnvío);
-            hash.Add(métodoDePago);
+            hash.Add(metodoDePago);
             hash.Add(compraItems);
             hash.Add(correoElectonico);
             hash.Add(teléfono);

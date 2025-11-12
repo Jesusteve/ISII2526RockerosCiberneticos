@@ -23,32 +23,42 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetAlquiler(int id)
         {
-            if (_context.Alquiler== null)
+            if (_context.Alquiler == null)
             {
                 _logger.LogError("Error: La tabla Alquiler no existe");
                 return NotFound();
             }
 
-            var alquiler = await _context.Alquiler
-             .Where(a => a.id == id)
+            // Cargar la entidad completa (evita la proyección que genera APPLY en SQLite)
+            var alquilerEntity = await _context.Alquiler
+                .Where(a => a.id == id)
                 .Include(a => a.applicationUser)
                 .Include(a => a.alquilarItems)
-                    .ThenInclude(h => h.herramienta)
-                        .ThenInclude(f => f.fabricante)
-             .Select(a => new AlquilerDetalleDTO(a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
-             a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin, a.alquilarItems
-                .Select(aq => new AlquilarItemDTO(a.AlquilarItem.Herramienta.Id, a.id, a.precioTotal, a.AlquilarItem.cantidad)).ToList<AlquilarItemDTO>()))
-             .FirstOrDefaultAsync();
+                    .ThenInclude(ai => ai.herramienta)
+                        .ThenInclude(h => h.fabricante)
+                .FirstOrDefaultAsync();
 
-
-            if (alquiler == null)
+            if (alquilerEntity == null)
             {
                 _logger.LogError($"Error: Rental with id {id} does not exist");
                 return NotFound();
             }
 
+            // Proyectar a DTO en memoria
+            var alquilerDto = new AlquilerDetalleDTO(
+                alquilerEntity.id,
+                alquilerEntity.fechaAlquiler,
+                alquilerEntity.applicationUser?.nombreCliente,
+                alquilerEntity.applicationUser?.apellidoCliente,
+                alquilerEntity.direccionEnvio,
+                alquilerEntity.fechaInicio,
+                alquilerEntity.fechaFin,
+                alquilerEntity.alquilarItems
+                    .Select(ai => new AlquilarItemDTO(ai.herramientaId, alquilerEntity.id, ai.precio, ai.cantidad))
+                    .ToList()
+            );
 
-            return Ok(alquiler);
+            return Ok(alquilerDto);
         }
 
         [HttpPost]
@@ -73,30 +83,39 @@ namespace AppForSEII2526.API.Controllers
 
              }
             //Validación de usuario
-            var usuario = _context.ApplicationUser.FirstOrDefault(u => u.UserName == crearAlquiler.nombreCliente);
+            var usuario = _context.ApplicationUser.FirstOrDefault(u => u.nombreCliente == crearAlquiler.nombreCliente);
             if (usuario == null)
                 ModelState.AddModelError("Usuario", "Error: El usuario no existe");
-            
-            if(ModelState.ErrorCount>0)
+
+            //Validación de que haya al menos una herramienta
+            if (crearAlquiler.AlquilarItems.Count == 0)
+                ModelState.AddModelError("AlquilerItem", "Error: Tienes que incluir al menos una herramienta");
+
+            //Validación de orden de fechas
+            if (crearAlquiler.fechaFin <= crearAlquiler.fechaInicio)
+                ModelState.AddModelError("Fechas", "Error: La fecha de fin debe ser posterior a la fecha de inicio");
+
+            //Validación de fecha de alquiler no anterior a hoy
+            if (crearAlquiler.fechaAlquiler < DateTime.Now.Date)
+                ModelState.AddModelError("FechaInicio", "Error: La fecha de alquiler no puede ser anterior a hoy");
+
+            if (ModelState.ErrorCount>0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
             //Segundo paso: Recupero datos de la BBDD
             var herramientasExistentes = crearAlquiler.AlquilarItems.Select(h => h.herramientaId).ToList();
 
-            var herramientas = _context.Herramienta.Include(h => h.AlquilarItems)
-                    .ThenInclude(al => al.Alquiler)
+            // Obtener las entidades completas para poder comprobar cantidad y alq. existentes
+            var herramientas = _context.Herramienta
+                .Include(h => h.AlquilarItems)
+                    .ThenInclude(ai => ai.alquiler)
                 .Where(h => herramientasExistentes.Contains(h.Id))
-
-            .Select(m => new {m.Id, m.nombre, m.AlquilarItem.cantidad, m.AlquilarItem.precio,
-             NumAlquileres = m.AlquilarItems.Count(ai => 
-                (ai.Alquiler.fechaInicio <= crearAlquiler.fechaFin) && 
-                (ai.Alquiler.fechaFin >= crearAlquiler.fechaInicio))})
-            .ToList();
+                .ToList();
 
             //Tercer paso: Creamos el objeto
-            Alquiler alquiler = new Alquiler(crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
+            Alquiler alquiler = new Alquiler(1,crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
                 crearAlquiler.fechaFin, crearAlquiler.fechaInicio, crearAlquiler.precioTotal, 
-                (AppForSEII2526.API.Models.Alquiler.metodoPago)crearAlquiler.metodoDePago, 
+                crearAlquiler.metodoDePago, 
                 usuario, new List<AlquilarItem>());
 
             alquiler.precioTotal = 0;
@@ -106,14 +125,19 @@ namespace AppForSEII2526.API.Controllers
             foreach(var item in crearAlquiler.AlquilarItems)
             {
                 var herramienta = herramientas.FirstOrDefault(h => h.Id == item.herramientaId);
-                if ((herramienta == null) || (herramienta.NumAlquileres >= herramienta.cantidad)){ 
-                    ModelState.AddModelError("AlquilerItem", $"Error: La herramienta '{herramienta.Id}' no está disponible");
-                }
-                else
+                if (herramienta== null)
                 {
-                    alquiler.alquilarItems.Add(new AlquilarItem(new Herramienta(), new Alquiler(), herramienta.precio,herramienta.cantidad));
-                    item.precio = herramienta.precio;
+                    ModelState.AddModelError("AlquilerItem", $"Error: La herramienta con id {item.herramientaId} no está disponible");
+                    continue;
                 }
+
+                var numAlquileres = herramienta.AlquilarItems.Count(ai =>
+                    ai.alquiler.fechaInicio <= crearAlquiler.fechaFin &&
+                    ai.alquiler.fechaFin >= crearAlquiler.fechaInicio);
+
+                // Usar la entidad real para crear el item (evita insertar Herramienta/Alquiler vacíos)
+                alquiler.alquilarItems.Add(new AlquilarItem(herramienta, alquiler, herramienta.precio));
+                item.precio = herramienta.precio;
             }
             alquiler.precioTotal = alquiler.alquilarItems.Sum(ai => (float)(ai.precio * numDias));
 

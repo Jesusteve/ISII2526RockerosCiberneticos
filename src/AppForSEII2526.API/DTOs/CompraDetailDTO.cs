@@ -3,13 +3,13 @@
     public class CompraDetailDTO : CompraForCreateDTO
     {
         public CompraDetailDTO(int id, string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
-            string direccionEnvío, List<CompraItemDTO> compraItems, métodoPago métodoDePago, string correoElectronico, int telefono)
+            string direccionEnvío, List<CompraItemDTO> compraItems, metodoDePago metodoDePago, string correoElectronico, int telefono)
             : base(apellidoCliente,
             nombreCliente,
             precioTotal,
             fechaCompra,
             direccionEnvío,
-            compraItems,métodoDePago, correoElectronico, telefono)
+            compraItems,metodoDePago, correoElectronico, telefono)
         {
             Id = id;
 
@@ -25,7 +25,7 @@
                    precioTotal == dTO.precioTotal &&
                    fechaCompra == dTO.fechaCompra &&
                    direccionEnvío == dTO.direccionEnvío &&
-                   métodoDePago == dTO.métodoDePago &&
+                   metodoDePago == dTO.metodoDePago &&
                    EqualityComparer<List<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems) &&
                    Id == dTO.Id;
         }
@@ -39,7 +39,7 @@
             hash.Add(precioTotal);
             hash.Add(fechaCompra);
             hash.Add(direccionEnvío);
-            hash.Add(métodoDePago);
+            hash.Add(metodoDePago);
             hash.Add(compraItems);
             hash.Add(Id);
             return hash.ToHashCode();

@@ -52,7 +52,7 @@ namespace AppForSEII2526.API.Data
         public static void SeedUsers(UserManager<ApplicationUser> userManager, List<string> roles)
         {
             //Primero, se comprueba que el usuario no existe ya en la BD
-            if (userManager.FindByNameAsync("elena@uclm.es").Result == null)
+            if (userManager.FindByNameAsync("jesus@uclm.es").Result == null)
             {
                 ApplicationUser user = new ApplicationUser(1, "Jesús", "Tercero Vergara", "jesus@uclm.es", 666514836);
                 user.EmailConfirmed = true;

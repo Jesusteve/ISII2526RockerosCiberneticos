@@ -11,11 +11,11 @@
         public Fabricante()
         {
         }
-        public Fabricante(int id, string nombre, List<Herramienta> herramientas)
+        public Fabricante(int id, string nombre)
         {
             Id = id;
             this.nombre = nombre;
-            this.Herramientas = herramientas;
+            
         }
         public List<Herramienta> Herramientas { get; set; }
 

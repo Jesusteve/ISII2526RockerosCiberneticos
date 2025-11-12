@@ -1,8 +1,9 @@
 ﻿using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AppForSEII2526.API.DTOs;
 using SQLitePCL;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -38,7 +39,8 @@ namespace AppForSEII2526.API.Controllers
                 .Include(alq => alq.AlquilarItems).ThenInclude(al => al.alquiler) 
                     .Where (alq => (nombre==null || alq.nombre.Contains(nombre)) 
                     && (material==null || alq.material.Contains(material)
-                    && (alq.AlquilarItem.alquiler.fechaInicio.Date>semSig.Date && alq.AlquilarItem.alquiler.fechaFin.Date <pasMñn.Date)))
+                    && (alq.AlquilarItems.All(a => a.alquiler.fechaInicio.Date > semSig.Date 
+                        && a.alquiler.fechaFin.Date < pasMñn.Date))))
                     .OrderBy(alq => alq.nombre)
                     .Select(alq => new HerramienParaAlquilarDTO(alq.Id, alq.material, alq.nombre, alq.precio, alq.fabricante.nombre))
                     .ToListAsync();

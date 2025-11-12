@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251015141313_CreateIdentitySchema")]
+    [Migration("20251107180057_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -55,6 +55,7 @@ namespace AppForSEII2526.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("applicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("direccionEnvio")
@@ -70,7 +71,7 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<DateTime>("fechaInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("métodoDePago")
+                    b.Property<int>("metodoDePago")
                         .HasColumnType("int");
 
                     b.Property<float>("precioTotal")
@@ -139,18 +140,22 @@ namespace AppForSEII2526.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("correo")
+                    b.Property<string>("correoElectonico")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("direccionEnvío")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("nombreCliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("numeroTelefono")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                    b.Property<int>("teléfono")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -173,31 +178,15 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("apellidoCliente")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("correoElectonico")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("direccionEnvío")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("fechaCompra")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("métodoDePago")
                         .HasColumnType("int");
-
-                    b.Property<string>("nombreCliente")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<float>("precioTotal")
                         .HasColumnType("real");
@@ -207,21 +196,20 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("Compra");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.CompraItem", b =>
                 {
-                    b.Property<int>("idCompra")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CompraId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idCompra"));
+                    b.Property<int>("HerramientaId")
+                        .HasColumnType("int");
 
                     b.Property<int>("cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<int>("compraId")
                         .HasColumnType("int");
 
                     b.Property<string>("descripcion")
@@ -229,20 +217,12 @@ namespace AppForSEII2526.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("herramientaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idHerramienta")
-                        .HasColumnType("int");
-
                     b.Property<float>("precio")
                         .HasColumnType("real");
 
-                    b.HasKey("idCompra");
+                    b.HasKey("CompraId", "HerramientaId");
 
-                    b.HasIndex("compraId");
-
-                    b.HasIndex("herramientaId");
+                    b.HasIndex("HerramientaId");
 
                     b.ToTable("CompraItem");
                 });
@@ -325,6 +305,7 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("usuarioId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -364,6 +345,7 @@ namespace AppForSEII2526.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("applicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("fechaEntrega")
@@ -573,23 +555,36 @@ namespace AppForSEII2526.API.Migrations
             modelBuilder.Entity("AppForSEII2526.API.Models.Alquiler", b =>
                 {
                     b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "applicationUser")
-                        .WithMany()
-                        .HasForeignKey("applicationUserId");
+                        .WithMany("alquileres")
+                        .HasForeignKey("applicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("applicationUser");
+                });
+
+            modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Compras")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.CompraItem", b =>
                 {
                     b.HasOne("AppForSEII2526.API.Models.Compra", "compra")
-                        .WithMany("compraItems")
-                        .HasForeignKey("compraId")
+                        .WithMany()
+                        .HasForeignKey("CompraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AppForSEII2526.API.Models.Herramienta", "herramienta")
                         .WithMany("CompraItems")
-                        .HasForeignKey("herramientaId")
+                        .HasForeignKey("HerramientaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -613,7 +608,9 @@ namespace AppForSEII2526.API.Migrations
                 {
                     b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "usuario")
                         .WithMany()
-                        .HasForeignKey("usuarioId");
+                        .HasForeignKey("usuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("usuario");
                 });
@@ -641,7 +638,9 @@ namespace AppForSEII2526.API.Migrations
                 {
                     b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "applicationUser")
                         .WithMany()
-                        .HasForeignKey("applicationUserId");
+                        .HasForeignKey("applicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("applicationUser");
                 });
@@ -721,9 +720,11 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("alquilarItems");
                 });
 
-            modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>
+            modelBuilder.Entity("AppForSEII2526.API.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("compraItems");
+                    b.Navigation("Compras");
+
+                    b.Navigation("alquileres");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Fabricante", b =>

@@ -13,13 +13,14 @@ public class Herramienta
         tiempoReparacion = 0;
         
     }
-    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion)
+    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
     {
         Id = id;
         material = Material;
         nombre = Nombre;
         precio = Precio;
         tiempoReparacion = TiempoReparacion;
+        this.fabricante = fabricante;
     }
 
     public int Id { get; set; }

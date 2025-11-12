@@ -15,26 +15,24 @@ namespace AppForSEII2526.UT.HerramientasController_test
     {
         public GetAlquiler_test()
         {
+          var fabricante = new List<Fabricante>()
+            {
+                new Fabricante(1, "Fabricante 1"),
+              
+            }
+            ;
             var herramientas = new List<Herramienta>()
             {
 
-                new Herramienta(1, "Hierro", "Taladro", 15.5f, 6),
-                new Herramienta(2,"Acero", "Martillo", 10,0.5f),
-                new Herramienta(3,"Madera", "Sierra", 20.6f,1)
+                new Herramienta(1, "Hierro", "Taladro", 15.5f, 6, fabricante[0]),
+                new Herramienta(2,"Acero", "Martillo", 10,0.5f, fabricante[0]),
+                new Herramienta(3,"Madera", "Sierra", 20.6f,1, fabricante[0])
             };
-
-            var fabricante = new List<Fabricante>()
-            {
-                new Fabricante(1, "Fabricante1", herramientas),
-                new Fabricante(2, "Fabricante 2",herramientas),
-                new Fabricante(3,"Fabricante 3", herramientas),
-            }
-            ;
             var usuario = new ApplicationUser(1, "Jesís", "Tercero", "jesus@uclm.es", 699584895, "Calle Ángel");
-            var alquiler = new Alquiler("Jesís", "Calle Ángel", DateTime.Now, DateTime.Now.AddDays(5), DateTime.Now, 50.3f, Alquiler.metodoPago.TarjetaCredito, usuario, new List<AlquilarItem>());
+            var alquiler = new Alquiler(1,"Jesís", "Calle Ángel", DateTime.Now.Date, DateTime.Now.AddDays(5).Date, DateTime.Now.Date, 50.3f, metodoDePago.TarjetaCredito, usuario, new List<AlquilarItem>());
             var alquilarItems = new List<AlquilarItem>()
             {
-                new AlquilarItem(herramientas[1], alquiler,66.3f,36)
+                new AlquilarItem(herramientas[1], alquiler,66.3f)
             };
             _context.Add(usuario);
             _context.Add(alquiler);
@@ -67,8 +65,8 @@ namespace AppForSEII2526.UT.HerramientasController_test
             ILogger<AlquilerController> logger = mock.Object;
             var controller = new AlquilerController(_context, logger);
             var expectedAlquiler = new AlquilerDetalleDTO(1, DateTime.Now.Date, "Jesís", "Tercero", "Calle Ángel",
-                DateTime.Now.Date, DateTime.Now.AddDays(3).Date, new List<AlquilarItemDTO>());
-            expectedAlquiler.AlquilarItems.Add(new AlquilarItemDTO(1, 1, 36.5f, 15));
+                DateTime.Now.Date, DateTime.Now.AddDays(5).Date, new List<AlquilarItemDTO>());
+            expectedAlquiler.AlquilarItems.Add(new AlquilarItemDTO(2, 1, 66.3f, 0));
 
             var result = await controller.GetAlquiler(1);
 

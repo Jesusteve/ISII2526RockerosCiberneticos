@@ -4,6 +4,7 @@
 public class AlquilarItem
 {
 	public AlquilarItem() { }
+
 	
 		public AlquilarItem(Herramienta herramienta, Alquiler alquiler, float precio, int cantidad)
         {
@@ -13,6 +14,15 @@ public class AlquilarItem
 			alquilerId = alquiler.id;
             this.precio = precio;
 			this.cantidad = cantidad;
+        }
+
+        public AlquilarItem(Herramienta herramienta, Alquiler alquiler, float precio)
+        {
+            Herramienta = herramienta;
+            Alquiler = alquiler;
+            herramientaId = herramienta.Id;
+            alquilerId = alquiler.id;
+            this.precio = precio;
         }
 
         public Herramienta herramienta { get; set; }

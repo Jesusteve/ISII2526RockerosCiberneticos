@@ -1,4 +1,5 @@
 ﻿
+
 namespace AppForSEII2526.API.DTOs.AlquilerDTOs
 {
     public class AlquilerDetalleDTO : AlquilerCrearDTO
@@ -22,7 +23,7 @@ namespace AppForSEII2526.API.DTOs.AlquilerDTOs
         {
             return obj is AlquilerDetalleDTO dTO &&
                    base.Equals(obj) &&
-                   AlquilarItems.SequenceEqual(dTO.AlquilarItems)&&
+                   AlquilarItems.SequenceEqual(dTO.AlquilarItems) &&
                    direccionEnvio == dTO.direccionEnvio &&
                    fechaAlquiler == dTO.fechaAlquiler &&
                    fechaFin == dTO.fechaFin &&
@@ -33,8 +34,10 @@ namespace AppForSEII2526.API.DTOs.AlquilerDTOs
                    apellidoCliente == dTO.apellidoCliente &&
                    metodoDePago == dTO.metodoDePago &&
                    id == dTO.id &&
-                   fechaAlquiler == dTO.fechaAlquiler;
+                   (fechaAlquiler-dTO.fechaAlquiler).TotalMinutes < 2;
         }
+
+
 
         public override int GetHashCode()
         {

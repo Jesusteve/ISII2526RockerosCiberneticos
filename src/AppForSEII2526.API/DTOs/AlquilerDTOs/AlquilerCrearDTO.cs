@@ -63,14 +63,14 @@
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir tus apellidos")]
         public string apellidoCliente { get; set; }
 
-        public enum métodoPago { TarjetaCredito, PayPal, Efectivo }
+        
 
-        public métodoPago metodoDePago { get; set; }
+        public metodoDePago metodoDePago { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is AlquilerCrearDTO dTO &&
-                   EqualityComparer<IList<AlquilarItemDTO>>.Default.Equals(AlquilarItems, dTO.AlquilarItems) &&
+                   AlquilarItems.SequenceEqual(dTO.AlquilarItems) &&
                    direccionEnvio == dTO.direccionEnvio &&
                    fechaAlquiler == dTO.fechaAlquiler &&
                    fechaFin == dTO.fechaFin &&

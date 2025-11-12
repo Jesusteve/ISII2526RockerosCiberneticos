@@ -13,23 +13,22 @@ namespace AppForSEII2526.UT.HerramientasController_test
     {
         public GetHerramientasAlquilar_test()
         {
+            var fabricante = new List<Fabricante>()
+            {
+                new Fabricante(1, "Fabricante 1"),
+
+            }
+;
             var herramientas = new List<Herramienta>()
             {
 
-                new Herramienta(1, "Hierro", "Taladro", 15.5f, 6), 
-                new Herramienta(2,"Acero", "Martillo", 10,0.5f), 
-                new Herramienta(3,"Madera", "Sierra", 20.6f,1)
+                new Herramienta(1, "Hierro", "Taladro", 15.5f, 6, fabricante[0]), 
+                new Herramienta(2,"Acero", "Martillo", 10,0.5f,fabricante[0]), 
+                new Herramienta(3,"Madera", "Sierra", 20.6f,1, fabricante[0])
             };
 
-            var fabricante = new List<Fabricante>()
-            {
-                new Fabricante(1, "Fabricante1", new List<Herramienta>()),
-                new Fabricante(2, "Fabricante 2",new List<Herramienta>()),
-                new Fabricante(3,"Fabricante 3", herramientas),
-            }
-            ;
             var usuario = new ApplicationUser(1, "Jesís", "Tercero", "jesus@uclm.es", 699584895, "Calle Ángel");
-            var alquiler = new Alquiler("Jesís", "Calle Ángel" , DateTime.Now, DateTime.Now.AddDays(5), DateTime.Now, 50.3f, Alquiler.metodoPago.TarjetaCredito,usuario,new List<AlquilarItem>());
+            var alquiler = new Alquiler(1, "Jesís", "Calle Ángel" , DateTime.Now, DateTime.Now.AddDays(5), DateTime.Now, 50.3f, metodoDePago.Efectivo,usuario,new List<AlquilarItem>());
             var alquilarItems = new List<AlquilarItem>()
             {
                 new AlquilarItem(herramientas[1], alquiler,66.3f,36)
@@ -46,15 +45,15 @@ namespace AppForSEII2526.UT.HerramientasController_test
         {
             var herramientaDTOs = new List<HerramienParaAlquilarDTO>()
             {
-                new HerramienParaAlquilarDTO(1, "Hierro", "Taladro", 15.5f, "Fabricante 3"),
-                new HerramienParaAlquilarDTO(2,"Acero", "Martillo", 10f,"Fabricante 3"),
-                new HerramienParaAlquilarDTO(3,"Madera", "Sierra", 20.6f, "Fabricante 3")
+                new HerramienParaAlquilarDTO(1, "Hierro", "Taladro", 15.5f, "Fabricante 1"),
+                new HerramienParaAlquilarDTO(2,"Acero", "Martillo", 10f,"Fabricante 1"),
+                new HerramienParaAlquilarDTO(3,"Madera", "Sierra", 20.6f, "Fabricante 1")
             };
 
             var herramientaDTOsTC1 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[1], herramientaDTOs[2] }
                 .OrderBy(h => h.nombre).ToList();
 
-            var herramientaDTOsTC2 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[1] };
+            var herramientaDTOsTC2 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0] };
             var herramientaDTOsTC3 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0], herramientaDTOs[2]};
 
 
@@ -63,9 +62,9 @@ namespace AppForSEII2526.UT.HerramientasController_test
 
             var allTests = new List<object[]>
             {
-                new object[] { null, null, herramientaDTOsTC1 },
+                new object[] { null, null, herramientaDTOsTC4 },
                 new object[] { "Taladro", null, herramientaDTOsTC2 },
-                new object[] { null, "Madera", herramientaDTOsTC3 },
+                new object[] { null, "Hierro", herramientaDTOsTC2 }
             };
             return allTests;
         }
