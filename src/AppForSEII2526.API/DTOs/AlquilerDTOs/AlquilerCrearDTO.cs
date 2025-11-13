@@ -2,6 +2,18 @@
 {
     public class AlquilerCrearDTO
     {
+        public AlquilerCrearDTO(int id, string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
+        {
+            this.id = id;
+            this.nombreCliente = nombreCliente;
+            this.apellidoCliente = apellidoCliente;
+            this.direccionEnvio = direccionEnvio;
+            this.fechaAlquiler = fechaAlquiler;
+            this.fechaInicio = fechaInicio;
+            this.fechaFin = fechaFin;
+            AlquilarItems = alquilarItems;
+        }
+
 
         public AlquilerCrearDTO(int id,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems, metodoDePago metodoDePago)
         {

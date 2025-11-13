@@ -14,6 +14,15 @@ public class Herramienta
         
     }
     public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
+    {
+        this.Id = id;
+        material = Material;
+        nombre = Nombre;
+        precio = Precio;
+        tiempoReparacion = TiempoReparacion;
+        this.fabricante = fabricante;
+
+    }
     public Herramienta(string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
     {
         material = Material;

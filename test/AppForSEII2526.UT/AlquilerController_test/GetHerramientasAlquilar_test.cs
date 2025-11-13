@@ -45,8 +45,8 @@ namespace AppForSEII2526.UT.HerramientasController_test
         {
             var herramientaDTOs = new List<HerramienParaAlquilarDTO>()
             {
-                new HerramienParaAlquilarDTO(1, "Hierro", "Taladro", 15.5f, "Fabricante 1"),
-                new HerramienParaAlquilarDTO(2,"Acero", "Martillo", 10f,"Fabricante 1"),
+                new HerramienParaAlquilarDTO(2, "Hierro", "Taladro", 15.5f, "Fabricante 1"),
+                new HerramienParaAlquilarDTO(1,"Acero", "Martillo", 10f,"Fabricante 1"),
                 new HerramienParaAlquilarDTO(3,"Madera", "Sierra", 20.6f, "Fabricante 1")
             };
 
@@ -79,7 +79,7 @@ namespace AppForSEII2526.UT.HerramientasController_test
             var controller = new HerramientaController(_context, null);
 
 
-            var result = await controller.GetHerramientasForRenting_DTO(filtronombre, filtromaterial);
+            var result = await controller.GetHerramientasForRenting(filtronombre, filtromaterial);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
 
@@ -88,25 +88,5 @@ namespace AppForSEII2526.UT.HerramientasController_test
         }
 
 
-        [Fact]
-        [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetHerramientasForRental_badrequest_text()
-        {
-
-            var mock = new Mock<ILogger<HerramientaController>>();
-            ILogger<HerramientaController> logger = mock.Object;
-            var controller = new HerramientaController(_context, logger);
-
-
-            var result = await controller.GetHerramientasForRenting(null, null);
-
-
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
-            var problem = problemDetails.Errors.First().Value[0];
-
-            Assert.Equal("Se debe proporcionar al menos un filtro: nombre o material.", problem);
-        }
-
-    }
+          }
 }

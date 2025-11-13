@@ -5,6 +5,19 @@ public class Alquiler
     public Alquiler() { }
 
     public Alquiler(int id, string nombreCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoDePago metodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
+    {
+        this.id = id;
+        this.applicationUser = applicationUser ?? new ApplicationUser();
+        this.applicationUser.nombreCliente = nombreCliente;
+        this.direccionEnvio = direccionEnvio;
+        this.fechaAlquiler = fechaAlquiler;
+        this.fechaFin = fechaFin;
+        this.fechaInicio = fechaInicio;
+        this.precioTotal = precioTotal;
+        this.metodoDePago = metodoDePago;
+        this.alquilarItems = alquilarItems;
+
+    }
     public Alquiler(string nombreCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoDePago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
     {
         this.id = id;

@@ -65,7 +65,7 @@ namespace AppForSEII2526.UT.HerramientasController_test
             ILogger<AlquilerController> logger = mock.Object;
             var controller = new AlquilerController(_context, logger);
             var expectedAlquiler = new AlquilerDetalleDTO(1, DateTime.Now.Date, "Jesís", "Tercero", "Calle Ángel",
-                DateTime.Now.Date, DateTime.Now.AddDays(5).Date, new List<AlquilarItemDTO>());
+                DateTime.Now.Date, DateTime.Now.AddDays(5).Date, new List<AlquilarItemDTO>(), metodoDePago.TarjetaCredito);
             expectedAlquiler.AlquilarItems.Add(new AlquilarItemDTO(2, 1, 66.3f, 0));
         
   

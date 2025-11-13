@@ -38,7 +38,7 @@ namespace AppForSEII2526.API.Controllers
                         .ThenInclude(f => f.fabricante)
              .Select(a => new AlquilerDetalleDTO(a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
              a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin, a.alquilarItems
-                .Select(aq => new AlquilarItemDTO(a.AlquilarItem.Herramienta.Id, a.id, a.precioTotal, a.AlquilarItem.cantidad)).ToList<AlquilarItemDTO>(),a.metodoDePago))
+                .Select(aq => new AlquilarItemDTO(aq.herramientaId, a.id, aq.precio, aq.cantidad)).ToList<AlquilarItemDTO>(),a.metodoDePago))
              .FirstOrDefaultAsync();
 
             if (alquilerEntity == null)
@@ -51,14 +51,15 @@ namespace AppForSEII2526.API.Controllers
             var alquilerDto = new AlquilerDetalleDTO(
                 alquilerEntity.id,
                 alquilerEntity.fechaAlquiler,
-                alquilerEntity.applicationUser?.nombreCliente,
-                alquilerEntity.applicationUser?.apellidoCliente,
+                alquilerEntity.nombreCliente,
+                alquilerEntity.apellidoCliente,
                 alquilerEntity.direccionEnvio,
                 alquilerEntity.fechaInicio,
                 alquilerEntity.fechaFin,
-                alquilerEntity.alquilarItems
+                alquilerEntity.AlquilarItems
                     .Select(ai => new AlquilarItemDTO(ai.herramientaId, alquilerEntity.id, ai.precio, ai.cantidad))
-                    .ToList()
+                    .ToList(),
+                alquilerEntity.metodoDePago
             );
 
             return Ok(alquilerDto);
@@ -86,7 +87,11 @@ namespace AppForSEII2526.API.Controllers
             //Validación de usuario
             var usuario = _context.ApplicationUser.FirstOrDefault(u => u.nombreCliente == crearAlquiler.nombreCliente);
             if (usuario == null)
+            {
                 ModelState.AddModelError("Usuario", "Error: El usuario no existe");
+                // Devolvemos inmediatamente para que el compilador y el flujo no permitan usar un usuario nulo
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
 
             //Validación de que haya al menos una herramienta
             if (crearAlquiler.AlquilarItems.Count == 0)
@@ -114,7 +119,8 @@ namespace AppForSEII2526.API.Controllers
                 .ToList();
 
             //Tercer paso: Creamos el objeto
-            Alquiler alquiler = new Alquiler(1,crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
+            // Usar el constructor que no fija el id para dejar que EF lo genere y evitar inconsistencias con claves foráneas
+            Alquiler alquiler = new Alquiler(crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
                 crearAlquiler.fechaFin, crearAlquiler.fechaInicio, crearAlquiler.precioTotal, 
                 crearAlquiler.metodoDePago, 
                 usuario, new List<AlquilarItem>());
@@ -137,7 +143,12 @@ namespace AppForSEII2526.API.Controllers
                     ai.alquiler.fechaFin >= crearAlquiler.fechaInicio);
 
                 // Usar la entidad real para crear el item (evita insertar Herramienta/Alquiler vacíos)
-                alquiler.alquilarItems.Add(new AlquilarItem(herramienta, alquiler, herramienta.precio));
+                var nuevoItem = new AlquilarItem(herramienta, alquiler, herramienta.precio);
+                // Asegurar que las claves foráneas estén consistentes en memoria (si es necesario)
+                nuevoItem.herramientaId = herramienta.Id;
+                // alquiler aún no tiene id definitivo hasta SaveChanges, pero al establecer la navegación se mantiene la relación
+                alquiler.alquilarItems.Add(nuevoItem);
+
                 item.precio = herramienta.precio;
             }
             alquiler.precioTotal = alquiler.alquilarItems.Sum(ai => (float)(ai.precio * numDias));

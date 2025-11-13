@@ -37,7 +37,7 @@ namespace AppForSEII2526.UT.HerramientasController_test
 
             };
 
-            ApplicationUser user = new ApplicationUser(_idCliente, _nombreCliente, _apellidoCliente, _username, _telefono, _direccionEnvio);
+            ApplicationUser user = new ApplicationUser(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio, _username, _telefono);
 
             var alquiler = new Alquiler(100, _nombreCliente, _direccionEnvio, DateTime.Now,
                 DateTime.Now.AddDays(5), DateTime.Now, 50.3f, metodoDePago.TarjetaCredito,
@@ -122,12 +122,12 @@ namespace AppForSEII2526.UT.HerramientasController_test
 
             var alquilerDTO = new AlquilerCrearDTO(_idCliente , _nombreCliente, _apellidoCliente, _direccionEnvio,
                  DateTime.Now.Date, inicio, fin, new List<AlquilarItemDTO>()
-                { new AlquilarItemDTO(1, 1, 29.3f, 6) });
+                { new AlquilarItemDTO(1, 1, 15.5f, 6) }, metodoDePago.TarjetaCredito);
 
-            var expectedAlquilerDetalleDTO = new AlquilerDetalleDTO(1, DateTime.Now.Date,
+            var expectedAlquilerDetalleDTO = new AlquilerDetalleDTO(_idCliente, DateTime.Now.Date,
                 _nombreCliente, _apellidoCliente, _direccionEnvio,
                   inicio, fin, new List<AlquilarItemDTO>()
-                { new AlquilarItemDTO(1, 1, 15.5f, 6) });
+                { new AlquilarItemDTO(1, 1,15.5f, 6) }, metodoDePago.TarjetaCredito);
 
             // Act
             var result = await controller.CreateAlquiler(alquilerDTO);

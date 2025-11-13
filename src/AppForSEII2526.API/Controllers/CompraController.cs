@@ -59,7 +59,7 @@ namespace AppForSEII2526.API.Controllers
                     c.ApplicationUser.teléfono
                 ))
                 .FirstOrDefaultAsync();
-            if(compra == null)
+            if (compra == null)
             {
                 _logger.LogWarning("Error en la creación de la compra");
                 return NotFound();
@@ -74,14 +74,15 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CreateCompra(CompraForCreateDTO compra)
         {
-            if(compra.compraItems.Count == 0){
+            if (compra.compraItems.Count == 0)
+            {
                 ModelState.AddModelError("CompraItems", "La compra debe contener al menos un item.");
 
             }
 
             if (string.IsNullOrEmpty(compra.nombreCliente))
             {
-                ModelState.AddModelError("nombreCliente","Nombre no proporcionado");
+                ModelState.AddModelError("nombreCliente", "Nombre no proporcionado");
             }
             if (string.IsNullOrEmpty(compra.apellidoCliente))
             {
@@ -90,7 +91,7 @@ namespace AppForSEII2526.API.Controllers
 
             if (string.IsNullOrEmpty(compra.direccionEnvío))
             {
-                ModelState.AddModelError("direccionEnvío","Dirección de envío no proporcionada.");
+                ModelState.AddModelError("direccionEnvío", "Dirección de envío no proporcionada.");
             }
 
             if (ModelState.ErrorCount > 0)
@@ -136,8 +137,8 @@ namespace AppForSEII2526.API.Controllers
                 }
                 else
                 {
-                    newCompra.compraItems.Add(new CompraItem(herramienta.Id,item.cantidad, herramienta.precio, item.descripcion, herramienta, newCompra));
-                    
+                    newCompra.compraItems.Add(new CompraItem(herramienta.Id, item.cantidad, herramienta.precio, item.descripcion, herramienta, newCompra));
+
                 }
             }
             newCompra.precioTotal = compra.compraItems.Sum(ci => ci.precio * ci.cantidad);
@@ -187,7 +188,8 @@ namespace AppForSEII2526.API.Controllers
 
             return CreatedAtAction("GetCompra", new { id = newCompra.Id }, createdCompraDTO);
 
-//        }
+            
+        }
     }
 }
 

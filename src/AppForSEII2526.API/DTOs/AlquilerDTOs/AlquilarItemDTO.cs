@@ -27,7 +27,7 @@
 
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima es 1")]
         [Display(Name = "Cantidad")]
-        int cantidad { get; set; }
+        public int cantidad { get; set; }
 
         public override bool Equals(object? obj)
         {

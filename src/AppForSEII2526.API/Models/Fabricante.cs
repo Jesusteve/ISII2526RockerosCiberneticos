@@ -12,6 +12,10 @@
         {
         }
         public Fabricante(int id, string nombre)
+        {
+            this.Id = id;   
+            this.nombre = nombre;
+        }
         public Fabricante(string nombre)
         {
             
