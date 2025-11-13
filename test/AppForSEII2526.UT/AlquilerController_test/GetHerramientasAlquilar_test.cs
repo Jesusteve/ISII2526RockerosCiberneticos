@@ -1,11 +1,11 @@
-﻿//using AppForSEII2526.API.Controllers;
-//using AppForSEII2526.API.DTOs;
-//using RabbitMQ.Client;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+using AppForSEII2526.API.Controllers;
+using AppForSEII2526.API.DTOs;
+using RabbitMQ.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AppForSEII2526.UT.HerramientasController_test 
 {
@@ -50,15 +50,15 @@ namespace AppForSEII2526.UT.HerramientasController_test
                 new HerramienParaAlquilarDTO(3,"Madera", "Sierra", 20.6f, "Fabricante 1")
             };
 
-//            var herramientaDTOsTC1 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[1], herramientaDTOs[2] }
-//                .OrderBy(h => h.nombre).ToList();
+            var herramientaDTOsTC1 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[1], herramientaDTOs[2] }
+                .OrderBy(h => h.nombre).ToList();
 
             var herramientaDTOsTC2 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0] };
             var herramientaDTOsTC3 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0], herramientaDTOs[2]};
 
 
-//            var herramientaDTOsTC4 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0], herramientaDTOs[1], herramientaDTOs[2] }
-//                .OrderBy(h => h.nombre).ToList();
+            var herramientaDTOsTC4 = new List<HerramienParaAlquilarDTO> { herramientaDTOs[0], herramientaDTOs[1], herramientaDTOs[2] }
+                .OrderBy(h => h.nombre).ToList();
 
             var allTests = new List<object[]>
             {
