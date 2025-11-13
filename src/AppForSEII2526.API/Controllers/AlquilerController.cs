@@ -34,9 +34,12 @@ namespace AppForSEII2526.API.Controllers
                 .Where(a => a.id == id)
                 .Include(a => a.applicationUser)
                 .Include(a => a.alquilarItems)
-                    .ThenInclude(ai => ai.herramienta)
-                        .ThenInclude(h => h.fabricante)
-                .FirstOrDefaultAsync();
+                    .ThenInclude(h => h.herramienta)
+                        .ThenInclude(f => f.fabricante)
+             .Select(a => new AlquilerDetalleDTO(a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
+             a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin, a.alquilarItems
+                .Select(aq => new AlquilarItemDTO(a.AlquilarItem.Herramienta.Id, a.id, a.precioTotal, a.AlquilarItem.cantidad)).ToList<AlquilarItemDTO>(),a.metodoDePago))
+             .FirstOrDefaultAsync();
 
             if (alquilerEntity == null)
             {

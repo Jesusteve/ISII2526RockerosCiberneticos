@@ -46,6 +46,7 @@ public class Alquiler
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     [Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
     public float precioTotal { get; set; }
+   
 
     [Display(Name = "Método de pago")]
     public metodoDePago metodoDePago { get; set; }

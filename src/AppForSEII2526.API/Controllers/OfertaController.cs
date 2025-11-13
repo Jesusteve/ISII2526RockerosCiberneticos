@@ -28,3 +28,16 @@ namespace AppForSEII2526.API.Controllers
                 _logger.LogError("Error: La tabla Alquiler no existe");
                 return NotFound();
             }
+            var oferta = await _context.Alquiler
+                .Select(a => new OfertaDetalleDTO
+                {
+                    Id = a.Id,
+                    Descripcion = a.Descripcion,
+                    PrecioPorDia = a.PrecioPorDia,
+                    Disponible = a.Disponible
+                })
+                .ToListAsync();
+            return Ok(oferta);
+        }
+    }
+}
