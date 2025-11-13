@@ -11,6 +11,7 @@
         public Fabricante()
         {
         }
+        public Fabricante(int id, string nombre)
         public Fabricante(string nombre)
         {
             

@@ -64,7 +64,7 @@
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir tus apellidos")]
         public string apellidoCliente { get; set; }
 
-
+        
 
         public metodoDePago metodoDePago { get; set; }
 

@@ -7,12 +7,13 @@ namespace AppForSEII2526.API.Models
         public Compra()
         {
         }
+        public Compra( int id, DateTime fechaCompra,float precioTotal, metodoDePago metodoDePago)
        
-        public Compra(DateTime fechaCompra, float precioTotal, metodoDePago metodoPago, ApplicationUser user, List<CompraItem> compraItems)
+        public Compra(DateTime fechaCompra, float precioTotal, metodoDePago metodoDePago, ApplicationUser user, List<CompraItem> compraItems)
         {
             this.fechaCompra = fechaCompra;
             this.precioTotal = precioTotal;
-            this.metodoDePago = metodoPago;
+            this.metodoDePago = metodoDePago;
             this.ApplicationUser = user;
             this.compraItems = compraItems;
         }

@@ -11,7 +11,7 @@
 
 namespace AppForSEII2526.UT.HerramientasController_test
 {
-    public class GetAlquiler_test : AppForSEII25264SqliteUT
+    public class GetAlquiler_test : AppForSEII25264SqliteUT //Heredacion obligatoria para el uso de la base de datos en memoria
     {
         public GetAlquiler_test()
         {
