@@ -3,7 +3,7 @@
     public class AlquilerCrearDTO
     {
 
-        public AlquilerCrearDTO(int id,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
+        public AlquilerCrearDTO(int id,string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems, metodoDePago metodoDePago)
         {
             this.id=id;
             this.nombreCliente = nombreCliente;
@@ -13,6 +13,7 @@
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             AlquilarItems = alquilarItems;
+            this.metodoDePago = metodoDePago;
         }
 
         public AlquilerCrearDTO()
@@ -63,7 +64,7 @@
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir tus apellidos")]
         public string apellidoCliente { get; set; }
 
-        
+
 
         public metodoDePago metodoDePago { get; set; }
 

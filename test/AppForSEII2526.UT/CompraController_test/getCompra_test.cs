@@ -1,93 +1,103 @@
-﻿using AppForSEII2526.API.Controllers;
-using Microsoft.EntityFrameworkCore;
-using AppForSEII2526.API.DTOs;
-using SQLitePCL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppForSEII2526.API.Controllers;
+using AppForSEII2526.API.DTOs;
 
 namespace AppForSEII2526.UT.CompraController_test
 {
-    public class getCompra_test : AppForSEII25264SqliteUT
+    public class GetCompra_test : AppForSEII25264SqliteUT
     {
-        public getCompra_test()
+        public GetCompra_test()
         {
+            var usuario = new ApplicationUser(1, "Daniel", "García Rodenas", "Carretera De Madrid 28 1 c", "maildedanielg@gmail.com", 642399229);
+            var compra = new Compra(1 ,DateTime.Now.Date, 50, metodoDePago.TarjetaCredito, usuario);
+            var fabricantes = new List<Fabricante>()
+            {
+                new Fabricante("Fabricante1"),
+                new Fabricante("Fabricante 2"),
+                new Fabricante("Fabricante 3")
+            };
             var herramientas = new List<Herramienta>()
             {
-
-                new Herramienta() { Id = 1, nombre = "Taladro", material = "Hierro", precio = 15, tiempoReparacion = 1 },
-                new Herramienta() { Id = 2, nombre = "Martillo", material = "Acero", precio = 10, tiempoReparacion = 0.5f },
-                new Herramienta() { Id = 3, nombre = "Sierra", material = "Madera", precio = 20, tiempoReparacion = 2 }
+                new Herramienta("Hierro", "Taladro", 15.5f, 6, fabricantes[0]),
+                new Herramienta("Acero", "Martillo", 10,0.5f, fabricantes[1]),
             };
-
-            var Fabricante = new List<Fabricante>();
+            var compraItems = new List<CompraItem>()
             {
-                new Fabricante(1, "Fabricante1");
-                new Fabricante() { Id = 2, nombre = "Fabricante2" };
-                new Fabricante() { Id = 3, nombre = "Fabricante3" };
-            }
-            ;
+                new CompraItem( 2, 30, "Compra de taladro de hierro", herramientas[0], compra),
+                new CompraItem( 1, 10, "Compra de martillo de acero", herramientas[1], compra),
+            };
+            _context.Add(usuario);
+            _context.Add(compra);
+            _context.AddRange(fabricantes);
             _context.AddRange(herramientas);
-            _context.AddRange(herramientas);
+            _context.AddRange(compraItems);
+            _context.SaveChanges();
+
         }
 
-        public static IEnumerable<object?[]> TestCasesFor_GetMoviesForRental_OK()
-        {
-            var herramientaDTOs = new List<HerramienParaComprarDTO>()
-            {
-
-                new HerramienParaComprarDTO("Hierro","Taladro",15,"Fabricante1" ),
-                new HerramienParaComprarDTO("Acero","Martillo",10, "Fabricante2" ),
-                new HerramienParaComprarDTO("Madera", "Sierra", 20, "Fabricante3")
-            }.OrderBy(m => m.nombre).ToList();
-
-            var herramientasDTO1sTC1 = new List<HerramienParaComprarDTO>
-            {
-                herramientaDTOs[0],herramientaDTOs[1]
-            }
-            ;
-
-            var herramientasDTO2sTC2 = new List<HerramienParaComprarDTO>
-            {
-                herramientaDTOs[1]
-            };
-
-            var herramientasDTO3sTC3 = new List<HerramienParaComprarDTO>
-            {
-                herramientaDTOs[2]
-            };
-
-
-
-            var AllTests = new List<object?[]>
-            {
-                new object[] { null, null,herramientasDTO1sTC1 },
-                new object[] { "Acero", null, herramientasDTO2sTC2 },
-                new object[] { null, "Sierra",herramientasDTO3sTC3 }
-
-
-            };
-            return AllTests;
-        }
-
-        [Theory]
-        [MemberData(nameof(TestCasesFor_GetMoviesForRental_OK))]
+        [Fact]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetCompra_OK(string? material, string? nombre)
+        public async Task GetCompra_NotFound_test()
         {
-            // Arrange
-            using var context = CreateContext();
-            var controller = new HerramientaController(context, null!);
-            // Act
-            var result = await controller.GetHerramienParaComprar(material, nombre) as OkObjectResult;
-            // Assert
-            Assert.NotNull(result);
-            var herramientas = result.Value as IList<HerramienParaComprarDTO>;
-            Assert.NotNull(herramientas);
-            
+            var mock = new Mock<ILogger<CompraController>>();
+            ILogger<CompraController> logger = mock.Object;
+            var controller = new CompraController(_context, logger);
+            var result = await controller.GetCompra(0);
+            Assert.IsType<NotFoundResult>(result);
         }
+
+        [Fact]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
+        public async Task GetCompra_OK_test()
+        {
+            var mock = new Mock<ILogger<CompraController>>();
+            ILogger<CompraController> logger = mock.Object;
+            // Arrange
+            var controller = new CompraController(_context, logger);
+            var expectedCompra = 
+                new CompraDetailDTO(
+                    "García Rodenas",
+                    "Daniel",
+                    50,
+                    DateTime.Now.Date,
+                    "Carretera De Madrid 28 1 c",
+                    new List<CompraItemDTO>()
+                    {
+                        new CompraItemDTO(
+                            "Hierro",
+                            "Taladro",
+                            15.5f,
+                            "Compra de taladro de hierro",
+                            2
+                        ),
+                        new CompraItemDTO(
+                            "Acero",
+                            "Martillo",
+                            10,
+                            "Compra de martillo de acero",
+                            1
+                        )
+                    },
+                    metodoDePago.TarjetaCredito,
+                    "maildedanielg@gmail.com",
+                                        642399229);
+
+            // Act
+            var result = await controller.GetCompra(1) as OkObjectResult;
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var compraActual = Assert.IsType<CompraDetailDTO>(okResult.Value);
+            var eq = expectedCompra.Equals(compraActual);
+            Assert.Equal(expectedCompra, compraActual);
+        }
+
+
     }
 }
+

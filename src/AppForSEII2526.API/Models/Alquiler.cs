@@ -4,7 +4,7 @@ public class Alquiler
 {
     public Alquiler() { }
 
-    public Alquiler(int id, string nombreCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoDePago metodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
+    public Alquiler(string nombreCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaFin, DateTime fechaInicio, float precioTotal, metodoDePago métodoDePago, ApplicationUser applicationUser, List<AlquilarItem> alquilarItems)
     {
         this.id = id;
         this.applicationUser = applicationUser ?? new ApplicationUser();
@@ -45,6 +45,7 @@ public class Alquiler
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     [Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
     public float precioTotal { get; set; }
+   
 
     [Display(Name = "Método de pago")]
     public metodoDePago metodoDePago { get; set; }

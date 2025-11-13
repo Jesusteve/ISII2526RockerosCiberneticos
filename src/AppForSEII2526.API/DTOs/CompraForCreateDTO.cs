@@ -14,20 +14,20 @@
             this.nombreCliente = nombreCliente ?? throw new ArgumentNullException(nameof(nombreCliente)); ;
             this.precioTotal = compraItems.Sum(t => t.precio * t.cantidad);
             this.fechaCompra = fechaCompra;
-            this.direccionEnvío = direccionEnvío ?? throw new ArgumentNullException(nameof(direccionEnvío)); 
+            this.direccionEnvío = direccionEnvío;
             this.compraItems = compraItems ?? throw new ArgumentNullException(nameof(compraItems)); ;
             this.metodoDePago = metodoDePago;
-            this.correoElectonico = correoElectronico;
-            this.teléfono = telefono;
+            this.correoElectonico = correoElectronico ?? throw new ArgumentNullException(nameof(compraItems)); ;
+            this.teléfono = telefono  ;
 
         }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu dirección")]
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tus apellidos")]
         public string apellidoCliente { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu dirección")]
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu nombre")]
         public string nombreCliente { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "El precio del material debe de ser mayor a 0")]
@@ -36,19 +36,15 @@
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime fechaCompra { get; set; }
 
-        [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
-        [Display(Name = "dirección Envío")]
-        [StringLength(50, MinimumLength = 10, ErrorMessage = "La dirección debe de teer mínimo 10 caractéres")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu dirección")]
         public string direccionEnvío { get; set; }
-    
-
+        
         [Display(Name = "Método de pago")]
         public metodoDePago metodoDePago { get; set; }
 
         public List<CompraItemDTO> compraItems { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+        
         public string correoElectonico { get; set; }
         public int teléfono { get; set; }
 
@@ -61,7 +57,7 @@
                    fechaCompra == dTO.fechaCompra &&
                    direccionEnvío == dTO.direccionEnvío &&
                    metodoDePago == dTO.metodoDePago &&
-                   EqualityComparer<List<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems) &&
+                   compraItems.SequenceEqual(dTO.compraItems) &&
                    correoElectonico == dTO.correoElectonico &&
                    teléfono == dTO.teléfono;
         }

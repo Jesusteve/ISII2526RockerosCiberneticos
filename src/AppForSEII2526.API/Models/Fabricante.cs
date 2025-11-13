@@ -11,12 +11,13 @@
         public Fabricante()
         {
         }
-        public Fabricante(int id, string nombre)
+        public Fabricante(string nombre)
         {
-            Id = id;
+            
             this.nombre = nombre;
             
         }
+        [NotMapped]
         public List<Herramienta> Herramientas { get; set; }
 
         [NotMapped]

@@ -7,14 +7,23 @@ namespace AppForSEII2526.API.Models
         public Compra()
         {
         }
-        public Compra( int id, DateTime fechaCompra,float precioTotal, metodoDePago metodoDePago)
+       
+        public Compra(DateTime fechaCompra, float precioTotal, metodoDePago metodoPago, ApplicationUser user, List<CompraItem> compraItems)
         {
-            Id = id;
             this.fechaCompra = fechaCompra;
             this.precioTotal = precioTotal;
-            this.metodoDePago = metodoDePago;
+            this.metodoDePago = metodoPago;
+            this.ApplicationUser = user;
+            this.compraItems = compraItems;
         }
-
+        public Compra(int Id,DateTime fechaCompra, float precioTotal, metodoDePago metodoPago, ApplicationUser user)
+        {
+            this.fechaCompra = fechaCompra;
+            this.precioTotal = precioTotal;
+            this.metodoDePago = metodoPago;
+            this.ApplicationUser = user;
+            this.Id = Id;
+        }
         public int Id { get; set; }
 
    
@@ -27,12 +36,14 @@ namespace AppForSEII2526.API.Models
         [Range(1, int.MaxValue, ErrorMessage = "El precio del pedido debe de ser mayor a 0")]
         public float precioTotal { get; set; }
 
-        
+       
 
         [Display(Name = "Método de pago")]
         public metodoDePago metodoDePago { get; set; }
-        [NotMapped]
+
+     
         public List<CompraItem> compraItems { get; set; }
+
         public ApplicationUser ApplicationUser { get; set; }
 
         [NotMapped]

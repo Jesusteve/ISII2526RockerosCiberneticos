@@ -16,8 +16,7 @@
         [Display(Name = "Tipo de oferta")]
         public tiposDirigidaOferta dirigidaA { get; set; }
        
-        public enum metodoPago { TarjetaCredito, PayPal, Efectivo }
-        public metodoPago metodopago { get; set; }
+        public metodoDePago metodopago { get; set; }
         public List<OfertaItem> ofertaItems { get; set; }
 
 

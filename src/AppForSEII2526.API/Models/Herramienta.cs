@@ -13,9 +13,8 @@ public class Herramienta
         tiempoReparacion = 0;
         
     }
-    public Herramienta(int id, string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
+    public Herramienta(string Material, string Nombre, float Precio, float TiempoReparacion, Fabricante fabricante)
     {
-        Id = id;
         material = Material;
         nombre = Nombre;
         precio = Precio;

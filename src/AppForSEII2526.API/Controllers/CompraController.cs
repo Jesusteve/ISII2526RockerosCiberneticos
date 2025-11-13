@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using AppForSEII2526.API.Data;
+﻿using AppForSEII2526.API.Data;
 using AppForSEII2526.API.DTOs;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.IdentityModel.Tokens;
 using Humanizer.DateTimeHumanizeStrategy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AppForSEII2526.API.Controllers
 {
@@ -21,116 +23,171 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
-//        [HttpGet]
-//        [Route("[action]")]
-//        [ProducesResponseType(typeof(CompraDetailDTO), (int)HttpStatusCode.Created)]
-//        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-//        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
-//        public async Task<ActionResult> CreateCompra()
-//        {
-//            if (_context.Compra == null)
-//            {
-//                _logger.LogWarning("No se encontraron herramientas en la base de datos.");
-//                return NotFound();
-//            }
-//            var compra = await _context.Compra
-//                .Include(c => c.compraItems)
-//                    .ThenInclude(ci => ci.herramienta)
-//                .Include(c => c.ApplicationUser)
-//                .Select(c => new CompraDetailDTO(
-//                    c.Id,
-//                    c.ApplicationUser.apellidoCliente,
-//                    c.ApplicationUser.nombreCliente,
-//                    c.precioTotal,
-//                    c.fechaCompra,
-//                    c.ApplicationUser.direccionEnvío,
-//                    c.compraItems
-//                        .Select(ci => new CompraItemDTO(
-//                            ci.herramienta.material,
-//                            ci.herramienta.nombre,
-//                            ci.precio,
-//                            ci.descripcion,
-//                            ci.cantidad
-//                        )).ToList(),
-//                    c.metodoDePago.GetType().GetProperty(c.metodoDePago.ToString()) != null
-//                        ? (CompraForCreateDTO.métodoPago)Enum.Parse(typeof(CompraForCreateDTO.métodoPago), c.metodoDePago.ToString())
-//                        : CompraForCreateDTO.métodoPago.Efectivo,
-//                    c.ApplicationUser.correoElectonico,
-//                    c.ApplicationUser.teléfono
-//                ))
-//                .ToListAsync();
-//            return Ok(compra);
-//        }
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(CompraDetailDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> GetCompra(int Id)
+        {
+            if (_context.Compra == null)
+            {
+                _logger.LogWarning("No se encontraron herramientas en la base de datos.");
+                return NotFound();
+            }
+            var compra = await _context.Compra
+                .Include(c => c.compraItems)
+                    .ThenInclude(ci => ci.herramienta)
+                .Include(c => c.ApplicationUser)
+                .Where(c => c.Id == Id)
+                .Select(c => new CompraDetailDTO(
 
-//        [HttpPost]
-//        [Route("[action]")]
-//        [ProducesResponseType(typeof(CompraDetailDTO), (int)HttpStatusCode.Created)]
-//        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-//        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
-//        public async Task<ActionResult> CreateCompra(string apellidoCliente, string nombreCliente, DateTime fechaCompra, string direccionEnvío,
-//            List<CompraItemDTO> compraItems, string metodoDePago, string? correoElectronico, int? telefono)
-//        {
-          
-//            if (compraItems == null || !compraItems.Any())
-//            {
-//                return BadRequest("La compra debe contener al menos un item.");
-//            }
-//            if (direccionEnvío == null)
-//            {
-//                return BadRequest("Debe de haber una dirección del envío.");
-//            }
-//            if (compraItems.Any(ci => ci.cantidad <= 0))
-//            {
-//                return BadRequest("La cantidad de cada item debe ser mayor que cero.");
-//            }
-//            if (nombreCliente == null || apellidoCliente == null)
-//            {
-//                return BadRequest("El nombre y apellido del cliente no pueden ser nulos.");
-//            }
-//            if (metodoDePago == null)
-//            {
-//                return BadRequest("Debe de haber un método de pago.");
-//            }
-//            float precioTotal = compraItems.Sum(ci => ci.precio * ci.cantidad); 
-//            var compra = new CompraForCreateDTO(
-//                apellidoCliente,
-//                nombreCliente,
-//                precioTotal,
-//                fechaCompra,
-//                direccionEnvío,
-//                compraItems,
-//                Enum.TryParse<CompraForCreateDTO.métodoPago>(metodoDePago, out var metodoPagoParsed) ? metodoPagoParsed : CompraForCreateDTO.métodoPago.Efectivo,
-//                correoElectronico ?? string.Empty,
-//                telefono ?? 0
-//            );
+                    c.ApplicationUser.apellidoCliente,
+                    c.ApplicationUser.nombreCliente,
+                    c.precioTotal,
+                    c.fechaCompra,
+                    c.ApplicationUser.direccionEnvío,
+                    c.compraItems
+                        .Select(ci => new CompraItemDTO(
+                            ci.herramienta.material,
+                            ci.herramienta.nombre,
+                            ci.herramienta.precio,
+                            ci.descripcion,
+                            ci.cantidad
+                        )).ToList(),
+                    c.metodoDePago,
+                    c.ApplicationUser.correoElectonico,
+                    c.ApplicationUser.teléfono
+                ))
+                .FirstOrDefaultAsync();
+            if(compra == null)
+            {
+                _logger.LogWarning("Error en la creación de la compra");
+                return NotFound();
+            }
+            return Ok(compra);
+        }
 
-//            if (ModelState.ErrorCount > 0)
-//            {
-//                return BadRequest(new ValidationProblemDetails(ModelState));
-//            }
-//            _context.Add(compra);
-//            try
-//            {
-//                await _context.SaveChangesAsync();
-//            }catch (DbUpdateException ex)
-//            {
-//                _logger.LogError(ex, "Error al guardar la compra en la base de datos.");
-//                return Conflict("Ocurrió un error al procesar la compra. Error " + ex.Message);
-//            }
-//            var compraDetail = new CompraForCreateDTO(
-//                compra.apellidoCliente,
-//                compra.nombreCliente,
-//                compra.precioTotal,
-//                compra.fechaCompra,
-//                compra.direccionEnvío,
-//                compra.compraItems,
-//                compra.metodoDePago,
-//                compra.correoElectonico,
-//                compra.teléfono
-//            );
-//            return CreatedAtAction(nameof(CreateCompra), compraDetail);
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(CompraDetailDTO), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
+        public async Task<ActionResult> CreateCompra(CompraForCreateDTO compra)
+        {
+            if(compra.compraItems.Count == 0){
+                ModelState.AddModelError("CompraItems", "La compra debe contener al menos un item.");
+
+            }
+
+            if (string.IsNullOrEmpty(compra.nombreCliente))
+            {
+                ModelState.AddModelError("nombreCliente","Nombre no proporcionado");
+            }
+            if (string.IsNullOrEmpty(compra.apellidoCliente))
+            {
+                ModelState.AddModelError("apellidoCliente", "Apellido no proporcionado");
+            }
+
+            if (string.IsNullOrEmpty(compra.direccionEnvío))
+            {
+                ModelState.AddModelError("direccionEnvío","Dirección de envío no proporcionada.");
+            }
+
+            if (ModelState.ErrorCount > 0)
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            //Validación de usuario
+            var usuario = _context.ApplicationUser.FirstOrDefault(u => u.nombreCliente == compra.nombreCliente);
+            if (usuario == null)
+                ModelState.AddModelError("Usuario", "Error: El usuario no existe");
+
+            if (ModelState.ErrorCount > 0)
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            //Creación de la compra
+            var nombresherramientas = compra.compraItems.Select(ci => ci.nombre).ToList<String>();
+
+            var herramientas = _context.Herramienta.Where(h => nombresherramientas.Contains(h.nombre)).ToList();
+
+            Compra newCompra = new Compra
+            {
+                fechaCompra = compra.fechaCompra,
+                precioTotal = compra.precioTotal,
+                metodoDePago = compra.metodoDePago,
+                ApplicationUser = usuario,
+                compraItems = new List<CompraItem>()
+            };
+            newCompra.precioTotal = 0;
+            foreach (var item in compra.compraItems)
+            {
+                if (item.cantidad <= 0)
+                {
+                    ModelState.AddModelError("Cantidad", "La cantidad debe ser mayor que cero.");
+                }
+                if (string.IsNullOrEmpty(item.descripcion))
+                {
+                    ModelState.AddModelError("Descripción", "La descripción no puede estar vacia");
+                }
+                if (ModelState.ErrorCount > 0)
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                var herramienta = herramientas.FirstOrDefault(h => h.nombre == item.nombre);
+                if (herramienta == null)
+                {
+                    ModelState.AddModelError("Herramienta", $"La herramienta '{item.nombre}' no existe.");
+
+                }
+                else
+                {
+                    newCompra.compraItems.Add(new CompraItem(herramienta.Id,item.cantidad, herramienta.precio, item.descripcion, herramienta, newCompra));
+                    
+                }
+            }
+            newCompra.precioTotal = compra.compraItems.Sum(ci => ci.precio * ci.cantidad);
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+            if (newCompra == null)
+            {
+                return BadRequest("No se pudo crear la compra.");
+            }
+            _context.Compra.Add(newCompra);
+
+            try
+            {
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                ModelState.AddModelError("Compra", $"Error durante el guardado de la compra");
+                return Conflict("Error" + ex.Message);
+
+            }
+
+
+            var createdCompraDTO = new CompraDetailDTO(
+                newCompra.ApplicationUser.apellidoCliente,
+                newCompra.ApplicationUser.nombreCliente,
+                newCompra.precioTotal,
+                newCompra.fechaCompra,
+                newCompra.ApplicationUser.direccionEnvío,
+                newCompra.compraItems
+                    .Select(ci => new CompraItemDTO(
+                        ci.herramienta.material,
+                        ci.herramienta.nombre,
+                        ci.precio,
+                        ci.descripcion,
+                        ci.cantidad
+                    )).ToList(),
+                newCompra.metodoDePago,
+                newCompra.ApplicationUser.correoElectonico,
+                newCompra.ApplicationUser.teléfono
+            );
+
+            return CreatedAtAction("GetCompra", new { id = newCompra.Id }, createdCompraDTO);
 
 //        }
     }
 }
-    
+

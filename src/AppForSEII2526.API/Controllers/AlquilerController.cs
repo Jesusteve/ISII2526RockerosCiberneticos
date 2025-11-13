@@ -34,9 +34,12 @@ namespace AppForSEII2526.API.Controllers
                 .Where(a => a.id == id)
                 .Include(a => a.applicationUser)
                 .Include(a => a.alquilarItems)
-                    .ThenInclude(ai => ai.herramienta)
-                        .ThenInclude(h => h.fabricante)
-                .FirstOrDefaultAsync();
+                    .ThenInclude(h => h.herramienta)
+                        .ThenInclude(f => f.fabricante)
+             .Select(a => new AlquilerDetalleDTO(a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
+             a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin, a.alquilarItems
+                .Select(aq => new AlquilarItemDTO(a.AlquilarItem.Herramienta.Id, a.id, a.precioTotal, a.AlquilarItem.cantidad)).ToList<AlquilarItemDTO>(),a.metodoDePago))
+             .FirstOrDefaultAsync();
 
             if (alquilerEntity == null)
             {
@@ -66,9 +69,7 @@ namespace AppForSEII2526.API.Controllers
         [ProducesResponseType(typeof(AlquilerDetalleDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(string),(int)HttpStatusCode.Conflict)]
-        public async Task<
-            
-           ActionResult> CreateAlquiler(AlquilerCrearDTO crearAlquiler)
+        public async Task<ActionResult> CreateAlquiler(AlquilerCrearDTO crearAlquiler)
         {
             if (_context.Alquiler == null)
             {
@@ -161,7 +162,7 @@ namespace AppForSEII2526.API.Controllers
 
             //Sexto paso: Devolvemos el detalle
             var alquilerDetalle = new AlquilerDetalleDTO(alquiler.id, alquiler.fechaAlquiler, usuario.nombreCliente,
-             usuario.apellidoCliente, alquiler.direccionEnvio, alquiler.fechaInicio, alquiler.fechaFin, crearAlquiler.AlquilarItems);
+             usuario.apellidoCliente, alquiler.direccionEnvio, alquiler.fechaInicio, alquiler.fechaFin, crearAlquiler.AlquilarItems, alquiler.metodoDePago);
 
             return CreatedAtAction("GetAlquiler", new { id = alquiler.id }, alquilerDetalle);
         }

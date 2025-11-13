@@ -9,8 +9,8 @@ namespace AppForSEII2526.API.DTOs.AlquilerDTOs
         }
 
         public AlquilerDetalleDTO(int id, DateTime fechaAlquiler, string nombreCliente, string apellidoCliente,
-            string direccionEnvio, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
-            : base(id, nombreCliente, apellidoCliente, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems)
+            string direccionEnvio, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems,metodoDePago metodoDePago)
+            : base(id, nombreCliente, apellidoCliente, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems, metodoDePago)
         {
             this.id = id;
             this.fechaAlquiler = fechaAlquiler;

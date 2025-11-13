@@ -12,7 +12,7 @@ namespace AppForSEII2526.API.Models
             precioTotal = 0;
         }
 
-        public Reparación(int id, string nombreCliente, string apellidoCliente, string telefono, DateTime fechaEntrega, DateTime fechaRecogida, float precioTotal, ApplicationUser applicationUser, TiposMetodosPago metodoPago)
+        public Reparación(int id, string nombreCliente, string apellidoCliente, string telefono, DateTime fechaEntrega, DateTime fechaRecogida, float precioTotal, ApplicationUser applicationUser, metodoDePago metodoPago)
         {
             this.id = id;
             this.fechaEntrega = fechaEntrega;
@@ -40,19 +40,12 @@ namespace AppForSEII2526.API.Models
 
         [Required]
         [Display(Name = "Método de pago")]
-        public TiposMetodosPago metodoPago { get; set; }
+        public metodoDePago metodoPago { get; set; }
 
         
 
         public List<ReparaciónItem> ReparaciónItem { get; set; }
 
         public ApplicationUser applicationUser { get; set; }
-
-        public enum TiposMetodosPago
-        {
-            TarjetaCredito,
-            PayPal,
-            Cash
-        }
     }
 }

@@ -14,9 +14,8 @@ public class ApplicationUser : IdentityUser {
         correoElectonico = "ninguno";
         teléfono =0;
     }
-    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correoElectonico, int numeroTelefono)
+    public ApplicationUser(string nombreCliente, string apellidoCliente, string direccionEnvío, string correoElectonico, int numeroTelefono)
     {
-        this.Id = id;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.nombreCliente = nombreCliente;
@@ -24,7 +23,7 @@ public class ApplicationUser : IdentityUser {
         this.correoElectonico = correoElectonico;
         teléfono = numeroTelefono;
     }
-    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string correoElectonico, int numeroTelefono, string direccionEnvío) {
+    public ApplicationUser(int id, string nombreCliente, string apellidoCliente, string direccionEnvío, string correoElectonico, int numeroTelefono) {
         this.Id = id;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
@@ -41,10 +40,8 @@ public class ApplicationUser : IdentityUser {
 
     [Display(Name = "Apellidos")]
     public string apellidoCliente { get; set; }
-    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string direccionEnvío { get; set; }
 
-    [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
     public string correoElectonico { get; set; }
     public int teléfono { get; set; }
 

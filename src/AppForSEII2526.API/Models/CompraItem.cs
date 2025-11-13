@@ -15,16 +15,35 @@
             compra = new Compra();
 
         }
-        public CompraItem(int compraId, int herramientaId, int cantidad, float precio, string descripcion, Herramienta herramienta, Compra compra)
+        public CompraItem(int cantidad, float precio, string descripcion, Herramienta herramienta, Compra compra)
         {
-            
-            this.CompraId = compraId;
+
+            this.CompraId = compra.Id;
+            this.HerramientaId = herramienta.Id;
+            this.cantidad = cantidad;
+            this.precio = precio;
+            this.descripcion = descripcion;
+            this.herramienta = herramienta;
+            this.compra = compra;
+        }
+        public CompraItem(int herramientaId,int cantidad, float precio, string descripcion, Herramienta herramienta, Compra compra)
+        {
+
+            this.CompraId = compra.Id;
             this.HerramientaId = herramientaId;
             this.cantidad = cantidad;
             this.precio = precio;
             this.descripcion = descripcion;
             this.herramienta = herramienta;
             this.compra = compra;
+        }
+        public CompraItem(int cantidad, float precio, string descripcion, Herramienta herramienta)
+        {
+            this.HerramientaId = herramienta.Id;
+            this.cantidad = cantidad;
+            this.precio = precio;
+            this.descripcion = descripcion;
+            this.herramienta = herramienta;
         }
 
         public int CompraId { get; set; }

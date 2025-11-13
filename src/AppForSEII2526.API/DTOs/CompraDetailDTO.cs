@@ -1,9 +1,11 @@
-﻿namespace AppForSEII2526.API.DTOs
+﻿using static AppForSEII2526.API.Models.Compra;
+
+namespace AppForSEII2526.API.DTOs
 {
     public class CompraDetailDTO : CompraForCreateDTO
     {
-        public CompraDetailDTO(int id, string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
-            string direccionEnvío, List<CompraItemDTO> compraItems, metodoDePago metodoDePago, string correoElectronico, int telefono)
+        public CompraDetailDTO(string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
+            string direccionEnvío, List<CompraItemDTO> compraItems, metodoDePago métodoDePago, string correoElectronico, int telefono)
             : base(apellidoCliente,
             nombreCliente,
             precioTotal,
@@ -11,7 +13,19 @@
             direccionEnvío,
             compraItems,metodoDePago, correoElectronico, telefono)
         {
-            Id = id;
+            
+
+        }
+        public CompraDetailDTO(int Id,string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
+            string direccionEnvío, List<CompraItemDTO> compraItems, metodoDePago métodoDePago, string correoElectronico, int telefono)
+            : base(apellidoCliente,
+            nombreCliente,
+            precioTotal,
+            fechaCompra,
+            direccionEnvío,
+            compraItems, métodoDePago, correoElectronico, telefono)
+        {
+            this.Id = Id;
 
         }
         public int Id { get; set; }
@@ -26,7 +40,9 @@
                    fechaCompra == dTO.fechaCompra &&
                    direccionEnvío == dTO.direccionEnvío &&
                    metodoDePago == dTO.metodoDePago &&
-                   EqualityComparer<List<CompraItemDTO>>.Default.Equals(compraItems, dTO.compraItems) &&
+                   compraItems.SequenceEqual(dTO.compraItems) &&
+                   correoElectonico == dTO.correoElectonico &&
+                   teléfono == dTO.teléfono &&
                    Id == dTO.Id;
         }
 
@@ -41,6 +57,8 @@
             hash.Add(direccionEnvío);
             hash.Add(metodoDePago);
             hash.Add(compraItems);
+            hash.Add(correoElectonico);
+            hash.Add(teléfono);
             hash.Add(Id);
             return hash.ToHashCode();
         }
