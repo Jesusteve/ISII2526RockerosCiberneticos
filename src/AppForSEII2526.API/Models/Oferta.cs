@@ -1,4 +1,6 @@
-﻿namespace AppForSEII2526.API.Models
+﻿using System.ComponentModel;
+
+namespace AppForSEII2526.API.Models
 {
     public class Oferta
     {
@@ -24,14 +26,15 @@
         {
 
         }
-        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, int id, tiposDirigidaOferta dirigidaA, ApplicationUser usuario)
+        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta,List<OfertaItem> ofertaItems, tiposDirigidaOferta dirigidaA, ApplicationUser usuario, metodoDePago metodopago)
         {
             this.fechaFinal = fechaFinal;
             this.fechaInicio = fechaInicio;
             this.fechaOferta = fechaOferta;
-            Id = id;
+            this.ofertaItems = ofertaItems;
             this.dirigidaA = dirigidaA;
             this.usuario = usuario;
+            this.metodopago= metodopago;
         }
         public ApplicationUser usuario { get; set; }
 

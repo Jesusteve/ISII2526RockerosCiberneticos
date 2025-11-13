@@ -48,5 +48,6 @@ public class ApplicationUser : IdentityUser {
     public List<Compra> Compras { get; set; }
 
     public List<Alquiler> alquileres { get; set; }
+    public List<Oferta> ofertas { get; set; }
 
 }

@@ -20,11 +20,12 @@
         {
 
         }
-        public OfertaItem(int idHerramienta, int idOferta, float porcentaje, float precioFinal)
+        public OfertaItem(Herramienta herramienta, Oferta oferta, float porcentaje, float precioFinal)
         {
-            this.HerramientaId = idHerramienta;
-            this.OfertaId = idOferta;
-
+            Oferta = oferta;
+            OfertaId = oferta.Id;
+            Herramienta = herramienta;
+            HerramientaId = herramienta.Id;
             this.porcentaje = porcentaje;
             this.precioFinal = precioFinal;
         }
