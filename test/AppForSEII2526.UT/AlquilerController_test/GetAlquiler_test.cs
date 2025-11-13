@@ -1,13 +1,13 @@
-﻿//using AppForSEII2526.API.Controllers;
-//using AppForSEII2526.API.DTOs;
-//using AppForSEII2526.API.DTOs.AlquilerDTOs;
-//using RabbitMQ.Client;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Net.WebSockets;
-//using System.Text;
-//using System.Threading.Tasks;
+using AppForSEII2526.API.Controllers;
+using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.DTOs.AlquilerDTOs;
+using RabbitMQ.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AppForSEII2526.UT.HerramientasController_test
 {
@@ -42,19 +42,19 @@ namespace AppForSEII2526.UT.HerramientasController_test
             _context.SaveChanges();
         }
 
-    //    [Fact]
-    //    [Trait("Database", "WithoutFixture")]
-    //    [Trait("LevelTesting", "Unit Testing")]
-    //    public async Task GetAlquiler_NotFound_test()
-    //    {
-    //        var mock = new Mock<ILogger<AlquilerController>>();
-    //        ILogger<AlquilerController> logger = mock.Object;
+        [Fact]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        public async Task GetAlquiler_NotFound_test()
+        {
+            var mock = new Mock<ILogger<AlquilerController>>();
+            ILogger<AlquilerController> logger = mock.Object;
 
-    //        var controller = new AlquilerController(_context, logger);
-    //        var result = await controller.GetAlquiler(0);
+            var controller = new AlquilerController(_context, logger);
+            var result = await controller.GetAlquiler(0);
 
-    //        Assert.IsType<NotFoundResult>(result);
-    //    }
+            Assert.IsType<NotFoundResult>(result);
+        }
 
         [Fact]
         [Trait("LevelTesting", "Unit Testing")]
