@@ -26,7 +26,7 @@ namespace AppForSEII2526.UT.HerramientasController_test
                 new Herramienta(2,"Acero", "Martillo", 10.1f,0.5f,fabricante[0]),
                 new Herramienta(3,"Madera", "Sierra", 20.6f,1, fabricante[0])
             };
-            var usuario = new ApplicationUser(1, "Jaime", "López", "jaime@uclm.es", 617665556, "Calle Zaragoza");
+            var usuario = new ApplicationUser(1, "Jaime", "López", "jaime@uclm.es", "Calle Zaragoza", 617665556);
             var oferta = new Oferta(1,DateTime.Now.AddDays(5), DateTime.Now,DateTime.Now, new List<OfertaItem>(), tiposDirigidaOferta.Socios, usuario, metodoDePago.Efectivo);
             var ofertaItem = new List<OfertaItem>()
             {
