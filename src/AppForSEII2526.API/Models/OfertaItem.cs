@@ -22,6 +22,7 @@
         }
         public OfertaItem(Herramienta herramienta, Oferta oferta, float porcentaje, float precioFinal)
         {
+
             Oferta = oferta;
             OfertaId = oferta.Id;
             Herramienta = herramienta;

@@ -15,6 +15,20 @@
         public string nombre { get; set; }
         public float precio { get; set; }
         public string fabricante { get; set; }
+        public override bool Equals(object? obj)
+        {
+            return obj is HerramientaparaOfertaDTO dTO &&
+                   Id == dTO.Id &&
+                   material == dTO.material &&
+                   nombre == dTO.nombre &&
+                   precio == dTO.precio &&
+                   fabricante == dTO.fabricante;
+        }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, material, nombre, precio, fabricante);
+        }
     }
 }
+

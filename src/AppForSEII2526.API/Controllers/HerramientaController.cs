@@ -81,8 +81,8 @@ namespace AppForSEII2526.API.Controllers
         {
             IList<HerramientaparaOfertaDTO> selectherr = await _context.Herramienta
                 .Include(Ofer=> Ofer.OfertaItem).ThenInclude(Ofe => Ofe.oferta)
-                    .Where(Ofer => (fabricante == null || Ofer.nombre.Contains(fabricante))
-                    && (precio == null || Ofer.precio==precio))
+                    .Where(Ofer => (fabricante == null || Ofer.fabricante.nombre.Contains(fabricante))
+                    && (precio == null || Ofer.precio<=precio))
                     .OrderBy(Ofer => Ofer.nombre)
                     .Select(Ofer=> new HerramientaparaOfertaDTO(Ofer.Id, Ofer.material, Ofer.nombre, Ofer.precio, Ofer.fabricante.nombre))
                     .ToListAsync();

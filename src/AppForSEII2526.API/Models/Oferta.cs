@@ -18,6 +18,7 @@ namespace AppForSEII2526.API.Models
         [Display(Name = "Tipo de oferta")]
         public tiposDirigidaOferta dirigidaA { get; set; }
        
+        
         public metodoDePago metodopago { get; set; }
         public List<OfertaItem> ofertaItems { get; set; }
 
@@ -26,14 +27,15 @@ namespace AppForSEII2526.API.Models
         {
 
         }
-        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta,List<OfertaItem> ofertaItems, tiposDirigidaOferta dirigidaA, ApplicationUser usuario, metodoDePago metodopago)
+        public Oferta(int id, DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta,List<OfertaItem> ofertaItems, tiposDirigidaOferta dirigidaA, ApplicationUser usuario, metodoDePago metodopago)
         {
+            this.Id = id;
             this.fechaFinal = fechaFinal;
             this.fechaInicio = fechaInicio;
             this.fechaOferta = fechaOferta;
             this.ofertaItems = ofertaItems;
             this.dirigidaA = dirigidaA;
-            this.usuario = usuario;
+            this.usuario = usuario ?? new ApplicationUser();
             this.metodopago= metodopago;
         }
         public ApplicationUser usuario { get; set; }
