@@ -1,6 +1,4 @@
-﻿
-
-namespace AppForSEII2526.API.DTOs.AlquilerDTOs
+﻿namespace AppForSEII2526.API.DTOs.AlquilerDTOs
 {
     public class AlquilerDetalleDTO : AlquilerCrearDTO
     {
@@ -12,12 +10,8 @@ namespace AppForSEII2526.API.DTOs.AlquilerDTOs
             string direccionEnvio, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems,metodoDePago metodoDePago)
             : base(id, nombreCliente, apellidoCliente, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems, metodoDePago)
         {
-            this.id = id;
-            this.fechaAlquiler = fechaAlquiler;
+            
         }
-
-        public int id { get; set; }
-        public DateTime fechaAlquiler { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -36,8 +30,6 @@ namespace AppForSEII2526.API.DTOs.AlquilerDTOs
                    id == dTO.id &&
                    (fechaAlquiler-dTO.fechaAlquiler).TotalMinutes < 2;
         }
-
-
 
         public override int GetHashCode()
         {

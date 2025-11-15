@@ -24,12 +24,12 @@ namespace AppForSEII2526.UT.HerramientasController_test
             var herramientas = new List<Herramienta>()
             {
 
-                new Herramienta("Hierro", "Taladro", 15.5f, 6, fabricante[0]),
-                new Herramienta("Acero", "Martillo", 10,0.5f, fabricante[0]),
-                new Herramienta("Madera", "Sierra", 20.6f,1, fabricante[0])
+                new Herramienta(1,"Hierro", "Taladro", 15.5f, 6, fabricante[0]),
+                new Herramienta(2, "Acero", "Martillo", 10,0.5f, fabricante[0]),
+                new Herramienta(3, "Madera", "Sierra", 20.6f,1, fabricante[0])
             };
             var usuario = new ApplicationUser(1, "Jesís", "Tercero", "jesus@uclm.es", "Calle Ángel", 699584895);
-            var alquiler = new Alquiler("Jesís", "Calle Ángel", DateTime.Now.Date, DateTime.Now.AddDays(5).Date, DateTime.Now.Date, 50.3f, metodoDePago.TarjetaCredito, usuario, new List<AlquilarItem>());
+            var alquiler = new Alquiler(1,"Jesís", "Calle Ángel", DateTime.Now.Date, DateTime.Now.AddDays(5).Date, DateTime.Now.Date, 50.3f, metodoDePago.TarjetaCredito, usuario, new List<AlquilarItem>());
             var alquilarItems = new List<AlquilarItem>()
             {
                 new AlquilarItem(herramientas[1], alquiler,66.3f)

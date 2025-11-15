@@ -36,9 +36,11 @@ namespace AppForSEII2526.API.Controllers
                 .Include(a => a.alquilarItems)
                     .ThenInclude(h => h.herramienta)
                         .ThenInclude(f => f.fabricante)
-             .Select(a => new AlquilerDetalleDTO(a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
-             a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin, a.alquilarItems
-                .Select(aq => new AlquilarItemDTO(aq.herramientaId, a.id, aq.precio, aq.cantidad)).ToList<AlquilarItemDTO>(),a.metodoDePago))
+             .Select(a => new AlquilerDetalleDTO(
+                 a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
+                 a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin,
+                 a.alquilarItems.Select(aq => new AlquilarItemDTO(aq.herramientaId, aq.alquilerId, aq.precio, aq.cantidad)).ToList(),
+                 a.metodoDePago))
              .FirstOrDefaultAsync();
 
             if (alquilerEntity == null)
@@ -119,8 +121,8 @@ namespace AppForSEII2526.API.Controllers
                 .ToList();
 
             //Tercer paso: Creamos el objeto
-            // Usar el constructor que no fija el id para dejar que EF lo genere y evitar inconsistencias con claves foráneas
-            Alquiler alquiler = new Alquiler(crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
+           
+            Alquiler alquiler = new Alquiler(1,crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
                 crearAlquiler.fechaFin, crearAlquiler.fechaInicio, crearAlquiler.precioTotal, 
                 crearAlquiler.metodoDePago, 
                 usuario, new List<AlquilarItem>());
