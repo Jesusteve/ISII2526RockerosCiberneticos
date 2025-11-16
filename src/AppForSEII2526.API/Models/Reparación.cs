@@ -5,11 +5,28 @@ namespace AppForSEII2526.API.Models
 {
     public class Reparación
     {
+        private DateTime today;
+        private DateTime dateTime;
+        private float v;
+        private metodoDePago efectivo;
+        private ApplicationUser usuario;
+        private List<ReparaciónItem> reparaciónItems;
+
         public Reparación()
         {
             fechaEntrega = DateTime.Now;
             fechaRecogida = DateTime.Now.AddDays(7);
             precioTotal = 0;
+        }
+
+        public Reparación(DateTime today, DateTime dateTime, float v, metodoDePago efectivo, ApplicationUser usuario, List<ReparaciónItem> reparaciónItems)
+        {
+            this.today = today;
+            this.dateTime = dateTime;
+            this.v = v;
+            this.efectivo = efectivo;
+            this.usuario = usuario;
+            this.reparaciónItems = reparaciónItems;
         }
 
         public Reparación(int id, string nombreCliente, string apellidoCliente, string telefono, DateTime fechaEntrega, DateTime fechaRecogida, float precioTotal, ApplicationUser applicationUser, metodoDePago metodoPago)

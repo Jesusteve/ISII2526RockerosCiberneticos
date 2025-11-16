@@ -5,6 +5,23 @@ namespace AppForSEII2526.API.DTOs
 {
     public class RepararCrearDTO
     {
+        private DateTime dateTime;
+        private string v1;
+        private string v2;
+        private List<RepararItemDTO> repararItemDTOs;
+        private metodoDePago efectivo;
+        private object value;
+
+        public RepararCrearDTO(DateTime dateTime, string v1, string v2, List<RepararItemDTO> repararItemDTOs, metodoDePago efectivo, object value)
+        {
+            this.dateTime = dateTime;
+            this.v1 = v1;
+            this.v2 = v2;
+            this.repararItemDTOs = repararItemDTOs;
+            this.efectivo = efectivo;
+            this.value = value;
+        }
+
         public RepararCrearDTO(DateTime fechaEntrega, DateTime fechaRecogida,
             float precioTotal, string name, string surname, IList<RepararItemDTO> repararItem, metodoDePago tiposMetodoPago, string phone)
         {
@@ -44,5 +61,6 @@ namespace AppForSEII2526.API.DTOs
         public metodoDePago TiposMetodoPago { get; set; }
 
         public IList<RepararItemDTO> RepararItem { get; set; }
+
     }
 }

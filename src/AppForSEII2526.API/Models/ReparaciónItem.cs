@@ -5,6 +5,10 @@ namespace AppForSEII2526.API.Models
 {
     public class ReparaciónItem
     {
+        private float v1;
+        private int v2;
+        private string v3;
+
         public ReparaciónItem()
         {
             cantidad = 0;
@@ -21,6 +25,15 @@ namespace AppForSEII2526.API.Models
             this.cantidad = cantidad;
             this.precio = precio;
             this.descripcion = descripcion;
+        }
+
+        public ReparaciónItem(float v1, int v2, string v3, Herramienta herramienta, Reparación reparacion)
+        {
+            this.v1 = v1;
+            this.v2 = v2;
+            this.v3 = v3;
+            this.herramienta = herramienta;
+            this.reparacion = reparacion;
         }
 
         [Key]
