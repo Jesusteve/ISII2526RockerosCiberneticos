@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
+using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AppForSEII2526.API.Controllers
@@ -87,6 +88,29 @@ namespace AppForSEII2526.API.Controllers
                     .Select(Ofer=> new HerramientaparaOfertaDTO(Ofer.Id, Ofer.material, Ofer.nombre, Ofer.precio, Ofer.fabricante.nombre))
                     .ToListAsync();
             return Ok(selectherr);
+        }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<HerramientaParaRepararDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetHerramientasParaReparar(string? filtroNombre, int? filtroTiempoReparacion)
+        {
+
+            var herramientas = await _context.Herramienta
+                .Include(h => h.Fabricante)
+                .Where(h => (h.nombre.Contains(filtroNombre) || filtroNombre == null)
+                    && (h.tiempoReparacion <= filtroTiempoReparacion || filtroTiempoReparacion == null))
+                .OrderBy(h => h.tiempoReparacion)
+                .Select(h => new HerramientaParaRepararDTO(
+                    h.Id,
+                    h.nombre,
+                    h.material,
+                    h.precio,
+                    h.tiempoReparacion,
+                    h.Fabricante.nombre
+                )).ToListAsync();
+            return Ok(herramientas);
         }
     }
 }

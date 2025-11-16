@@ -1,0 +1,52 @@
+﻿
+namespace AppForSEII2526.API.DTOs
+{
+    public class HerramientaParaRepararDTO
+    {
+
+        public int Id { get; set; }
+
+        [StringLength(50, ErrorMessage = "El nombre no puede tener más de 50 caracteres.")]
+        public string Nombre { get; set; }
+
+        [StringLength(50, ErrorMessage = "El nombre del material no puede tener más de 50 caracteres.")]
+        public string Material { get; set; }
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+        [Range(0.05, float.MaxValue, ErrorMessage = "El precio minimo es 0.05")]
+        [Precision(10, 2)]
+        public float Precio { get; set; }
+
+        public float TiempoReparacion { get; set; }
+        public string Fabricante { get; set; }
+
+        public HerramientaParaRepararDTO(int id, string nombre, string material, float precio, float tiempoReparacion, string fabricante)
+        {
+            Id = id;
+            Nombre = nombre;
+            Material = material;
+            Precio = precio;
+            TiempoReparacion = tiempoReparacion;
+            Fabricante = fabricante;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is HerramientaParaRepararDTO dTO &&
+                   Id == dTO.Id &&
+                   Nombre == dTO.Nombre &&
+                   Fabricante == dTO.Fabricante &&
+                   TiempoReparacion == dTO.TiempoReparacion &&
+                   Precio == dTO.Precio &&
+                   Material == dTO.Material;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Nombre, Material, Precio, TiempoReparacion, Fabricante);
+        }
+
+
+
+    }
+}
