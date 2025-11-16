@@ -1,31 +1,42 @@
 ﻿
+using Humanizer;
+
 namespace AppForSEII2526.API.DTOs.OfertaDTOs
 {
     public class OfertaCrearDTO
     {
-        public OfertaCrearDTO(int Id, string Descripcion, float PrecioPorDia, bool Disponible) {
-            this.Id = Id;
-            this.Descripcion = Descripcion;
-            this.PrecioPorDia = PrecioPorDia;
-            this.Disponible = Disponible;
+        public OfertaCrearDTO(int id,DateTime fechafinal, DateTime fechaInicio, tiposDirigidaOferta dirigidaA, metodoDePago metododepago, IList<OfertaItemDTO> ofertaitemdto) {
+            this.Id=id;
+            this.fechafinal = fechafinal;
+            this.fechaInicio = fechaInicio;
+            this.dirigidaA = dirigidaA;
+            this.metododepago = metododepago;
+            this.ofertaitemdto = ofertaitemdto;
+            
+
         }
         public int Id { get; set; }
-        public string Descripcion { get; set; }
-        public float PrecioPorDia { get; set; }
-        public bool Disponible { get; set; }
+        public DateTime fechafinal { get; set; }
+        public DateTime fechaInicio { get; set; }
+        public tiposDirigidaOferta dirigidaA { get; set; }
+      
+        public metodoDePago metododepago { get; set; }
+        public IList<OfertaItemDTO> ofertaitemdto { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is OfertaCrearDTO dTO &&
                    Id == dTO.Id &&
-                   Descripcion == dTO.Descripcion &&
-                   PrecioPorDia == dTO.PrecioPorDia &&
-                   Disponible == dTO.Disponible;
+                   fechafinal == dTO.fechafinal &&
+                   fechaInicio == dTO.fechaInicio &&
+                   dirigidaA == dTO.dirigidaA &&
+                   metododepago == dTO.metododepago &&
+                   ofertaitemdto.SequenceEqual(dTO.ofertaitemdto);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Descripcion, PrecioPorDia, Disponible);
+            return HashCode.Combine(Id, fechafinal, fechaInicio, dirigidaA, metododepago, ofertaitemdto);
         }
     }
    
