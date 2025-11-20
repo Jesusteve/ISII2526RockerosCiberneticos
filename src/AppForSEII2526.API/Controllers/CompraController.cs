@@ -34,6 +34,11 @@ namespace AppForSEII2526.API.Controllers
                 _logger.LogWarning("No se encontraron herramientas en la base de datos.");
                 return NotFound();
             }
+            if(Id != null && Id < 0)
+            {
+                _logger.LogWarning("El id no puede ser menor que cero");
+                return NotFound();
+            }
             var compra = await _context.Compra
                 .Include(c => c.compraItems)
                     .ThenInclude(ci => ci.herramienta)
@@ -79,7 +84,7 @@ namespace AppForSEII2526.API.Controllers
                 ModelState.AddModelError("CompraItems", "La compra debe contener al menos un item.");
 
             }
-
+            
             if (string.IsNullOrEmpty(compra.nombreCliente))
             {
                 ModelState.AddModelError("nombreCliente", "Nombre no proporcionado");
@@ -123,23 +128,29 @@ namespace AppForSEII2526.API.Controllers
                 {
                     ModelState.AddModelError("Cantidad", "La cantidad debe ser mayor que cero.");
                 }
-                if (string.IsNullOrEmpty(item.descripcion))
+                //Examen
+                if (string.IsNullOrEmpty(item.descripcion) && item.cantidad == 3)
                 {
-                    ModelState.AddModelError("Descripción", "La descripción no puede estar vacia");
+                    ModelState.AddModelError("Descripción","¡Error! Estás comprando demasiadas herramientas sin descripción");
                 }
+                //Examen
+
+                
                 if (ModelState.ErrorCount > 0)
                     return BadRequest(new ValidationProblemDetails(ModelState));
+                
                 var herramienta = herramientas.FirstOrDefault(h => h.nombre == item.nombre);
                 if (herramienta == null)
                 {
                     ModelState.AddModelError("Herramienta", $"La herramienta '{item.nombre}' no existe.");
-
+                    return BadRequest(new ValidationProblemDetails(ModelState));
                 }
                 else
                 {
                     newCompra.compraItems.Add(new CompraItem(herramienta.Id, item.cantidad, herramienta.precio, item.descripcion, herramienta, newCompra));
 
                 }
+                
             }
             newCompra.precioTotal = compra.compraItems.Sum(ci => ci.precio * ci.cantidad);
 

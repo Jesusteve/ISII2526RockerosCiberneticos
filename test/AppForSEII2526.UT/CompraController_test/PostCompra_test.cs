@@ -46,7 +46,8 @@ namespace AppForSEII2526.UT.CompraController_test
 
             var compra_sin_nombre = new CompraForCreateDTO("García Rodenas", "", 0, DateTime.Now.Date, "Carretera De Madrid 28 1 c", new List<CompraItemDTO>(), metodoDePago.TarjetaCredito, "maildedanielg@gmail.com", 642399229);
             compra_sin_nombre.compraItems.Add(new CompraItemDTO("Acero", "Martillo", 10, "Compra de martillo de acero", 1));
-
+            var compra_sin_descripcion = new CompraForCreateDTO("García Rodenas", "Daniel", 0, DateTime.Now.Date, "Carretera De Madrid 28 1 c", new List<CompraItemDTO>(), metodoDePago.TarjetaCredito, "maildedanielg@gmail.com", 642399229);
+            compra_sin_descripcion.compraItems.Add(new CompraItemDTO("Acero", "Martillo", 10, "", 3));
             var compra_sin_direccion = new CompraForCreateDTO(
             "García Rodenas",
             "Daniel",
@@ -63,6 +64,7 @@ namespace AppForSEII2526.UT.CompraController_test
                 new object[] {compra_sin_herramientas,"La compra debe contener al menos un item." },
                 new object[] {compra_sin_nombre, "Nombre no proporcionado"},
                 new object[] {compra_sin_direccion, "Dirección de envío no proporcionada."},
+                new object[] {compra_sin_descripcion, "¡Error! Estás comprando demasiadas herramientas sin descripción" }
             };
 
             return allTest;

@@ -12,16 +12,15 @@ namespace AppForSEII2526.API.DTOs
             this.cantidad = cantidad;
         }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
         public string material { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre de la herramienta debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+
         public string nombre { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
         public float precio { get; set; }
 
-        [StringLength(100, ErrorMessage = "La descripción debe de tener minimo 10 caracteres y máximo 500", MinimumLength = 10)]
+        
         public string descripcion { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe de ser mayor a 0")]

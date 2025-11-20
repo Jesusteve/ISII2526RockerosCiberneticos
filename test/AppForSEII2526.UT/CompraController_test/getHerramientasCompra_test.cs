@@ -19,7 +19,8 @@ namespace AppForSEII2526.UT.CompraController_test
             {
                 new Fabricante("Fabricante1"),
                 new Fabricante("Fabricante2"),
-                new Fabricante("Fabricante3")
+                new Fabricante("Fabricante3"),
+                new Fabricante("Fabricante4")
             }
             ;
             var herramientas = new List<Herramienta>()
@@ -27,7 +28,8 @@ namespace AppForSEII2526.UT.CompraController_test
 
                 new Herramienta( "Hierro","Taladro", 15f, 1 ,fabricante[0]),
                 new Herramienta("Acero", "Martillo", 10f, 0.5f, fabricante[1]),
-                new Herramienta("Madera", "Sierra", 20f, 2, fabricante[2])
+                new Herramienta("Madera", "Sierra", 20f, 2, fabricante[2]),
+                new Herramienta("Hierro", "Tornillos", 2f, 1,fabricante[3])
             };
 
             
@@ -41,14 +43,15 @@ namespace AppForSEII2526.UT.CompraController_test
             var herramientaDTOs = new List<HerramienParaComprarDTO>()
             {
 
-                new HerramienParaComprarDTO("Hierro","Taladro",15,"Fabricante1" ),
-                new HerramienParaComprarDTO("Acero","Martillo",10, "Fabricante2" ),
-                new HerramienParaComprarDTO("Madera", "Sierra", 20, "Fabricante3")
+                new HerramienParaComprarDTO("Hierro","Taladro",15f,"Fabricante1" ),
+                new HerramienParaComprarDTO("Acero","Martillo",10f, "Fabricante2" ),
+                new HerramienParaComprarDTO("Madera", "Sierra", 20f, "Fabricante3"),
+                new HerramienParaComprarDTO("Hierro", "Tornillos", 2f, "Fabricante4")
             };
 
             var herramientasDTO1sTC1 = new List<HerramienParaComprarDTO>
             {
-                herramientaDTOs[0],herramientaDTOs[1],herramientaDTOs[2]
+                herramientaDTOs[0],herramientaDTOs[1],herramientaDTOs[2],herramientaDTOs[3],
             }
             ;
 
@@ -61,15 +64,19 @@ namespace AppForSEII2526.UT.CompraController_test
             {
                 herramientaDTOs[2]
             };
+            var herramientasDTO4sTC4 = new List<HerramienParaComprarDTO>
+            {
+                herramientaDTOs[3]
+            };
 
 
 
             var AllTests = new List<object?[]>
             {
-                new object[] { null, null,herramientasDTO1sTC1 },
-                new object[] { "Acero", null, herramientasDTO2sTC2 },
-                new object[] { null, 20f,herramientasDTO3sTC3 }
-
+                new object[] { null, null, null, herramientasDTO1sTC1 },
+                new object[] { "Acero", null,null, herramientasDTO2sTC2 },
+                new object[] { null, 20f,null,herramientasDTO3sTC3 },
+                new object[] {null, null,"Tornillos",herramientasDTO4sTC4 }
 
             };
             return AllTests;
@@ -79,7 +86,7 @@ namespace AppForSEII2526.UT.CompraController_test
         [MemberData(nameof(TestCasesFor_GetMoviesForRental_OK))]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetCompra_OK(string? material, float? precio, IList<HerramienParaComprarDTO> herramientaPrueba)
+        public async Task GetCompra_OK(string? material, float? precio, string? nombreHerramienta,IList<HerramienParaComprarDTO> herramientaPrueba)
         {
             
             var mock = new Mock<ILogger<HerramientaController>>();
@@ -88,7 +95,7 @@ namespace AppForSEII2526.UT.CompraController_test
             using var context = CreateContext();
             var controller = new HerramientaController(context, logger);
             // Act
-            var result = await controller.GetHerramienParaComprar(material, precio) as OkObjectResult;
+            var result = await controller.GetHerramienParaComprar(material, precio, nombreHerramienta) as OkObjectResult;
             // Assert
            var okResult = Assert.IsType<OkObjectResult>(result);
             var herramientaActual = Assert.IsType<List<HerramienParaComprarDTO>>(okResult.Value);
