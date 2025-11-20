@@ -39,8 +39,8 @@ namespace AppForSEII2526.UT.HerramientasController_test
 
             ApplicationUser user = new ApplicationUser(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio, _username, _telefono);
 
-            var alquiler = new Alquiler(100, _nombreCliente, _direccionEnvio, DateTime.Now,
-                DateTime.Now.AddDays(5), DateTime.Now, 50.3f, metodoDePago.TarjetaCredito,
+            var alquiler = new Alquiler(100, _nombreCliente, _direccionEnvio, DateTime.Now.AddDays(1),
+                DateTime.Now.AddDays(5), DateTime.Now.AddDays(1).Date, 50.3f, metodoDePago.TarjetaCredito,
                 user, new List<AlquilarItem>());
 
             alquiler.alquilarItems.Add(new AlquilarItem(herramientas[0], alquiler, 66.3f));
@@ -55,9 +55,9 @@ namespace AppForSEII2526.UT.HerramientasController_test
         public static IEnumerable<object[]> TestCasesFor_CrearAlquiler()
         {
             var alquilerNoItem = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
-                DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.AddDays(3).Date, new List<AlquilarItemDTO>());
+                DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(3).Date, new List<AlquilarItemDTO>());
 
-            var alquilerItems = new List<AlquilarItemDTO>() { new AlquilarItemDTO(2, 1, 29.3f, 6) };
+            var alquilerItems = new List<AlquilarItemDTO>() { new AlquilarItemDTO(1, 1, 29.3f, 6) };
 
             var alquilerAntesdeHoy = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
                 DateTime.Now.AddDays(-5).Date, DateTime.Now.AddDays(-5).Date, DateTime.Now.AddDays(5).Date, alquilerItems);
@@ -72,13 +72,19 @@ namespace AppForSEII2526.UT.HerramientasController_test
                 DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.AddDays(5).Date,
                 new List<AlquilarItemDTO>() { new AlquilarItemDTO(4, 1, 29.3f, 6) });
 
+            //PRUEBA HECHA EN EXAMEN SPRINT 2
+            var alquilerDireccionInvalida = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, "C/Rosario",
+                DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(2).Date, alquilerItems);
+
             var alltests = new List<object[]>
             {
+                new object[] { alquilerDireccionInvalida, "¡Error! La direccion de envio debe empezar por la palabra Calle"},
                 new object[] { alquilerNoItem, "Error: Tienes que incluir al menos una herramienta" },
                 new object[] { alquilerAntesdeHoy, "Error: La fecha de alquiler no puede ser anterior a hoy" },
                 new object[] { alquilerDesordenadoFechas, "Error: La fecha de fin debe ser posterior a la fecha de inicio" },
                 new object[] { alquilerUsuario, "Error: El usuario no existe" },
-                new object[] { alquilerHerramientaNoExiste, "Error: La herramienta no está disponible" }
+                new object[] { alquilerHerramientaNoExiste, "Error: La herramienta no está disponible" },
+
             };
             return alltests;
         }

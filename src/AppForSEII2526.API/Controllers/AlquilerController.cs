@@ -80,6 +80,12 @@ namespace AppForSEII2526.API.Controllers
                 return NotFound();
             }
             //Primer paso: validaciones
+
+            //Validación de Direción contiene "Calle"
+            //MODIFICACIÓN EXAMEN SPRINT 2
+            if (!crearAlquiler.direccionEnvio.Contains("Calle"))
+                ModelState.AddModelError("DirrecionInvalida", "¡Error! La direccion de envio debe empezar por la palabra Calle");
+
             //Validación de que las herramientas estén disponibles
             if (crearAlquiler.fechaInicio<=DateTime.Now.Date || crearAlquiler.fechaFin<=crearAlquiler.fechaInicio)
             {
