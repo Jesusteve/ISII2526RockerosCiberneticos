@@ -1,9 +1,13 @@
+using AppForSEII2526.Web.API;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AppForSEII2526.Web.Components;
 using AppForSEII2526.Web.Components.Account;
 using AppForSEII2526.Web.Data;
+using ApplicationUser = AppForSEII2526.Web.Data.ApplicationUser;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +39,12 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+//Esta línea obtiene la URI del API desde el archivo appsettings.json
+string? URI2API = builder.Configuration.GetValue(typeof(string), "AppForSEII2526_API") as string;
+
+//Creamos el cliente HTTP para comunicarnos con el API
+
+builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIClient(URI2API, new HttpClient()));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
