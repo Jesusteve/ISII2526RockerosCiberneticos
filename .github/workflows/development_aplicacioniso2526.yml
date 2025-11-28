@@ -6,9 +6,10 @@ name: CD - aplicacioniso2526
 on:
   push:
     branches:
-      - development
-    paths:
-      -'src/AppForSEII2526.API**'
+      -115-dessarrollar-ui-select-alquilar-herramientas
+   #   - development
+    #paths:
+     # -'src/AppForSEII2526.API**'
 
       
   workflow_dispatch:
@@ -83,3 +84,4 @@ jobs:
           package: .
 
           
+
