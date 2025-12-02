@@ -1,4 +1,5 @@
 using AppForSEII2526.Web.API;
+using AppForSEII2526.Web;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,12 @@ string? URI2API = builder.Configuration.GetValue(typeof(string), "AppForSEII2526
 //Creamos el cliente HTTP para comunicarnos con el API
 
 builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIClient(URI2API, new HttpClient()));
+builder.Services.AddScoped<AlquilerStateContainer>();
 var app = builder.Build();
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

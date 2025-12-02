@@ -1,0 +1,239 @@
+﻿@page "/alquiler/selectherramientasparaalquiler"
+
+@using Microsoft.AspNetCore.Authorization
+@using AppForSEII2526.Web.API
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<SelectHerramientaParaAlquiler> logger
+@inject AlquilerStateContainer alquilerState
+@inject NavigationManager navigation
+
+
+<h3>Seleccionar herramientas para alquilar</h3>
+<div class="container-fluid">
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @errors</p>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Nombre</span
+                            <input @bind-value="@nombreHerramienta" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Material</span
+                            <input @bind-value="@materialHerramienta" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Inicio</span>
+                        <InputDate @bind-Value="@Inicio" id="fromDate" />
+                    </div>
+                </div>
+                <div class="col">
+                    <span class="input-group-text">Fin</span>
+                    <InputDate id="toDate" @bind-Value="@To" />
+
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" @onclick=@SearchHerramientas id="searchMovies">Buscar herramientas</button>
+                </div>
+
+            </div>
+            <div class="row">
+                @if (herramienta == null)
+                {
+                    <p>Loading movies....</p>
+                }
+                else
+                {
+                    <div class="mh-100 table-responsive">
+                        <table class="table table-condensed table-hover" id="TableOfMovies">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Fabricante</th>
+                                    <th>Material</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var herr in herramienta)
+                                {
+                                    <tr id="MovieData_@herr.Nombre">
+                                        <td>@herr.Id</td>
+                                        <td>@herr.Nombre</td>
+                                        <td>@herr.Fabricante</td>
+                                        <td>@herr.Material</td>
+                                        <td>@herr.Precio</td>
+                                        <td>
+                                            <button class="btn btn-outline-secondary" id="movieToRent_@herr.Nombre" @onclick="@(() => AddHerramienta(herr))">Add</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                }
+            </div>
+        </div>
+        <div class="col-2" hidden="@hideRentingCart">
+            <div class="row">
+                <h3>Shopping Cart</h3>
+            </div>
+            @foreach (AlquilarItemDTO item in alquiler.AlquilarItems)
+            {
+                <div class="row">
+                    <button type="button" class="btn btn-light" id="removeMovie_@item.HerramientaId" @onclick="@(() => RemoveRentalItem(item))">x @item.HerramientaId - @item.Precio€</button>
+                </div>
+            }
+            <div class="row">
+                <button type="button" class="btn btn-primary" id="purchaseMovieButton" @onclick=@AlquilarHerramientas>Alquilar herramientas</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+    private string fabricanteHerramientaSeleccionado;
+  
+    private bool hideRentingCart { get { return alquiler.AlquilarItems.Count == 0; } }
+    private ICollection<HerramienParaAlquilarDTO> herramienta;
+    private bool hideErrors { get { return errors.Length == 0; } }
+    private string errors = "";
+    private string nombreHerramienta { get; set; }
+    private string materialHerramienta { get; set; }
+    private DateTime _inicio;
+    private DateTime Inicio
+    {
+        get { return _inicio; }
+        set
+        {
+            if (_inicio != value)
+            {
+                // la cesta de alquiler se borra para asegurar que solo se seleccionan herramientas disponibles para el periodo seleccionado
+                _inicio = value;
+                alquiler.FechaInicio = DateTime.SpecifyKind(_inicio, DateTimeKind.Utc);
+                alquilerState.ClearRentingCart();
+
+            }
+        }
+    }
+
+    private DateTime _to;
+    private DateTime To
+    {
+        get { return _to; }
+        set
+        {
+            if (_to != value)
+            {
+                //la cesta de alquiler se borra para asegurar que solo se seleccionan herramientas disponibles para el periodo seleccionado
+                _to = value;
+                alquiler.FechaFin = DateTime.SpecifyKind(_to, DateTimeKind.Utc);
+                alquilerState.ClearRentingCart();
+
+            }
+        }
+    }
+    private AlquilerCrearDTO alquiler => alquilerState.Alquiler;
+
+    private bool hiddenRentingCart = true;
+
+    private void AddHerramienta(HerramienParaAlquilarDTO herramienta)
+    {
+        alquilerState.AddHerramientaToRental(herramienta);
+    }
+
+    private void RemoveRentalItem(AlquilarItemDTO item)
+    {
+        alquilerState.RemoveRentalItemToRent(item);
+        if (alquiler.AlquilarItems.Count == 0) hiddenRentingCart = true;
+    }
+
+    public async void SearchHerramientas()
+    {
+
+        //  nombreFabricantes = fabricanteHerramientaSeleccionado == "All" ? null : fabricanteHerramientaSeleccionado;
+
+        if (alquiler.FechaInicio > alquiler.FechaFin)
+        {
+            errors = "Your rental must end after than its starts";
+            return;
+        }
+
+        if (alquiler.FechaInicio < DateTime.Today || alquiler.FechaFin < DateTime.Today)
+        {
+            errors = "Your rental period must be later";
+            return;
+        }
+
+        try
+        {
+            if (!string.IsNullOrEmpty(nombreHerramienta))
+            {
+                herramienta = await apiclient.GetHerramientasForRentingAsync(nombreHerramienta, null);
+                errors = "";
+                StateHasChanged();
+                return;
+            }
+            else if (!string.IsNullOrEmpty(materialHerramienta))
+            {
+                herramienta = await apiclient.GetHerramientasForRentingAsync(null, materialHerramienta);
+                errors = "";
+                StateHasChanged();
+                return;
+            }
+            else 
+            {
+            herramienta = await apiclient.GetHerramientasForRentingAsync(null, null);
+            errors = "";
+            }
+
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError($"{DateTime.Now} Error: {ex}");
+            errors = "Error while connecting to the system";
+        }
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        
+
+        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
+        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
+        _inicio = (_inicio == new DateTime(1, 1, 1)) ?
+            DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
+            : _inicio;
+        alquiler.FechaInicio = _inicio;
+
+        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
+        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
+        _to = (_to == new DateTime(1, 1, 1)) ?
+            DateTime.SpecifyKind(DateTime.Today.AddDays(2), DateTimeKind.Utc)
+            : _to;
+        alquiler.FechaFin = _to;
+
+        SearchHerramientas();
+
+        //return base.OnInitializedAsync();
+    }
+
+    private void AlquilarHerramientas()
+    {
+        navigation.NavigateTo("/alquiler/selectherramientasparaalquiler");
+    }
+
+}
