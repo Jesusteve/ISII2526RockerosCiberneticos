@@ -165,7 +165,7 @@
         herramientaPrecio = herramientaPrecio == 0 ? 0 : herramientaPrecio;
 
        
-        /* ACORDARSE DE QUITAR COMENTARIO
+       
         try
         {
             herramientas = await apiclient.GetHerramienParaComprarAsync(herramientaNombre, herramientaPrecio);
@@ -176,7 +176,7 @@
         {
             logger.LogError($"{DateTime.Now} Error: {ex}");
             errors = "Error while connecting to the system";
-        }*/
+        }
         StateHasChanged();
     }
 
