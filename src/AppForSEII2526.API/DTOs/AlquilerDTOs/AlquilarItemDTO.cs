@@ -13,10 +13,32 @@
             this.alquilerId = alquilerId;
             this.precio = precio;
             this.cantidad = cantidad;
+            this.nombre = null; // explícito o eliminar si se deja por defecto
         }
+
+        public AlquilarItemDTO(int herramientaId, string nombre, int alquilerId, float precio, int cantidad)
+        {
+            this.herramientaId = herramientaId;
+            this.nombre = nombre; // corregido
+            this.alquilerId = alquilerId;
+            this.precio = precio;
+            this.cantidad = cantidad;
+        }
+        public AlquilarItemDTO(int herramientaId, string nombre, int alquilerId, float precio, int cantidad, string descripcion)
+        {
+            this.herramientaId = herramientaId;
+            this.nombre = nombre; 
+            this.alquilerId = alquilerId;
+            this.precio = precio;
+            this.cantidad = cantidad;
+            this.Descripcion = descripcion;
+        }
+
         [Display(Name = "ID Herramienta")]
         public int herramientaId { get; set; }
 
+        
+        public string nombre { get; set; }
         [Display(Name = "ID Alquiler")]
         public int alquilerId { get; set; }
 
@@ -29,6 +51,7 @@
         [Display(Name = "Cantidad")]
         public int cantidad { get; set; }
 
+        public string Descripcion { get; set; }
         public override bool Equals(object? obj)
         {
             return obj is AlquilarItemDTO dTO &&

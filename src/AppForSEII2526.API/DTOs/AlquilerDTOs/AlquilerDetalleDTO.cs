@@ -10,7 +10,7 @@
             string direccionEnvio, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems,metodoDePago metodoDePago)
             : base(id, nombreCliente, apellidoCliente, direccionEnvio, fechaAlquiler, fechaInicio, fechaFin, alquilarItems, metodoDePago)
         {
-            
+            precioTotal = AlquilarItems.Sum(item => item.precio * item.cantidad);
         }
 
         public override bool Equals(object? obj)

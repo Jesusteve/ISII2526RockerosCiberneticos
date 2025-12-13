@@ -27,11 +27,15 @@ public class Alquiler
         this.fechaAlquiler = fechaAlquiler;
         this.fechaFin = fechaFin;
         this.fechaInicio = fechaInicio;
-        this.precioTotal = precioTotal;
         this.metodoDePago = metodoDePago;
         this.alquilarItems = alquilarItems;
+
+      
+        this.precioTotal = precioTotal;
     }
 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int id { get; set; }
 
 
@@ -58,7 +62,21 @@ public class Alquiler
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     [Range(0.5, float.MaxValue, ErrorMessage = "El precio mínimo es 0,5")]
-    public float precioTotal { get; set; }
+    public float precioTotal {
+        //Sumatorio de los precios de los items
+        get
+        {
+            if (alquilarItems == null || alquilarItems.Count == 0)
+                return 0;
+            int numDias = (fechaFin - fechaInicio).Days;
+            float total = 0;
+            foreach (var item in alquilarItems)
+            {
+                total += item.precio * numDias * item.cantidad;
+            }
+            return total;
+        } set;
+    }
    
 
     [Display(Name = "Método de pago")]

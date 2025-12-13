@@ -28,17 +28,7 @@
                             <input @bind-value="@materialHerramienta" />
                     </div>
                 </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Inicio</span>
-                        <InputDate @bind-Value="@Inicio" id="fromDate" />
-                    </div>
-                </div>
-                <div class="col">
-                    <span class="input-group-text">Fin</span>
-                    <InputDate id="toDate" @bind-Value="@To" />
 
-                </div>
                 <div class="col">
                     <button type="button" class="btn btn-primary" @onclick=@SearchHerramientas id="searchMovies">Buscar herramientas</button>
                 </div>
@@ -47,7 +37,7 @@
             <div class="row">
                 @if (herramienta == null)
                 {
-                    <p>Loading movies....</p>
+                    <p>Cargando herramientas...</p>
                 }
                 else
                 {
@@ -85,12 +75,12 @@
         </div>
         <div class="col-2" hidden="@hideRentingCart">
             <div class="row">
-                <h3>Shopping Cart</h3>
+                <h3>Carrito</h3>
             </div>
             @foreach (AlquilarItemDTO item in alquiler.AlquilarItems)
             {
                 <div class="row">
-                    <button type="button" class="btn btn-light" id="removeMovie_@item.HerramientaId" @onclick="@(() => RemoveRentalItem(item))">x @item.HerramientaId - @item.Precio€</button>
+                    <button type="button" class="btn btn-light" id="removeMovie_@item.HerramientaId" @onclick="@(() => RemoveRentalItem(item))"> @item.HerramientaId x @item.Cantidad - @item.Precio€</button>
                 </div>
             }
             <div class="row">
@@ -112,38 +102,8 @@
     private string nombreHerramienta { get; set; }
     private string materialHerramienta { get; set; }
     private DateTime _inicio;
-    private DateTime Inicio
-    {
-        get { return _inicio; }
-        set
-        {
-            if (_inicio != value)
-            {
-                // la cesta de alquiler se borra para asegurar que solo se seleccionan herramientas disponibles para el periodo seleccionado
-                _inicio = value;
-                alquiler.FechaInicio = DateTime.SpecifyKind(_inicio, DateTimeKind.Utc);
-                alquilerState.ClearRentingCart();
+    
 
-            }
-        }
-    }
-
-    private DateTime _to;
-    private DateTime To
-    {
-        get { return _to; }
-        set
-        {
-            if (_to != value)
-            {
-                //la cesta de alquiler se borra para asegurar que solo se seleccionan herramientas disponibles para el periodo seleccionado
-                _to = value;
-                alquiler.FechaFin = DateTime.SpecifyKind(_to, DateTimeKind.Utc);
-                alquilerState.ClearRentingCart();
-
-            }
-        }
-    }
     private AlquilerCrearDTO alquiler => alquilerState.Alquiler;
 
     private bool hiddenRentingCart = true;
@@ -163,18 +123,6 @@
     {
 
         //  nombreFabricantes = fabricanteHerramientaSeleccionado == "All" ? null : fabricanteHerramientaSeleccionado;
-
-        if (alquiler.FechaInicio > alquiler.FechaFin)
-        {
-            errors = "Your rental must end after than its starts";
-            return;
-        }
-
-        if (alquiler.FechaInicio < DateTime.Today || alquiler.FechaFin < DateTime.Today)
-        {
-            errors = "Your rental period must be later";
-            return;
-        }
 
         try
         {
@@ -202,7 +150,7 @@
         catch (ApiException ex)
         {
             logger.LogError($"{DateTime.Now} Error: {ex}");
-            errors = "Error while connecting to the system";
+            errors = "Error mientras el sistema se estaba conectando";
         }
         StateHasChanged();
     }
@@ -212,19 +160,6 @@
 
         
 
-        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
-        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
-        _inicio = (_inicio == new DateTime(1, 1, 1)) ?
-            DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
-            : _inicio;
-        alquiler.FechaInicio = _inicio;
-
-        //the type of RentalDateFrom is DateTimeOffset, it is required a conversion
-        //https://learn.microsoft.com/es-es/dotnet/standard/datetime/converting-between-datetime-and-offset
-        _to = (_to == new DateTime(1, 1, 1)) ?
-            DateTime.SpecifyKind(DateTime.Today.AddDays(2), DateTimeKind.Utc)
-            : _to;
-        alquiler.FechaFin = _to;
 
         SearchHerramientas();
 

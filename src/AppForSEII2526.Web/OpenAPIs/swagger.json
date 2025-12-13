@@ -14,54 +14,6 @@
     "version": "v1"
   },
   "paths": {
-    "/GetFabricantes": {
-      "get": {
-        "tags": [
-          "Frabricantes"
-        ],
-        "operationId": "GetFabricantes",
-        "parameters": [
-          {
-            "name": "nombreFabricantes",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Alquiler/GetAlquiler": {
       "get": {
         "tags": [
@@ -360,15 +312,15 @@
         }
       }
     },
-    "/api/Fabricante/GetFabricantes": {
+    "/api/Fabricante/GetFabricante": {
       "get": {
         "tags": [
           "Fabricante"
         ],
-        "operationId": "GetFabricantes",
+        "operationId": "GetFabricante",
         "parameters": [
           {
-            "name": "nombreFabricantes",
+            "name": "nombre",
             "in": "query",
             "schema": {
               "type": "string"
@@ -877,6 +829,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
           "alquilerId": {
             "type": "integer",
             "format": "int32"
@@ -891,6 +847,10 @@
             "minimum": 1,
             "type": "integer",
             "format": "int32"
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -898,7 +858,6 @@
       "AlquilerCrearDTO": {
         "required": [
           "apellidoCliente",
-          "id",
           "nombreCliente"
         ],
         "type": "object",
@@ -918,19 +877,18 @@
             "type": "string",
             "format": "date-time"
           },
-          "fechaFin": {
+          "fechaInicio": {
             "type": "string",
             "format": "date-time"
           },
-          "fechaInicio": {
+          "fechaFin": {
             "type": "string",
             "format": "date-time"
           },
           "precioTotal": {
             "minimum": 0.5,
             "type": "number",
-            "format": "currency",
-            "readOnly": true
+            "format": "currency"
           },
           "id": {
             "type": "integer",
@@ -953,7 +911,6 @@
       "AlquilerDetalleDTO": {
         "required": [
           "apellidoCliente",
-          "id",
           "nombreCliente"
         ],
         "type": "object",
@@ -973,19 +930,18 @@
             "type": "string",
             "format": "date-time"
           },
-          "fechaFin": {
+          "fechaInicio": {
             "type": "string",
             "format": "date-time"
           },
-          "fechaInicio": {
+          "fechaFin": {
             "type": "string",
             "format": "date-time"
           },
           "precioTotal": {
             "minimum": 0.5,
             "type": "number",
-            "format": "currency",
-            "readOnly": true
+            "format": "currency"
           },
           "id": {
             "type": "integer",
@@ -1150,13 +1106,13 @@
           },
           "material": {
             "maxLength": 50,
-            "minLength": 10,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "nombre": {
             "maxLength": 50,
-            "minLength": 10,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },

@@ -18,11 +18,22 @@ public class AlquilarItem
 
         public AlquilarItem(Herramienta herramienta, Alquiler alquiler, float precio)
         {
-            Herramienta = herramienta;
-            Alquiler = alquiler;
+            this.herramienta = herramienta;
+            this.alquiler = alquiler;
             herramientaId = herramienta.Id;
             alquilerId = alquiler.id;
             this.precio = precio;
+        }
+
+        public AlquilarItem(Herramienta herramienta, Alquiler alquiler, float precio, int cantidad, string ? descripcion)
+        {
+            this.herramienta = herramienta;
+            herramientaId = herramienta.Id;
+            this.alquiler = alquiler;
+            alquilerId = alquiler.id;
+            this.precio = precio;
+            this.cantidad = cantidad;
+            this.Descripcion= descripcion;
         }
 
         public Herramienta herramienta { get; set; }
@@ -39,7 +50,9 @@ public class AlquilarItem
 	[Display(Name = "Precio")]
     public float precio { get; set; }
 
-	[Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima es 1")]
+    public string ? Descripcion { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima es 1")]
 	[Display(Name = "Cantidad")]
     public int cantidad { get; set; }
 

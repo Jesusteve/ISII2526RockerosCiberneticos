@@ -2,9 +2,9 @@
 {
     public class AlquilerCrearDTO
     {
-        public AlquilerCrearDTO(int id, string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
+        public AlquilerCrearDTO(string nombreCliente, string apellidoCliente, string direccionEnvio, DateTime fechaAlquiler, DateTime fechaInicio, DateTime fechaFin, IList<AlquilarItemDTO> alquilarItems)
         {
-            this.id = id;
+            
             this.nombreCliente = nombreCliente;
             this.apellidoCliente = apellidoCliente;
             this.direccionEnvio = direccionEnvio;
@@ -12,6 +12,7 @@
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             AlquilarItems = alquilarItems;
+            precioTotal = AlquilarItems.Sum(item => item.precio * item.cantidad);
         }
 
 
@@ -26,6 +27,7 @@
             this.fechaFin = fechaFin;
             AlquilarItems = alquilarItems;
             this.metodoDePago = metodoDePago;
+            precioTotal = AlquilarItems.Sum(item => item.precio * item.cantidad);
         }
 
         public AlquilerCrearDTO()
@@ -44,16 +46,16 @@
 
         [Display(Name = "Inicio del alquiler")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime fechaFin { get; set; }
+        public DateTime fechaInicio { get; set; }
 
         [Display(Name = "Fin del alquiler")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime fechaInicio { get; set; }
+        public DateTime fechaFin { get; set; }
 
         private int diasAlquiler { 
             get 
             {
-                return (fechaFin - fechaInicio).Days;
+                return Math.Abs((fechaFin - fechaInicio).Days);
             }
         }
 
@@ -63,11 +65,12 @@
         public float precioTotal {
             get
             {
-                return AlquilarItems.Sum(it => it.precio) * diasAlquiler;
-            }
+                return AlquilarItems.Sum(it => it.precio * it.cantidad);
+            } set;
         }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Tienes que introducir un nombre")]

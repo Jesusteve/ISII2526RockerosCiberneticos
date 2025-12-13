@@ -15,10 +15,10 @@ namespace AppForSEII2526.API.DTOs
 
         public int Id { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+        [StringLength(50, ErrorMessage = "El nombre del material no puede exceder los 50 caracteres ")]
         public string material { get; set; }
 
-        [StringLength(50, ErrorMessage = "El nombre de la herramienta debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]
+        [StringLength(50, ErrorMessage = "El nombre de la herramienta debe de tener 50 caracteres como máximo")]
         public string nombre { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]

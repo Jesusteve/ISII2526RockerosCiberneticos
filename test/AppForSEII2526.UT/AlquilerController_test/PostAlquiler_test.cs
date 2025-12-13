@@ -54,26 +54,26 @@ namespace AppForSEII2526.UT.HerramientasController_test
 
         public static IEnumerable<object[]> TestCasesFor_CrearAlquiler()
         {
-            var alquilerNoItem = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
+            var alquilerNoItem = new AlquilerCrearDTO( _nombreCliente, _apellidoCliente, _direccionEnvio,
                 DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(3).Date, new List<AlquilarItemDTO>());
 
             var alquilerItems = new List<AlquilarItemDTO>() { new AlquilarItemDTO(1, 1, 29.3f, 6) };
 
-            var alquilerAntesdeHoy = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
+            var alquilerAntesdeHoy = new AlquilerCrearDTO( _nombreCliente, _apellidoCliente, _direccionEnvio,
                 DateTime.Now.AddDays(-5).Date, DateTime.Now.AddDays(-5).Date, DateTime.Now.AddDays(5).Date, alquilerItems);
 
-            var alquilerDesordenadoFechas = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
+            var alquilerDesordenadoFechas = new AlquilerCrearDTO( _nombreCliente, _apellidoCliente, _direccionEnvio,
                 DateTime.Now.Date, DateTime.Now.AddDays(2).Date, DateTime.Now.Date, alquilerItems);
 
-            var alquilerUsuario = new AlquilerCrearDTO(99, "Jaime", _apellidoCliente, _direccionEnvio,
+            var alquilerUsuario = new AlquilerCrearDTO( "Jaime", _apellidoCliente, _direccionEnvio,
                 DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.AddDays(5).Date, alquilerItems);
 
-            var alquilerHerramientaNoExiste = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, _direccionEnvio,
+            var alquilerHerramientaNoExiste = new AlquilerCrearDTO(_nombreCliente, _apellidoCliente, _direccionEnvio,
                 DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.AddDays(5).Date,
                 new List<AlquilarItemDTO>() { new AlquilarItemDTO(4, 1, 29.3f, 6) });
 
             //PRUEBA HECHA EN EXAMEN SPRINT 2
-            var alquilerDireccionInvalida = new AlquilerCrearDTO(_idCliente, _nombreCliente, _apellidoCliente, "C/Rosario",
+            var alquilerDireccionInvalida = new AlquilerCrearDTO( _nombreCliente, _apellidoCliente, "C/Rosario",
                 DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(2).Date, alquilerItems);
 
             var alltests = new List<object[]>

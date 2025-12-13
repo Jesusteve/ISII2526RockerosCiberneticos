@@ -39,7 +39,7 @@ namespace AppForSEII2526.API.Controllers
              .Select(a => new AlquilerDetalleDTO(
                  a.id, a.fechaAlquiler, a.applicationUser.nombreCliente,
                  a.applicationUser.apellidoCliente, a.direccionEnvio, a.fechaInicio, a.fechaFin,
-                 a.alquilarItems.Select(aq => new AlquilarItemDTO(aq.herramientaId, aq.alquilerId, aq.precio, aq.cantidad)).ToList(),
+                 a.alquilarItems.Select(aq => new AlquilarItemDTO(aq.herramientaId, aq.herramienta.nombre, aq.alquilerId, aq.precio, aq.cantidad)).ToList(),
                  a.metodoDePago))
              .FirstOrDefaultAsync();
 
@@ -59,7 +59,7 @@ namespace AppForSEII2526.API.Controllers
                 alquilerEntity.fechaInicio,
                 alquilerEntity.fechaFin,
                 alquilerEntity.AlquilarItems
-                    .Select(ai => new AlquilarItemDTO(ai.herramientaId, alquilerEntity.id, ai.precio, ai.cantidad))
+                    .Select(ai => new AlquilarItemDTO(ai.herramientaId, ai.nombre, alquilerEntity.id, ai.precio, ai.cantidad))
                     .ToList(),
                 alquilerEntity.metodoDePago
             );
@@ -121,6 +121,7 @@ namespace AppForSEII2526.API.Controllers
 
             // Obtener las entidades completas para poder comprobar cantidad y alq. existentes
             var herramientas = _context.Herramienta
+                .AsNoTracking() 
                 .Include(h => h.AlquilarItems)
                     .ThenInclude(ai => ai.alquiler)
                 .Where(h => herramientasExistentes.Contains(h.Id))
@@ -128,16 +129,15 @@ namespace AppForSEII2526.API.Controllers
 
             //Tercer paso: Creamos el objeto
            
-            Alquiler alquiler = new Alquiler(1,crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
-                crearAlquiler.fechaFin, crearAlquiler.fechaInicio, crearAlquiler.precioTotal, 
-                crearAlquiler.metodoDePago, 
+            Alquiler alquiler = new Alquiler(crearAlquiler.nombreCliente, crearAlquiler.direccionEnvio, DateTime.Now.Date,
+                crearAlquiler.fechaFin, crearAlquiler.fechaInicio,
+                crearAlquiler.precioTotal,crearAlquiler.metodoDePago, 
                 usuario, new List<AlquilarItem>());
 
-            alquiler.precioTotal = 0;
+            
             var numDias = (crearAlquiler.fechaFin - crearAlquiler.fechaInicio).TotalDays;
-
             //Cuarto paso: Guardamos en la base de datos
-            foreach(var item in crearAlquiler.AlquilarItems)
+            foreach (var item in crearAlquiler.AlquilarItems)
             {
                 var herramienta = herramientas.FirstOrDefault(h => h.Id == item.herramientaId);
                 if (herramienta== null)
@@ -150,12 +150,15 @@ namespace AppForSEII2526.API.Controllers
                     ai.alquiler.fechaInicio <= crearAlquiler.fechaFin &&
                     ai.alquiler.fechaFin >= crearAlquiler.fechaInicio);
 
-                // Usar la entidad real para crear el item (evita insertar Herramienta/Alquiler vacíos)
-                var nuevoItem = new AlquilarItem(herramienta, alquiler, herramienta.precio);
-                // Asegurar que las claves foráneas estén consistentes en memoria (si es necesario)
-                nuevoItem.herramientaId = herramienta.Id;
-                // alquiler aún no tiene id definitivo hasta SaveChanges, pero al establecer la navegación se mantiene la relación
-                alquiler.alquilarItems.Add(nuevoItem);
+
+
+                alquiler.alquilarItems.Add(new AlquilarItem
+                {
+                    herramientaId = herramienta.Id,
+                    alquilerId = alquiler.id,
+                    precio = herramienta.precio,
+                    cantidad = item.cantidad
+                });
 
                 item.precio = herramienta.precio;
             }

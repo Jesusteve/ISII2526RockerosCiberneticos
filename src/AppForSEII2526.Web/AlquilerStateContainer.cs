@@ -30,13 +30,16 @@ namespace AppForSEII2526.Web
         {
             //antes de añadirla comprobamos que no esté ya en la lista
             if (!Alquiler.AlquilarItems.Any(ri => ri.HerramientaId == herr.Id))
-                
+
                 Alquiler.AlquilarItems.Add(new AlquilarItemDTO()
                 {
                     HerramientaId = herr.Id,
-                    AlquilerId=Alquiler.Id,
-                    Precio = Alquiler.PrecioTotal
+                    AlquilerId = Alquiler.Id,
+                    Precio = herr.Precio,
+                    Cantidad = 1,
+                    Nombre = herr.Nombre
                 }
+                
             );
 
         }

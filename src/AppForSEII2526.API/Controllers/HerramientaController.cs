@@ -39,12 +39,18 @@ namespace AppForSEII2526.API.Controllers
             IList<HerramienParaAlquilarDTO> selectherr = await _context.Herramienta
                 .Include(alq => alq.AlquilarItems).ThenInclude(al => al.alquiler) 
                     .Where (alq => (nombre==null || alq.nombre.Contains(nombre)) 
-                    && (material==null || alq.material.Contains(material)
+                    && (material==null || alq.material.Contains(material))
                     && (alq.AlquilarItems.All(a => a.alquiler.fechaInicio.Date > semSig.Date 
-                        && a.alquiler.fechaFin.Date < pasMñn.Date))))
-                    .OrderBy(alq => alq.nombre)
+                        || a.alquiler.fechaFin.Date < pasMñn.Date)))
+                    .OrderBy(alq => alq.Id)
                     .Select(alq => new HerramienParaAlquilarDTO(alq.Id, alq.material, alq.nombre, alq.precio, alq.fabricante.nombre))
                     .ToListAsync();
+
+            if (selectherr.Count == 0)
+            {
+                throw new Exception("No se encontraron herramientas disponibles para alquilar con los filtros proporcionados.");
+                
+            }
                 return Ok(selectherr);
             }
 

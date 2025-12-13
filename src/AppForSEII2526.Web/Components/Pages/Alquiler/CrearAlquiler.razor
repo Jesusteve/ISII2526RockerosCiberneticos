@@ -23,19 +23,19 @@
         <div class="col-md">
             <div class="form-floating mb-3">
                 <InputText @bind-Value="alquiler.NombreCliente" class="form-control" id="Name" />
-                <label for="Name">Name </label>
+                <label for="Name">Nombre </label>
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
                 <InputText @bind-Value="alquiler.ApellidoCliente" class="form-control" id="Surname" />
-                <label for="Name">Name </label>
+                <label for="Name">Apellido </label>
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
                 <InputText @bind-Value="alquiler.DireccionEnvio" class="form-control" id="DeliveryAddress" />
-                <label for="DeliveryAddress">Delivery Address</label>
+                <label for="DeliveryAddress">Dirección de entrega</label>
             </div>
         </div>
     </div>
@@ -48,24 +48,34 @@
                     <option value="@MetodoDePago.PayPal"> PayPal</option>
                     <option value="@MetodoDePago.Efectivo"> Cash</option>
                 </InputSelect>
-                <label for="PaymentMethod">Payment Method</label>
+                <label for="PaymentMethod">Método de pago</label>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Inicio</span>
+                    <InputDate @bind-Value="@_inicio" id="fromDate" />
+                </div>
+                
+                <div class="input-group mb-3">
+                <span class="input-group-text">Fin</span>
+                <InputDate id="toDate" @bind-Value="@_to" />
+                </div>
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating">
-                @*this button will be used to ask the user if he want to proceed to rent the movies*@
+                @*Este botón se usará para preguntar al usuario si quiere seguir con el alquiler*@
                 <button class="btn btn-primary" type="submit" id="Submit">
-                    Rent your movies
+                    Alquilar herramientas
                 </button>
             </div>
         </div>
     </div>
-    <h4>Rental detail</h4>
-    <p><b>Date from:</b> @alquiler.FechaInicio.ToString("dd/MM/yyyy") <b>to:</b> @alquiler.FechaFin.ToString("dd/MM/yyyy")</p>
+    <h4>Detalle de Alquiler</h4>
     <p>
-        <b>Total price:</b> @TotalCost €
+        <b>Precio total:</b> @TotalCost €
         <button class="btn btn-outline-primary" type="submit" @onclick="ModifyRentalItems" id="ModifyMovies">
-            Modify movies
+            Modificar herramientas
         </button>
     </p>
     
@@ -73,19 +83,22 @@
         <table class="table table-condensed table-hover" id="TableOfRentalItems">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Genre</th>
-                    <th>Price For Renting</th>
-                    <th>Description</th>
+                    <th>Nombre</th>
+                    <th>Id Herramienta</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Descripción</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in alquiler.AlquilarItems) {
-                    <tr id="MovieData_@item.AlquilerId">
-                        <td>@item.AlquilerId</td>
+                    <tr id="Herramienta_data @item.AlquilerId">
+                        <td>@item.Nombre</td>
                         <td>@item.HerramientaId</td>
                         <td>@item.Precio</td>
-@*              CORREGIR DESPUÉS     <td><InputText @bind-Value="item.Description" class="form-control" id="@($"description_{item.MovieID}")" /></td> *@
+                        <td><InputNumber @bind-Value="item.Cantidad" class="form-control style="width: 80px;" /></td>
+                        <td><InputText @bind-Value="item.Descripcion" class="form-control" id="@($"descripcionn{item.HerramientaId}")" /></td>
+                        
                     </tr>
                 }
             </tbody>
@@ -93,11 +106,11 @@
     </div>
 </EditForm>
 
-@*a modal popup dialog for checking if user wants to proceed to rent*@
+@*Un cuadro de texto para que el usuario confirme que quiere alquilar*@
 @if (DialogIsOpen)
 {
-    <Dialog Caption="Rental movies"
-    Message="Do you want to proceed to rent the selected movies?"
+    <Dialog Caption="Herramientas seleccionadas"
+    Message="Estás seguro de que quiere continuar con las herramientas seleccionadas?"
     OnClose="@OnDialogClose"
     Type=Dialog.Category.SaveNot>
     </Dialog>
@@ -106,11 +119,13 @@
     private string messageError = "";
     private bool hideErrors { get { return messageError.Length == 0; } }
     private bool DialogIsOpen;
+    private DateTime _inicio;
+    private DateTime _to;
 
     public CrearAlquiler()
     {
     }
-    
+
     public CrearAlquiler(NavigationManager navigation)
     {
         this.navigation = navigation;
@@ -118,15 +133,16 @@
 
     private decimal TotalCost { 
         get {
-            int days = (alquiler.FechaFin.DateTime - alquiler.FechaInicio.DateTime).Days;
-            double price = alquiler.AlquilarItems.Sum(ri => ri.Precio * days);
+            int days = (_to - _inicio).Days;
+            double price = alquiler.AlquilarItems.Sum(ri => ri.Precio * ri.Cantidad * days);
+            alquiler.PrecioTotal = price;
             return Convert.ToDecimal(price);
         }
     }
 
     private void ModifyRentalItems()
     {
-        navigation.NavigateTo("/rental/selectmoviesforrental");
+        navigation.NavigateTo("/alquiler/selectherramientasparaalquiler");
     }
     private AlquilerCrearDTO alquiler => alquilerState.Alquiler;
 
@@ -141,14 +157,14 @@
         DialogIsOpen = false;
         if (isOk)
         {
-            // Process the data introduced by the user if they are valid
+            
             if (alquiler.AlquilarItems.Count > 0)
             {
                 try
                 {
                     var rented = await apiclient.CreateAlquilerAsync(alquiler);
                     alquilerState.RentalProcessed();
-                    navigation.NavigateTo($"/rental/detailrental/?RentalID={rented.Id}");
+                    navigation.NavigateTo($"/alquiler/detallealquiler?alquilerID={rented.Id}");
                 }
                 catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
                 {
@@ -163,8 +179,7 @@
                 }
                 catch (ApiException apiexception)
                 {
-                    //we need to inform user that there was some other error while processing the request
-                    messageError = "Error while processing your request, please try again later!";
+                    messageError = "Error procesando tu alquiler, inténtalo de nuevo más tarde";
 
                 }
 
@@ -191,6 +206,20 @@
             alquiler.ApellidoCliente = alquiler.ApellidoCliente == null ? "" : alquiler.ApellidoCliente;
             alquiler.DireccionEnvio = alquiler.DireccionEnvio == null ? "" : alquiler.DireccionEnvio;
 
+            alquiler.FechaAlquiler = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+          
+            _inicio = (_inicio == new DateTime(1, 1, 1)) ?
+                DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
+                : _inicio;
+            alquiler.FechaInicio = _inicio;
+
+           
+            _to = (_to == new DateTime(1, 1, 1)) ?
+                DateTime.SpecifyKind(DateTime.Today.AddDays(2), DateTimeKind.Utc)
+                : _to;
+            alquiler.FechaFin = _to;
+
+           
         }
     }
 
