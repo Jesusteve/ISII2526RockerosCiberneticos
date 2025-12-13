@@ -24,9 +24,14 @@
         {
 
             Oferta = oferta;
-            OfertaId = oferta.Id;
+            if (oferta != null && oferta.Id != 0)
+            {
+                OfertaId = oferta.Id;
+            }
             Herramienta = herramienta;
+            if (herramienta != null && herramienta.Id != 0) { 
             HerramientaId = herramienta.Id;
+        }
             this.porcentaje = porcentaje;
             this.precioFinal = precioFinal;
         }

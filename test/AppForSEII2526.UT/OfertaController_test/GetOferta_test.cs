@@ -1,7 +1,12 @@
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs;
+using AppForSEII2526.API.DTOs.AlquilerDTOs;
 using AppForSEII2526.API.DTOs.OfertaDTOs;
+using AppForSEII2526.API.Models;
 using Humanizer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -10,46 +15,37 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Moq;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AppForSEII2526.UT.HerramientasController_test
 {
     public class GetOferta_test : AppForSEII25264SqliteUT
     {
-        private readonly DateTime _fechaBase;
-        private readonly DateTime _fechaFinal;
 
         public GetOferta_test()
-        {
-            var nowUnspecified = new DateTime(2025, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified);
-            _fechaBase = nowUnspecified.Date;
-            _fechaFinal = nowUnspecified.AddDays(5).AddMinutes(25).AddSeconds(51);
+        { 
 
-            var fabricante = new List<Fabricante>()
+            var fabricante = new List<Fabricante>
             {
-                new Fabricante("Fabricante 1"),
+                new Fabricante ("Fabricante 1"),
+                new Fabricante ("Fabricante 2"),
+                new Fabricante ("Fabricante 3")
             };
-            var herramientas = new List<Herramienta>()
+            var herramientas = new List<Herramienta>
             {
-                new Herramienta(1,"Hierro", "Taladro", 15.5f, 6, fabricante[0]),
-                new Herramienta(2,"Acero", "Martillo", 36.6f,5, fabricante[0]),
-                new Herramienta(3,"Madera", "Sierra", 20.6f,1, fabricante[0])
+             new Herramienta (1,"Hierro", "Martillo", 25.50f, 10,fabricante[0]),
+                new Herramienta (2,"Acero", "Destornillador", 15.75f, 12, fabricante[1]),
+                new Herramienta (3,"Plástico","Clavo", 56.22f, 14, fabricante[2]),
             };
-            var usuario = new ApplicationUser(1, "Jaime", "Lopez", "jaime@uclm.es", "Calle Zaragoza", 617665556);
+            ApplicationUser usuario = new ApplicationUser(1, "Jaime", "Lopez", "jaime@uclm.es", "Calle Zaragoza", 617665556);
 
-            var oferta = new Oferta(1, _fechaFinal, _fechaBase, _fechaBase, new List<OfertaItem>(), tiposDirigidaOferta.Socios, usuario, metodoDePago.TarjetaCredito);
-
-            var ofertaItems = new List<OfertaItem>()
-            {
-                new OfertaItem(herramientas[1], oferta,66,36.6f)
-            };
+           
+            
+            var oferta = new Oferta (DateTime.Today.AddDays(10), DateTime.Today, DateTime.Today, new List<OfertaItem>(), tiposDirigidaOferta.Clientes, usuario, metodoDePago.TarjetaCredito);
+            oferta.ofertaItems.Add(new OfertaItem(herramientas[0], oferta, 50,38.2f));
+            _context.AddRange(fabricante);
+            _context.AddRange(herramientas);
             _context.Add(usuario);
             _context.Add(oferta);
-            _context.AddRange(ofertaItems);
-            _context.AddRange(herramientas);
-            _context.AddRange(fabricante);
             _context.SaveChanges();
         }
 
@@ -62,7 +58,7 @@ namespace AppForSEII2526.UT.HerramientasController_test
             ILogger<OfertaController> logger = mock.Object;
 
             var controller = new OfertaController(_context, logger);
-            var result = await controller.GetOferta(0);
+            var result = await controller.GetDetallesdeOfertasCreadas(0);
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -76,10 +72,11 @@ namespace AppForSEII2526.UT.HerramientasController_test
             ILogger<OfertaController> logger = mock.Object;
             var controller = new OfertaController(_context, logger);
 
-            var expectedOferta = new OfertaDetalleDTO(1, _fechaFinal, _fechaBase, _fechaBase, metodoDePago.TarjetaCredito, tiposDirigidaOferta.Socios, new List<OfertaItemDTO>());
-            expectedOferta.ofertaitemdto.Add(new OfertaItemDTO("Martillo", "Acero", "Fabricante 1", 36.6f, 66));
+            var expectedOferta = new OfertaDetalleDTO(DateTime.Today, DateTime.Today.AddDays(10), metodoDePago.TarjetaCredito,
+                tiposDirigidaOferta.Clientes, new List<OfertaItemDTO>(), DateTime.Today, 1);
+            expectedOferta.OfertaItem.Add(new OfertaItemDTO("Martillo", "Hierro", "Fabricante 1", 25.5f, 1, 50));
 
-            var result = await controller.GetOferta(1);
+            var result = await controller.GetDetallesdeOfertasCreadas(1);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var ofertaDTOActual = Assert.IsType<OfertaDetalleDTO>(okResult.Value);

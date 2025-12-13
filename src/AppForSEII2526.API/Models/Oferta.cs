@@ -38,6 +38,15 @@ namespace AppForSEII2526.API.Models
             this.usuario = usuario ?? new ApplicationUser();
             this.metodopago= metodopago;
         }
+        public Oferta(DateTime fechaFinal, DateTime fechaInicio, DateTime fechaOferta, List<OfertaItem> ofertaItems, tiposDirigidaOferta dirigidaA, ApplicationUser usuario, metodoDePago metodopago)
+        {             this.fechaFinal = fechaFinal;
+            this.fechaInicio = fechaInicio;
+            this.fechaOferta = fechaOferta;
+            this.ofertaItems = ofertaItems;
+            this.dirigidaA = dirigidaA;
+            this.usuario = usuario ?? new ApplicationUser();
+            this.metodopago = metodopago;
+        }
         public ApplicationUser usuario { get; set; }
 
         [NotMapped]

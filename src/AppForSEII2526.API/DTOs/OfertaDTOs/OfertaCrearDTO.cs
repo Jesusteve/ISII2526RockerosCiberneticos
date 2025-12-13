@@ -1,44 +1,45 @@
 ﻿
-using Humanizer;
+using AppForSEII2526.API.Models;
 
 namespace AppForSEII2526.API.DTOs.OfertaDTOs
 {
-    public class OfertaCrearDTO
+    public class CreacionOfertaDTO
     {
-        public OfertaCrearDTO(int id,DateTime fechafinal, DateTime fechaInicio, tiposDirigidaOferta dirigidaA, metodoDePago metododepago, IList<OfertaItemDTO> ofertaitemdto) {
-            this.Id=id;
-            this.fechafinal = fechafinal;
-            this.fechaInicio = fechaInicio;
-            this.dirigidaA = dirigidaA;
-            this.metododepago = metododepago;
-            this.ofertaitemdto = ofertaitemdto;
-            
-
+        public CreacionOfertaDTO(DateTime fechaFinal, DateTime fechaInicio, metodoDePago tiposMetodoPago, tiposDirigidaOferta tiposDirigdaOferta, IList<OfertaItemDTO> ofertaItem)
+        {
+            FechaFinal = fechaFinal;
+            FechaInicio = fechaInicio;
+            TiposMetodoPago = tiposMetodoPago;
+            TiposDirigdaOferta = tiposDirigdaOferta;
+            OfertaItem = ofertaItem;
         }
-        public int Id { get; set; }
-        public DateTime fechafinal { get; set; }
-        public DateTime fechaInicio { get; set; }
-        public tiposDirigidaOferta dirigidaA { get; set; }
-      
-        public metodoDePago metododepago { get; set; }
-        public IList<OfertaItemDTO> ofertaitemdto { get; set; }
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime FechaFinal { get; set; }
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime FechaInicio { get; set; }
+
+        public metodoDePago TiposMetodoPago { get; set; }
+
+        public tiposDirigidaOferta TiposDirigdaOferta { get; set; }
+
+        public IList<OfertaItemDTO> OfertaItem { get; set; }
 
         public override bool Equals(object? obj)
         {
-            return obj is OfertaCrearDTO dTO &&
-                   Id == dTO.Id &&
-                   fechafinal == dTO.fechafinal &&
-                   fechaInicio == dTO.fechaInicio &&
-                   dirigidaA == dTO.dirigidaA &&
-                   metododepago == dTO.metododepago &&
-                   ofertaitemdto.SequenceEqual(dTO.ofertaitemdto);
+            return obj is CreacionOfertaDTO dTO &&
+
+                   TiposMetodoPago == dTO.TiposMetodoPago &&
+                   TiposDirigdaOferta == dTO.TiposDirigdaOferta &&
+                   OfertaItem.SequenceEqual(dTO.OfertaItem);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, fechafinal, fechaInicio, dirigidaA, metododepago, ofertaitemdto);
+            return HashCode.Combine(TiposMetodoPago, TiposDirigdaOferta, OfertaItem);
         }
     }
-   
-
-    }
+}

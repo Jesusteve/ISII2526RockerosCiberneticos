@@ -1,39 +1,57 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using AppForSEII2526.API.Models;
 
-namespace AppForSEII2526.API.DTOs.OfertaDTOs
+namespace AppForSEII2526.API.DTOs
 {
     public class OfertaItemDTO
     {
-        public OfertaItemDTO(string nombre, string material, string fabricante, float precio, float porcentaje)
+        public OfertaItemDTO(string nombre, string material, string fabricante, float precio, int id, float porcentaje)
         {
-            this.Material = material;
-            this.Fabricante = fabricante;
-            this.Precio = precio;
-            this.PrecioFinal = precio*(porcentaje/100);
-            this.Nombre = nombre;
+            Nombre = nombre;
+            Material = material;
+            Fabricante = fabricante;
+            Precio = precio;
+            Id = id;
+            Porcentaje = porcentaje;
         }
-        [StringLength(50, ErrorMessage = "El nombre del material debe estar entre minimo 10 caracteres y maximo 50", MinimumLength = 10)]
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+        [Range(0, 100, ErrorMessage = "porcentaje no valido")]
+        public float Porcentaje { get; set; }
+        public int Id { get; set; }
+
+        [StringLength(50, ErrorMessage = "el nombre no puede tener más de 50 caracteres.")]
         public string Nombre { get; set; }
-        [StringLength(50, ErrorMessage = "El nombre del material debe estar entre minimo 10 caracteres y maximo 50", MinimumLength = 10)]
+
+        [StringLength(50, ErrorMessage = "el nombre del material no puede tener más de 50 caracteres.")]
         public string Material { get; set; }
+
         public string Fabricante { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+        [Range(0.05, float.MaxValue, ErrorMessage = "El precio minimo es 0.05")]
+        [Precision(10, 2)]
         public float Precio { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
-        public float PrecioFinal { get; set; }
+
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+        [Range(0.05, float.MaxValue, ErrorMessage = "El precio minimo es 0.05")]
+        [Precision(10, 2)]
+        public float PrecioFinal { get { return Precio * (1 - (Porcentaje / 100.0f)); } }
+
         public override bool Equals(object? obj)
         {
             return obj is OfertaItemDTO dTO &&
-                     Nombre == dTO.Nombre &&
+                   Porcentaje == dTO.Porcentaje &&
+                   Id == dTO.Id &&
+                   Nombre == dTO.Nombre &&
                    Material == dTO.Material &&
                    Fabricante == dTO.Fabricante &&
                    Precio == dTO.Precio &&
                    PrecioFinal == dTO.PrecioFinal;
         }
+
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nombre, Material, Fabricante, Precio, PrecioFinal);
+            return HashCode.Combine(Porcentaje, Id, Nombre, Material, Fabricante, Precio, PrecioFinal);
         }
     }
 }
-    
