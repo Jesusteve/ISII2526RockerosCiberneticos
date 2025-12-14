@@ -11,6 +11,13 @@ namespace AppForSEII2526.API.DTOs
             this.precio = precio;
             this.fabricante = fabricante;
         }
+        public HerramienParaComprarDTO(string material, string nombre, float precio, string fabricante)
+        {
+            this.material = material;
+            this.nombre = nombre;
+            this.precio = precio;
+            this.fabricante = fabricante;
+        }
         public int Id { get; set; }
 
         [StringLength(50, ErrorMessage = "El nombre del material debe de tener minimo 10 caracteres y máximo 50", MinimumLength = 10)]

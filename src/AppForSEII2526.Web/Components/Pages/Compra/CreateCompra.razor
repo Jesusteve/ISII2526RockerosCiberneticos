@@ -156,9 +156,29 @@ using Microsoft.AspNetCore.Components
             {
                 try
                 {
-                    var rented = await apiclient.CreateCompraAsync(compra);
+                    AppForSEII2526.Web.API.CompraForCreateDTO compraDTO = new AppForSEII2526.Web.API.CompraForCreateDTO()
+                    {
+                        Id = this.compra.Id,
+                        NombreCliente = this.compra.NombreCliente,
+                        ApellidoCliente = this.compra.ApellidoCliente,
+                        DireccionEnvío = this.compra.DireccionEnvío,
+                        MetodoDePago = this.compra.MetodoDePago,
+                        Teléfono = this.compra.Teléfono,
+                        CorreoElectonico = this.compra.CorreoElectonico,
+                        CompraItems = this.compra.CompraItems.Select(ri => new AppForSEII2526.Web.API.CompraItemDTO()
+                        {
+                            Nombre = ri.Nombre,
+                            Material = ri.Material,
+                            Cantidad = ri.Cantidad,
+                            Descripcion = ri.Descripcion,
+                            Precio = ri.Precio
+                        }).ToList(),
+                        PrecioTotal = this.compra.PrecioTotal
+                    };
+
+                    var rented = await apiclient.CreateCompraAsync(compraDTO);
                     comprarStateContainer.FinalizarCompra();
-                    navigation.NavigateTo($"/compra/detallecompra/?CompraID={rented.Id}");
+                    navigation.NavigateTo($"/compra/detallecompra/?CompraID={compraDTO.Id}");
                 }
                 catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
                 {

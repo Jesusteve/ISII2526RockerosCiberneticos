@@ -179,7 +179,6 @@ namespace AppForSEII2526.API.Controllers
 
 
             var createdCompraDTO = new CompraDetailDTO(
-                newCompra.Id,
                 usuario.apellidoCliente,
                 usuario.nombreCliente,
                 newCompra.precioTotal,
@@ -197,8 +196,7 @@ namespace AppForSEII2526.API.Controllers
                 usuario.correoElectonico,
                 usuario.teléfono
             );
-
-            return CreatedAtAction("GetCompra", new { id = newCompra.Id }, createdCompraDTO);
+            return CreatedAtAction("GetCompra", new { id = createdCompraDTO.Id }, createdCompraDTO);
 
             
         }

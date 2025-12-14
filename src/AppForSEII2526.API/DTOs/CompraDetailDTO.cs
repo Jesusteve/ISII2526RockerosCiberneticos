@@ -11,7 +11,7 @@ namespace AppForSEII2526.API.DTOs
             precioTotal,
             fechaCompra,
             direccionEnvío,
-            compraItems,metodoDePago.Efectivo, correoElectronico, telefono)
+            compraItems,métodoDePago, correoElectronico, telefono)
         {
             
 

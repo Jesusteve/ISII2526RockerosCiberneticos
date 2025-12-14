@@ -38,6 +38,7 @@
         }
 
         public int Id { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tus apellidos")]
         public string apellidoCliente { get; set; }
 

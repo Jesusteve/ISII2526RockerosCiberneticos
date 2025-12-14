@@ -27,6 +27,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.36.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
