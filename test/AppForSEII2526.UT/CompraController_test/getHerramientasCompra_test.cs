@@ -43,10 +43,10 @@ namespace AppForSEII2526.UT.CompraController_test
             var herramientaDTOs = new List<HerramienParaComprarDTO>()
             {
 
-                new HerramienParaComprarDTO("Hierro","Taladro",15f,"Fabricante1" ),
-                new HerramienParaComprarDTO("Acero","Martillo",10f, "Fabricante2" ),
-                new HerramienParaComprarDTO("Madera", "Sierra", 20f, "Fabricante3"),
-                new HerramienParaComprarDTO("Hierro", "Tornillos", 2f, "Fabricante4")
+               new HerramienParaComprarDTO("Hierro","Taladro",15f,"Fabricante1" ),
+               new HerramienParaComprarDTO("Acero","Martillo",10f, "Fabricante2" ),
+               new HerramienParaComprarDTO("Madera", "Sierra", 20f, "Fabricante3"),
+               new HerramienParaComprarDTO("Hierro", "Tornillos", 2f, "Fabricante4")
             };
 
             var herramientasDTO1sTC1 = new List<HerramienParaComprarDTO>
