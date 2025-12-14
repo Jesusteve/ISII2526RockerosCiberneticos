@@ -45,7 +45,7 @@ namespace AppForSEII2526.API.Controllers
                 .Include(c => c.ApplicationUser)
                 .Where(c => c.Id == Id)
                 .Select(c => new CompraDetailDTO(
-
+                    c.Id,
                     c.ApplicationUser.apellidoCliente,
                     c.ApplicationUser.nombreCliente,
                     c.precioTotal,
@@ -179,22 +179,23 @@ namespace AppForSEII2526.API.Controllers
 
 
             var createdCompraDTO = new CompraDetailDTO(
-                newCompra.ApplicationUser.apellidoCliente,
-                newCompra.ApplicationUser.nombreCliente,
+                newCompra.Id,
+                usuario.apellidoCliente,
+                usuario.nombreCliente,
                 newCompra.precioTotal,
                 newCompra.fechaCompra,
-                newCompra.ApplicationUser.direccionEnvío,
+                usuario.direccionEnvío,
                 newCompra.compraItems
                     .Select(ci => new CompraItemDTO(
                         ci.herramienta.material,
                         ci.herramienta.nombre,
-                        ci.precio,
+                        ci.herramienta.precio,
                         ci.descripcion,
                         ci.cantidad
                     )).ToList(),
                 newCompra.metodoDePago,
-                newCompra.ApplicationUser.correoElectonico,
-                newCompra.ApplicationUser.teléfono
+                usuario.correoElectonico,
+                usuario.teléfono
             );
 
             return CreatedAtAction("GetCompra", new { id = newCompra.Id }, createdCompraDTO);

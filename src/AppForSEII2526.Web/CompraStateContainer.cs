@@ -1,23 +1,20 @@
 ﻿using AppForSEII2526.Web.API;
-
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow.CopyAnalysis;
 namespace AppForSEII2526.Web
 {
     public class CompraStateContainer
     {
-
-        //we create an instance of Compra when an instance of RentalStateContainer is created
+        //Creamos una instancia de Compra cuando se crea una instancia de CompraStateContainer
         public CompraForCreateDTO Compra { get; private set; } = new CompraForCreateDTO()
         {
             CompraItems = new List<CompraItemDTO>()
         };
-
-
-        public decimal precioTotal
+        //Calculamos el Precio Total de las herramientas que hemos seleccionado para comprarlas
+        public double PrecioTotal
         {
             get
             {
-                
-                return Convert.ToDecimal(Compra.CompraItems.Sum(ri => ri.Precio * ri.Cantidad));
+                return Compra.CompraItems.Sum(item => item.Precio * item.Cantidad);
             }
         }
 
@@ -25,45 +22,37 @@ namespace AppForSEII2526.Web
 
         private void NotifyStateChanged() => OnChange?.Invoke();
 
-
-
-        public void AddHerramientaToCompra(HerramienParaComprarDTO herramienta)
+        public void AddHerramienta(HerramienParaComprarDTO herramienta)
         {
-            //before adding a movie we checked whether it has been already added
-            if (!Compra.CompraItems.Any(ri => ri.Nombre == herramienta.Nombre))
-                //we add it if it is not in the list
+            //Antes de agregar una herramienta, verificamos si ya se ha agregado.
+            if (!Compra.CompraItems.Any(h => h.Nombre == herramienta.Nombre))
+                //Lo agregamos si no está en la lista.
                 Compra.CompraItems.Add(new CompraItemDTO()
                 {
-                   Material = herramienta.Material,
-                   Nombre = herramienta.Nombre,
-                   Precio = herramienta.Precio,
-                   Descripcion = herramienta.Fabricante,
-                   Cantidad = 1
-
-
+                    Nombre = herramienta.Nombre,
+                    Precio = herramienta.Precio,
+                    Material = herramienta.Material,
+                    //Cantidad = 1,
+                    //Descripcion = ""
                 }
             );
-
         }
 
-        //to delete movies from the list of selected movies
-        public void RemoveHerramientaItemToCompra(CompraItemDTO item)
+        //Eliminar herramienta de la lista de herramientas seleccionadas
+        public void EliminarHerramienta(CompraItemDTO item)
         {
             Compra.CompraItems.Remove(item);
-
         }
 
-        //we eliminate all the movies from the list
-        public void ClearRentingCart()
+        //Eliminamos todas las herramientas de la lista
+        public void EliminarTodasLasHerramientas()
         {
             Compra.CompraItems.Clear();
-
         }
 
-        //we have already finished the process of renting, thus, we create a new Compra 
-        public void CompralProcessed()
+        //Ya hemos finalizado el proceso de compra, por lo tanto, creamos una nueva Compra
+        public void FinalizarCompra()
         {
-            //we have finished the Compra  process so we create a new object without data
             Compra = new CompraForCreateDTO()
             {
                 CompraItems = new List<CompraItemDTO>()

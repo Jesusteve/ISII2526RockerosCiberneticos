@@ -1132,6 +1132,10 @@
       "HerramienParaComprarDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "material": {
             "maxLength": 50,
             "minLength": 10,

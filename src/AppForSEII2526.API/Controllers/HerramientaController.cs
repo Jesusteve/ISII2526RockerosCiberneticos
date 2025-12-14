@@ -71,6 +71,7 @@ namespace AppForSEII2526.API.Controllers
                 .Where(h => (material == null || h.material.ToLower().Contains(material.ToLower())) &&
                             (precio == null || h.precio == precio) && (nombreHerramienta == null || h.nombre.ToLower().Contains(nombreHerramienta.ToLower())))
                 .Select(h => new HerramienParaComprarDTO(
+                    h.Id,
                     h.material,
                     h.nombre,
                     h.precio,
