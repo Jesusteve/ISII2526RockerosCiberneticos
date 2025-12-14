@@ -32,8 +32,8 @@ namespace AppForSEII2526.API.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     nombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     apellidoCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    direccionEnvío = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    correoElectonico = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    direccionEnvío = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    correoElectonico = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     teléfono = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -208,7 +208,7 @@ namespace AppForSEII2526.API.Migrations
                     fechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     teléfono = table.Column<int>(type: "int", nullable: false),
                     precioTotal = table.Column<float>(type: "real", nullable: false),
-                    métodoDePago = table.Column<int>(type: "int", nullable: false),
+                    metodoDePago = table.Column<int>(type: "int", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -233,8 +233,7 @@ namespace AppForSEII2526.API.Migrations
                     fechaOferta = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dirigidaA = table.Column<int>(type: "int", nullable: false),
                     metodopago = table.Column<int>(type: "int", nullable: false),
-                    usuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ParaSocio = table.Column<int>(type: "int", nullable: false)
+                    usuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -300,6 +299,7 @@ namespace AppForSEII2526.API.Migrations
                     herramientaId = table.Column<int>(type: "int", nullable: false),
                     alquilerId = table.Column<int>(type: "int", nullable: false),
                     precio = table.Column<float>(type: "real", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     cantidad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

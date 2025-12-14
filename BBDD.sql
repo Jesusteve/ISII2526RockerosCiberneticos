@@ -66,3 +66,48 @@ INSERT INTO dbo.AlquilarItem (herramientaId, alquilerId, precio, cantidad) VALUE
 INSERT INTO dbo.AlquilarItem (herramientaId, alquilerId, precio, cantidad) VALUES (1, 6, 300, 2);
 INSERT INTO dbo.AlquilarItem (herramientaId, alquilerId, precio, cantidad) VALUES (5, 6, 450, 3);
 INSERT INTO dbo.AlquilarItem (herramientaId, alquilerId, precio, cantidad) VALUES (6, 6, 170, 1);
+
+SET IDENTITY_INSERT dbo.Oferta ON;
+
+-- Oferta 1: Socios (dirigidaA = 0)
+INSERT INTO dbo.Oferta (Id, fechaInicio, fechaFinal, fechaOferta, dirigidaA, metodopago, usuarioId) 
+VALUES (1, '2023-11-01', '2023-11-30', '2023-10-25', 0, 0, 1);
+
+-- Oferta 2: Clientes (dirigidaA = 1)
+INSERT INTO dbo.Oferta (Id, fechaInicio, fechaFinal, fechaOferta, dirigidaA, metodopago, usuarioId) 
+VALUES (2, '2023-12-01', '2023-12-15', '2023-11-28', 1, 1, 2);
+
+-- Oferta 3: Clientes (dirigidaA = 1)
+INSERT INTO dbo.Oferta (Id, fechaInicio, fechaFinal, fechaOferta, dirigidaA, metodopago, usuarioId) 
+VALUES (3, '2024-01-01', '2024-01-31', '2023-12-20', 1, 2, 1);
+
+SET IDENTITY_INSERT dbo.Oferta OFF;
+
+-- ITEMS DE LA OFERTA 1 (Descuentos moderados en herramientas caras)
+-- Martillo (Id 1): Precio original 30. Descuento 10%. Final = 27
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (1, 1, 10, 27);
+
+-- Sierra (Id 5): Precio original 45. Descuento 20%. Final = 36
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (5, 1, 20, 36);
+
+
+-- ITEMS DE LA OFERTA 2 (Descuentos agresivos en herramientas medianas)
+-- Destornillador (Id 2): Precio original 25. Descuento 50%. Final = 12.5
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (2, 2, 50, 12.5);
+
+-- Alicates (Id 6): Precio original 33. Descuento 15%. Final = 28.05
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (6, 2, 15, 28.05);
+
+
+-- ITEMS DE LA OFERTA 3 (Liquidación de herramientas baratas)
+-- Metro (Id 3): Precio original 10. Descuento 30%. Final = 7
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (3, 3, 30, 7);
+
+-- Clavo (Id 4): Precio original 3. Descuento 5%. Final = 2.85
+INSERT INTO dbo.OfertaItem (HerramientaId, OfertaId, porcentaje, precioFinal) 
+VALUES (4, 3, 5, 2.85);

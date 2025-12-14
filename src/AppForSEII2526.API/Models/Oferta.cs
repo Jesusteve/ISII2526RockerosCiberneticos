@@ -58,13 +58,7 @@ namespace AppForSEII2526.API.Models
             }
         }
 
-        public tiposDirigidaOferta ParaSocio
-        {
-            get => default;
-            set
-            {
-            }
-        }
+       
     }
 
     public enum tiposDirigidaOferta

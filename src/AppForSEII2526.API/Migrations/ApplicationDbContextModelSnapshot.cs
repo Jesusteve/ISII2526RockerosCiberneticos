@@ -284,9 +284,6 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ParaSocio")
-                        .HasColumnType("int");
-
                     b.Property<int>("dirigidaA")
                         .HasColumnType("int");
 

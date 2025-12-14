@@ -99,7 +99,7 @@ namespace AppForSEII2526.API.Controllers
             {
                 
                 fechaFinal = creaciondeoferatas.FechaFinal,
-                fechaInicio = creaciondeoferatas.FechaFinal,
+                fechaInicio = creaciondeoferatas.FechaInicio,
                 fechaOferta = DateTime.Now,
                 ofertaItems = new List<OfertaItem>(),
                 dirigidaA = creaciondeoferatas.TiposDirigdaOferta,

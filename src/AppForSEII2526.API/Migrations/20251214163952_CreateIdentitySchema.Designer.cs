@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251213153502_holaqueTal")]
-    partial class holaqueTal
+    [Migration("20251214163952_CreateIdentitySchema")]
+    partial class CreateIdentitySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace AppForSEII2526.API.Migrations
 
                     b.Property<int>("herramientaId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("cantidad")
                         .HasColumnType("int");
@@ -184,8 +187,7 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("metodoDePago")
-                        .HasColumnType("int")
-                        .HasColumnName("métodoDePago");
+                        .HasColumnType("int");
 
                     b.Property<float>("precioTotal")
                         .HasColumnType("real");
@@ -284,9 +286,6 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ParaSocio")
-                        .HasColumnType("int");
 
                     b.Property<int>("dirigidaA")
                         .HasColumnType("int");
