@@ -74,7 +74,7 @@
     <h4>Detalle de Alquiler</h4>
     <p>
         <b>Precio total:</b> @TotalCost €
-        <button class="btn btn-outline-primary" type="submit" @onclick="ModifyRentalItems" id="ModifyMovies">
+        <button class="btn btn-outline-primary" type="submit" @onclick="ModifyRentalItems" id="ModifyHerr">
             Modificar herramientas
         </button>
     </p>
@@ -97,7 +97,7 @@
                         <td>@item.HerramientaId</td>
                         <td>@item.Precio</td>
                         <td><InputNumber @bind-Value="item.Cantidad" class="form-control style="width: 80px;" /></td>
-                        <td><InputText @bind-Value="item.Descripcion" class="form-control" id="@($"descripcionn{item.HerramientaId}")" /></td>
+                        <td><InputText @bind-Value="item.Descripcion" class="form-control" id="@($"descripcion{item.HerramientaId}")" /></td>
                         
                     </tr>
                 }

@@ -11,26 +11,26 @@
 <h3>Seleccionar herramientas para alquilar</h3>
 <div class="container-fluid">
     <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
-        <p id="ErrorsShown">Errors: @errors</p>
+        <p id="muestraError">Errors: @errors</p>
     </div>
     <div class="row">
         <div class="col-8">
             <div class="row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Nombre</span>
-                            <input @bind-value="@nombreHerramienta" />
+                        <span class="input-group-text">Nombre</span>
+                        <input id="nombreHerr" type="text" class="form-control" @bind="nombreHerramienta" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Material</span>
-                            <input @bind-value="@materialHerramienta" />
+                        <span class="input-group-text">Material</span>
+                        <input id="materialHerr" type="text" class="form-control" @bind="materialHerramienta" />
                     </div>
                 </div>
 
                 <div class="col">
-                    <button type="button" class="btn btn-primary" @onclick=@SearchHerramientas id="searchMovies">Buscar herramientas</button>
+                    <button type="button" class="btn btn-primary" @onclick=@SearchHerramientas id="buscarHerramientas">Buscar herramientas</button>
                 </div>
 
             </div>
@@ -42,7 +42,7 @@
                 else
                 {
                     <div class="mh-100 table-responsive">
-                        <table class="table table-condensed table-hover" id="TableOfMovies">
+                        <table class="table table-condensed table-hover" id="tablaHerr">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -62,7 +62,7 @@
                                         <td>@herr.Material</td>
                                         <td>@herr.Precio</td>
                                         <td>
-                                            <button class="btn btn-outline-secondary" id="movieToRent_@herr.Nombre" @onclick="@(() => AddHerramienta(herr))">Add</button>
+                                            <button class="btn btn-outline-secondary" id="herrAdd_@herr.Id" @onclick="@(() => AddHerramienta(herr))">Add</button>
                                         </td>
                                     </tr>
                                 }
@@ -80,11 +80,11 @@
             @foreach (AlquilarItemDTO item in alquiler.AlquilarItems)
             {
                 <div class="row">
-                    <button type="button" class="btn btn-light" id="removeMovie_@item.HerramientaId" @onclick="@(() => RemoveRentalItem(item))"> @item.HerramientaId x @item.Cantidad - @item.Precio€</button>
+                    <button type="button" class="btn btn-light" id="removeHerr_@item.HerramientaId" @onclick="@(() => RemoveRentalItem(item))"> @item.HerramientaId x @item.Cantidad - @item.Precio€</button>
                 </div>
             }
             <div class="row">
-                <button type="button" class="btn btn-primary" id="purchaseMovieButton" @onclick=@AlquilarHerramientas>Alquilar herramientas</button>
+                <button type="button" class="btn btn-primary" id="AlquilarHerramientasBoton" @onclick=@AlquilarHerramientas>Alquilar herramientas</button>
             </div>
         </div>
 

@@ -10,7 +10,7 @@ namespace AppForSEII2526.Web
             AlquilarItems = new List<AlquilarItemDTO>()
         };
 
-        //we compute the TotalPrice of the movies we have selected for renting them
+     
         public decimal TotalPrice
         {
             get

@@ -8,7 +8,7 @@ namespace AppForSEII2526.UIT.Shared {
     public class PageObject {
 
         protected IWebDriver _driver;
-        //this may be used whenever some result should be printed in Explorador de Pruebas
+      
         protected readonly ITestOutputHelper _output;
 
         private By _modalTitle = By.ClassName("modal-title");
@@ -23,7 +23,7 @@ namespace AppForSEII2526.UIT.Shared {
 
 
         public void InputDateInDatePicker(By datepicker, DateTime date) {
-            //first we select the datepicker
+          
             IWebElement webElement = _driver.FindElement(datepicker);
 
             var action = new Actions(_driver);
@@ -54,8 +54,8 @@ namespace AppForSEII2526.UIT.Shared {
             IList<IWebElement> actualrows = _driver
                 .FindElement(IdTable)
                 .FindElement(By.TagName("tbody"))
-                //.FindElements(By.XPath(".//tr"))
-                .FindElements(By.TagName("tr"))//we obtain just the rows of the body of the table
+               
+                .FindElements(By.TagName("tr"))
                 .ToList();
 
             if (actualrows.Count != expectedRows.Count) {
@@ -68,7 +68,7 @@ namespace AppForSEII2526.UIT.Shared {
                 for (j = 1; j < expectedRows[i].Count(); j++)
                     expectedRow = expectedRow + " " + expectedRows[i][j];
                 actualRow = actualrows
-                    .Select(m => m.Text) //we return the text of the row
+                    .Select(m => m.Text) 
                     .ToList()[i];
 
                 if (!actualRow.StartsWith(expectedRow)) {
@@ -82,21 +82,21 @@ namespace AppForSEII2526.UIT.Shared {
         }
 
         public bool CheckModalBodyText(string expectedBody, By modal) {
-            //waiting for the message error to be shown
+            
             WaitForBeingVisible(modal);
             var actualBody = _driver.FindElement(_modalBody).Text;
             return actualBody.Contains(expectedBody);
         }
 
         public bool CheckModalTitleText(string expectedTitle, By modal) {
-            //waiting for the message error to be shown
+           
             WaitForBeingVisible(modal);
             var actualTitle = _driver.FindElement(_modalTitle).Text;
             return actualTitle.Contains(expectedTitle);
         }
 
         public void PressOkModalDialog() {
-            //waiting for the message error to be shown
+         
             WaitForBeingVisible(_okModalDialog);
             _driver.FindElement(_okModalDialog).Click();
         }
@@ -104,22 +104,22 @@ namespace AppForSEII2526.UIT.Shared {
 
 
         public void WaitForBeingClickable(By IdElement) {
-            //used whenever the webelement needs a delay for being clickable
-            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 30));
+           
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
             wait.Until(ExpectedConditions.ElementToBeClickable(IdElement));
 
         }
 
         public void WaitForBeingVisible(By IdElement) {
-            //used whenever the webelement needs a delay for being clickable
+            
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 30));
             wait.Until(ExpectedConditions.ElementIsVisible(IdElement));
 
         }
 
         public void WaitForBeingVisibleIgnoringExeptionTypes(By IdElement) {
-            //used whenever the webelement needs a delay for being clickable
-            var wait = new WebDriverWait(_driver, new TimeSpan(0, 10, 0));
+            
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 20));
 
 
             wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
@@ -140,7 +140,8 @@ namespace AppForSEII2526.UIT.Shared {
 
 
         public void WaitForTextToBePresentInElement(By IdElement, string expectedText) {
-            //used whenever the webelement needs a delay for being clickable
+           
+
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 30));
             IWebElement element = _driver.FindElement(IdElement);
             wait.Until(ExpectedConditions.TextToBePresentInElement(element, expectedText));
@@ -148,7 +149,7 @@ namespace AppForSEII2526.UIT.Shared {
         }
 
 
-        //it wait for "seconds" till all the webelements of the page are loaded
+   
         public void ImplicitWait(int seconds) =>
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(seconds);
     }

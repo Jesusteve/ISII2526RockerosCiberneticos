@@ -1,4 +1,5 @@
 ﻿using AppForSEII2526.API.Models;
+using Humanizer.Localisation;
 
 namespace AppForSEII2526.API.Data
 {
@@ -36,7 +37,7 @@ namespace AppForSEII2526.API.Data
         {
 
             foreach (string roleName in roles)
-            { 
+            {
                 //Esto comprueba que el rol no existe ya en la BD
                 if (!roleManager.RoleExistsAsync(roleName).Result)
                 {
@@ -54,7 +55,7 @@ namespace AppForSEII2526.API.Data
             //Primero, se comprueba que el usuario no existe ya en la BD
             if (userManager.FindByNameAsync("jesus@uclm.es").Result == null)
             {
-                ApplicationUser user = new ApplicationUser(1, "Jesús", "Tercero Vergara", "Residencia UCLM ","jesus@uclm.es", 666514836);
+                ApplicationUser user = new ApplicationUser(1, "Jesús", "Tercero Vergara", "Residencia UCLM ", "jesus@uclm.es", 666514836);
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "Password1234%");

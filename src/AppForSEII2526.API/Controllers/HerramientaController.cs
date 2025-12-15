@@ -40,8 +40,8 @@ namespace AppForSEII2526.API.Controllers
                 .Include(alq => alq.AlquilarItems).ThenInclude(al => al.alquiler) 
                     .Where (alq => (nombre==null || alq.nombre.Contains(nombre)) 
                     && (material==null || alq.material.Contains(material))
-                    && (alq.AlquilarItems.All(a => a.alquiler.fechaInicio.Date > semSig.Date 
-                        || a.alquiler.fechaFin.Date < pasMñn.Date)))
+                   /* && (alq.AlquilarItems.All(a => a.alquiler.fechaInicio.Date > semSig.Date 
+                        || a.alquiler.fechaFin.Date < pasMñn.Date))*/)
                     .OrderBy(alq => alq.Id)
                     .Select(alq => new HerramienParaAlquilarDTO(alq.Id, alq.material, alq.nombre, alq.precio, alq.fabricante.nombre))
                     .ToListAsync();
