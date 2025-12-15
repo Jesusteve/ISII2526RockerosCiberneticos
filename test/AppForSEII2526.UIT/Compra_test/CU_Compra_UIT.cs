@@ -49,32 +49,66 @@ namespace AppForSEII2526.UIT.Compra_test
         {
             InitialStepsForCompra();
             
-            // 1. Filtrar y Seleccionar
+    
             _selectCompra_PO.FiltrarHerramientas("", 0, herramientaNombre1);
             _selectCompra_PO.SelectTools(herramientaNombre1);
             Thread.Sleep(500);
             
-            // 2. Ir al formulario de Compra
+  
             _selectCompra_PO.BuyTools();
-            Thread.Sleep(1000); // Esperar a que cargue CreateCompra
+            Thread.Sleep(500); 
 
-            // --- NUEVO: RELLENAR DETALLES DEL ITEM ---
-            // Ponemos 2 unidades y una descripción
+     
             _createCompra_PO.RellenarDetallesProducto(herramientaNombre1, "2", "Para arreglar la mesa");
             Thread.Sleep(500);
 
-            // 3. Rellenar Datos del Cliente
-            _createCompra_PO.PonerDatosCompra(nombre, apellido, "Calle Falsa 123", metodoPago);
-            Thread.Sleep(1000);
+            _createCompra_PO.PonerDatosCompra(nombre, apellido, "Calle Carretera de Madrid, 28", metodoPago);
+            Thread.Sleep(500);
             
             _createCompra_PO.SubmitCompra();
             Thread.Sleep(500);
             
             _createCompra_PO.ConfirmarCompra();
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
-            // 4. Verificar (Ahora deberíamos chequear también que sale la descripción, ver paso 3)
             Assert.True(_getDetailsCompra_PO.CheckDetallesCompra(nombre, apellido, "60")); // 30€ * 2 = 60€
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA0_FiltrarPorNombre()
+        {
+            InitialStepsForCompra();
+            var expectedHerramientas = new List<string[]>
+            {
+                new string[] { herramientaNombre1, "Jaime", herramientaMaterial1, "30" }
+            };
+
+            // Filtramos SOLO por nombre
+            _selectCompra_PO.FiltrarHerramientas("", 0, herramientaNombre1);
+            Thread.Sleep(500);
+
+            Assert.True(_selectCompra_PO.CheckListOfTools(expectedHerramientas));
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA0_FiltrarPorMaterial()
+        {
+            InitialStepsForCompra();
+
+            var expectedHerramientas = new List<string[]>
+            {
+                new string[] { herramientaNombre1, "Jaime", herramientaMaterial1, "30" },
+                new string[] { herramientaNombre2, "Daniel Balan", herramientaMaterial2, "25" }
+            };
+
+            // Filtramos por material "Hierro"
+            _selectCompra_PO.FiltrarHerramientas("Hierro", 0, "");
+            Thread.Sleep(500);
+
+
+            Assert.True(_selectCompra_PO.CheckListOfTools(expectedHerramientas));
         }
 
         /*
@@ -94,6 +128,84 @@ namespace AppForSEII2526.UIT.Compra_test
             _selectCompra_PO.FiltrarHerramientas(filtroMaterial, filtroPrecioMax, filtroNombre);
             Thread.Sleep(500);
             Assert.True(_selectCompra_PO.CheckListOfTools(expectedHerramientas));
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA0_FiltrarPorPrecio()
+        {
+            InitialStepsForCompra();
+            var expectedHerramientas = new List<string[]>
+            {
+                new string[] { herramientaNombre2, "Daniel Balan", "Hierro", "25" }
+            };
+
+
+            _selectCompra_PO.FiltrarHerramientas("", 25, "");
+            Thread.Sleep(500);
+
+            Assert.True(_selectCompra_PO.CheckListOfTools(expectedHerramientas));
+        }
+
+        [Theory]
+        [InlineData("", "Simpson", "Calle 1", "TarjetaCredito", "The NombreCliente field is required.")]
+        [InlineData("Homer", "", "Calle 1", "TarjetaCredito", "The ApellidoCliente field is required.")]
+        [InlineData("Homer", "Simpson", "", "TarjetaCredito", "The DireccionEnvío field is required.")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA1_ErroresDatosPersonales(string nombre, string apellido, string direccion, string metodoPago, string errorEsperado)
+        {
+            InitialStepsForCompra();
+
+            _selectCompra_PO.FiltrarHerramientas("", 0, "");
+            Thread.Sleep(500);
+            _selectCompra_PO.SelectTools(herramientaNombre1);
+            Thread.Sleep(500);
+            _selectCompra_PO.BuyTools();
+            Thread.Sleep(1000);
+
+            // Rellenamos producto con datos válidos para que no falle por esto
+            _createCompra_PO.RellenarDetallesProducto(herramientaNombre1, "1", "Test descripción");
+            Thread.Sleep(500);
+
+            // Intentar compra con datos personales malos
+            _createCompra_PO.PonerDatosCompra(nombre, apellido, direccion, metodoPago);
+            Thread.Sleep(500);
+            _createCompra_PO.SubmitCompra();
+            Thread.Sleep(500);
+
+            Assert.True(_createCompra_PO.CheckError(errorEsperado));
+        }
+
+        /*
+         * CU3_FA3_ErroresHerramienta
+         * Cubre: Cantidad 0, Sin Descripción
+         */
+        [Theory]
+        [InlineData("0", "Descripción válida", "The field PrecioTotal must be between 1 and 2147483647.")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void CU3_FA3_ErroresHerramienta(string cantidad, string descripcion, string errorEsperado)
+        {
+            InitialStepsForCompra();
+
+            _selectCompra_PO.FiltrarHerramientas("", 0, "");
+            Thread.Sleep(500);
+            _selectCompra_PO.SelectTools(herramientaNombre1);
+            Thread.Sleep(500);
+            _selectCompra_PO.BuyTools();
+            Thread.Sleep(1000);
+
+            // AQUÍ probamos los datos malos de la herramienta
+            _createCompra_PO.RellenarDetallesProducto(herramientaNombre1, cantidad, descripcion);
+            Thread.Sleep(500);
+
+            // Rellenamos datos personales VÁLIDOS para aislar el error de la herramienta
+            _createCompra_PO.PonerDatosCompra("Homer", "Simpson", "Calle 1", "TarjetaCredito");
+            Thread.Sleep(500);
+
+            _createCompra_PO.SubmitCompra();
+            Thread.Sleep(500);
+
+            Assert.True(_createCompra_PO.CheckError(errorEsperado));
         }
 
         /*
@@ -131,13 +243,13 @@ namespace AppForSEII2526.UIT.Compra_test
          * CU3_FA1_Errores
          */
         [Theory]
-        [InlineData("", "Simpson", "Calle 1", "TarjetaCredito", "The NombreCliente field is required.")] // Verifica este mensaje con tu ValidationSummary
+        [InlineData("", "Simpson", "Calle 1", "TarjetaCredito", "The NombreCliente field is required.")] 
         [Trait("LevelTesting", "Funcional Testing")]
         public void CU3_FA1_Errores(string nombre, string apellido, string direccion, string metodoPago, string errorEsperado)
         {
             InitialStepsForCompra();
 
-            // Necesitamos añadir algo al carrito para poder ir al formulario
+
             _selectCompra_PO.FiltrarHerramientas("", 0,"");
             Thread.Sleep(500);
             _selectCompra_PO.SelectTools(herramientaNombre1);
@@ -145,7 +257,7 @@ namespace AppForSEII2526.UIT.Compra_test
             _selectCompra_PO.BuyTools();
             Thread.Sleep(500);
 
-            // Intentar compra con datos malos
+
             _createCompra_PO.PonerDatosCompra(nombre, apellido, direccion, metodoPago);
             Thread.Sleep(500);
             _createCompra_PO.SubmitCompra();

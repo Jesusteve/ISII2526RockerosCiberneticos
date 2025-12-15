@@ -34,7 +34,7 @@ namespace AppForSEII2526.API.Controllers
                 _logger.LogWarning("No se encontraron herramientas en la base de datos.");
                 return NotFound();
             }
-            if(Id != null && Id < 0)
+            if (Id != null && Id < 0)
             {
                 _logger.LogWarning("El id no puede ser menor que cero");
                 return NotFound();
@@ -84,7 +84,7 @@ namespace AppForSEII2526.API.Controllers
                 ModelState.AddModelError("CompraItems", "La compra debe contener al menos un item.");
 
             }
-            
+
             if (string.IsNullOrEmpty(compra.nombreCliente))
             {
                 ModelState.AddModelError("nombreCliente", "Nombre no proporcionado");
@@ -113,14 +113,7 @@ namespace AppForSEII2526.API.Controllers
 
             var herramientas = _context.Herramienta.Where(h => nombresherramientas.Contains(h.nombre)).ToList();
 
-            Compra newCompra = new Compra
-            {
-                fechaCompra = compra.fechaCompra,
-                precioTotal = compra.precioTotal,
-                metodoDePago = compra.metodoDePago,
-                ApplicationUser = usuario,
-                compraItems = new List<CompraItem>()
-            };
+            Compra newCompra = new Compra(compra.fechaCompra, compra.precioTotal, compra.metodoDePago, usuario, new List<CompraItem>());
             newCompra.precioTotal = 0;
             foreach (var item in compra.compraItems)
             {
@@ -131,14 +124,14 @@ namespace AppForSEII2526.API.Controllers
                 //Examen
                 if (string.IsNullOrEmpty(item.descripcion) && item.cantidad == 3)
                 {
-                    ModelState.AddModelError("Descripción","¡Error! Estás comprando demasiadas herramientas sin descripción");
+                    ModelState.AddModelError("Descripción", "¡Error! Estás comprando demasiadas herramientas sin descripción");
                 }
                 //Examen
 
-                
+
                 if (ModelState.ErrorCount > 0)
                     return BadRequest(new ValidationProblemDetails(ModelState));
-                
+
                 var herramienta = herramientas.FirstOrDefault(h => h.nombre == item.nombre);
                 if (herramienta == null)
                 {
@@ -150,7 +143,7 @@ namespace AppForSEII2526.API.Controllers
                     newCompra.compraItems.Add(new CompraItem(herramienta.Id, item.cantidad, herramienta.precio, item.descripcion, herramienta, newCompra));
 
                 }
-                
+
             }
             newCompra.precioTotal = compra.compraItems.Sum(ci => ci.precio * ci.cantidad);
 
@@ -198,8 +191,7 @@ namespace AppForSEII2526.API.Controllers
             );
             return CreatedAtAction("GetCompra", new { id = createdCompraDTO.Id }, createdCompraDTO);
 
-            
+
         }
     }
 }
-

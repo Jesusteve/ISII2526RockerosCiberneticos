@@ -7,24 +7,9 @@
             this.compraItems = new List<CompraItemDTO>();
         }
 
-        public CompraForCreateDTO(string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra, string direccionEnvío, 
+        public CompraForCreateDTO(string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra, string direccionEnvío,
             List<CompraItemDTO> compraItems, metodoDePago metodoDePago, string correoElectronico, int telefono)
         {
-            this.apellidoCliente = apellidoCliente ?? throw new ArgumentNullException(nameof(apellidoCliente)); ;
-            this.nombreCliente = nombreCliente ?? throw new ArgumentNullException(nameof(nombreCliente)); ;
-            this.precioTotal = compraItems.Sum(t => t.precio * t.cantidad);
-            this.fechaCompra = fechaCompra;
-            this.direccionEnvío = direccionEnvío;
-            this.compraItems = compraItems ?? throw new ArgumentNullException(nameof(compraItems)); ;
-            this.metodoDePago = metodoDePago;
-            this.correoElectonico = correoElectronico ?? throw new ArgumentNullException(nameof(compraItems)); ;
-            this.teléfono = telefono  ;
-
-        }
-        public CompraForCreateDTO(int id,string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra, string direccionEnvío,
-           List<CompraItemDTO> compraItems, metodoDePago metodoDePago, string correoElectronico, int telefono)
-        {
-            this.Id = id;
             this.apellidoCliente = apellidoCliente ?? throw new ArgumentNullException(nameof(apellidoCliente)); ;
             this.nombreCliente = nombreCliente ?? throw new ArgumentNullException(nameof(nombreCliente)); ;
             this.precioTotal = compraItems.Sum(t => t.precio * t.cantidad);
@@ -36,8 +21,8 @@
             this.teléfono = telefono;
 
         }
+      
 
-        public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tus apellidos")]
         public string apellidoCliente { get; set; }
@@ -54,13 +39,13 @@
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, ingresa tu dirección")]
         public string direccionEnvío { get; set; }
-        
+
         [Display(Name = "Método de pago")]
         public metodoDePago metodoDePago { get; set; }
 
         public List<CompraItemDTO> compraItems { get; set; }
 
-        
+
         public string correoElectonico { get; set; }
         public int teléfono { get; set; }
 

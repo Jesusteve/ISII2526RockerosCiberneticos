@@ -125,7 +125,7 @@ namespace AppForSEII2526.UT.CompraController_test
             expectedCompraDetail.compraItems.Add(new CompraItemDTO("Acero", "Martillo", 10f, "Compra de martillo de acero", 1));
             expectedCompraDetail.precioTotal = 41;
             var result = await controller.CreateCompra(CompraCreate);
-            var okResult= Assert.IsType<CreatedAtActionResult>(result);
+            var okResult = Assert.IsType<CreatedAtActionResult>(result);
             var compraDetailResult = Assert.IsType<CompraDetailDTO>(okResult.Value);
             // Assert
             Assert.Equal(expectedCompraDetail, compraDetailResult);

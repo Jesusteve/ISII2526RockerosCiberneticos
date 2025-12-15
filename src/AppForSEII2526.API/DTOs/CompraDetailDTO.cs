@@ -11,21 +11,21 @@ namespace AppForSEII2526.API.DTOs
             precioTotal,
             fechaCompra,
             direccionEnvío,
-            compraItems,métodoDePago, correoElectronico, telefono)
+            compraItems, métodoDePago, correoElectronico, telefono)
         {
-            
+
 
         }
-        public CompraDetailDTO(int Id,string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
+        public CompraDetailDTO(int Id, string apellidoCliente, string nombreCliente, float precioTotal, DateTime fechaCompra,
             string direccionEnvío, List<CompraItemDTO> compraItems, metodoDePago métodoDePago, string correoElectronico, int telefono)
-            : base(Id,apellidoCliente,
+            : base(apellidoCliente,
             nombreCliente,
             precioTotal,
             fechaCompra,
             direccionEnvío,
             compraItems, métodoDePago, correoElectronico, telefono)
         {
-
+            this.Id = Id;
         }
         public int Id { get; set; }
 

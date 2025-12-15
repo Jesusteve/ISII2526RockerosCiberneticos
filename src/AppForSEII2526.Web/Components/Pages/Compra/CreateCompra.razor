@@ -36,7 +36,7 @@ using Microsoft.AspNetCore.Components
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
-                <InputText @bind-Value="compra.DireccionEnvÌo" class="form-control" id="DeliveryAddress" />
+                <InputText @bind-Value="compra.DireccionEnv√≠o" class="form-control" id="DeliveryAddress" />
                 <label for="DeliveryAddress">Direccion Envio</label>
             </div>
         </div>
@@ -55,7 +55,7 @@ using Microsoft.AspNetCore.Components
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
-                <InputNumber @bind-Value="compra.TelÈfono" class="form-control" id="Telefono" />
+                <InputNumber @bind-Value="compra.Tel√©fono" class="form-control" id="Telefono" />
                 <label for="Telefono">Telefono </label>
             </div>
         </div>
@@ -77,7 +77,7 @@ using Microsoft.AspNetCore.Components
 
     <h4>Detalles Compra</h4>
     <p>
-        <b>Precio Total:</b> @PrecioTotal Ä
+        <b>Precio Total:</b> @PrecioTotal ‚Ç¨
         <button class="btn btn-outline-primary" type="button" @onclick="ModifyCompraItems" id="ModifyCompras">
             Modificar herramientas
         </button>
@@ -114,7 +114,7 @@ using Microsoft.AspNetCore.Components
 @if (DialogIsOpen)
 {
     <Dialog Caption="Herramientas compradas"
-    Message="øQuieres proceder a comprar las herramientas seleccionadas?"
+    Message="¬øQuieres proceder a comprar las herramientas seleccionadas?"
     OnClose="@OnDialogClose"
     Type=Dialog.Category.SaveNot>
     </Dialog>
@@ -156,27 +156,7 @@ using Microsoft.AspNetCore.Components
             {
                 try
                 {
-                    AppForSEII2526.Web.API.CompraForCreateDTO compraDTO = new AppForSEII2526.Web.API.CompraForCreateDTO()
-                    {
-                        Id = this.compra.Id,
-                        NombreCliente = this.compra.NombreCliente,
-                        ApellidoCliente = this.compra.ApellidoCliente,
-                        DireccionEnvÌo = this.compra.DireccionEnvÌo,
-                        MetodoDePago = this.compra.MetodoDePago,
-                        TelÈfono = this.compra.TelÈfono,
-                        CorreoElectonico = this.compra.CorreoElectonico,
-                        CompraItems = this.compra.CompraItems.Select(ri => new AppForSEII2526.Web.API.CompraItemDTO()
-                        {
-                            Nombre = ri.Nombre,
-                            Material = ri.Material,
-                            Cantidad = ri.Cantidad,
-                            Descripcion = ri.Descripcion,
-                            Precio = ri.Precio
-                        }).ToList(),
-                        PrecioTotal = this.compra.PrecioTotal
-                    };
-
-                    var rented = await apiclient.CreateCompraAsync(compraDTO);
+                    CompraDetailDTO rented = await apiclient.CreateCompraAsync(compra);
                     comprarStateContainer.FinalizarCompra();
                     navigation.NavigateTo($"/compra/detallecompra/?CompraID={compraDTO.Id}");
                 }
@@ -194,7 +174,7 @@ using Microsoft.AspNetCore.Components
                 catch (ApiException apiexception)
                 {
                     //we need to inform user that there was some other error while processing the request
-                    messageError = "Error mientras procesaba la compra, por favor prueba m·s tarde";
+                    messageError = "Error mientras procesaba la compra, por favor prueba m√°s tarde";
 
                 }
 
