@@ -27,7 +27,7 @@ namespace AppForSEII2526.UT.CompraController_test
 
             };
             var usuario = new ApplicationUser(1, "Daniel", "García Rodenas", "Carretera De Madrid 28 1 c", "maildedanielg@gmail.com", 642399229);
-            var compra = new Compra(1, DateTime.Now.Date, 50, metodoDePago.TarjetaCredito, usuario);
+            var compra = new Compra(1, DateTime.Now.Date, 50, metodoDePago.TarjetaCredito, usuario, new List<CompraItem>());
             compra.compraItems = new List<CompraItem>()
             {
                 new CompraItem( 2, 30, "Compra de taladro de hierro", herramientas[0], compra),

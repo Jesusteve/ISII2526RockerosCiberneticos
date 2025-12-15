@@ -158,7 +158,7 @@ using Microsoft.AspNetCore.Components
                 {
                     CompraDetailDTO rented = await apiclient.CreateCompraAsync(compra);
                     comprarStateContainer.FinalizarCompra();
-                    navigation.NavigateTo($"/compra/detallecompra/?CompraID={compraDTO.Id}");
+                    navigation.NavigateTo($"/compra/detallecompra/?CompraID={rented.Id}");
                 }
                 catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
                 {

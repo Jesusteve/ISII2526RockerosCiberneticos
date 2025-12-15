@@ -13,7 +13,7 @@ namespace AppForSEII2526.UT.CompraController_test
         public GetCompra_test()
         {
             var usuario = new ApplicationUser(1, "Daniel", "García Rodenas", "Carretera De Madrid 28 1 c", "maildedanielg@gmail.com", 642399229);
-            var compra = new Compra(1 ,DateTime.Now.Date, 50, metodoDePago.TarjetaCredito, usuario);
+            var compra = new Compra(1 ,DateTime.Now.Date, 50, metodoDePago.TarjetaCredito, usuario, new List<CompraItem>());
             var fabricantes = new List<Fabricante>()
             {
                 new Fabricante("Fabricante1"),
