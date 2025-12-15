@@ -88,9 +88,10 @@ namespace AppForSEII2526.API.Controllers
                 && creaciondeoferatas.FechaFinal != DateTime.MinValue
                 && creaciondeoferatas.FechaInicio >= creaciondeoferatas.FechaFinal)
                 ModelState.AddModelError("FechaInicio&FechaFinal", "Tu oferta debe terminar después de que empiece");
-
+            
             if (creaciondeoferatas.OfertaItem == null || !creaciondeoferatas.OfertaItem.Any())
                 ModelState.AddModelError("OfertaItems", "Tienes que incluir al menos una herramienta para aplicar una oferta");
+            
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
@@ -125,6 +126,12 @@ namespace AppForSEII2526.API.Controllers
                 {
                     ModelState.AddModelError("Porcentaje", "Introduce un valor entre 0 y 100");
                     continue;
+                }
+                if (item.Porcentaje> 70)
+                {
+                    ModelState.AddModelError("Porcentaje", "¡Error!, no es rentable rebajar de precio tanto una herramienta");
+                    continue;
+
                 }
 
                 float precioFinal = herramienta.precio * (1 - (item.Porcentaje / 100f));

@@ -81,6 +81,9 @@ namespace AppForSEII2526.UT.ControladorDetallesOferta_test
             var ofertaSinFechaInicio = new CreacionOfertaDTO(DateTime.Today.AddDays(5), DateTime.MinValue,
                 metodoDePago.PayPal, tiposDirigidaOferta.Clientes, ofertaItems);
 
+            var ofertaPorcentajemayor= new CreacionOfertaDTO(DateTime.Today.AddDays(20), DateTime.Today.AddDays(2),
+                metodoDePago.PayPal, tiposDirigidaOferta.Clientes,new List<OfertaItemDTO> { new OfertaItemDTO("Martillo", "Acero", "Fabricante 1", 20, 1, 80) });
+
 
 
             var allTests = new List<object[]>
@@ -93,7 +96,7 @@ namespace AppForSEII2526.UT.ControladorDetallesOferta_test
                 new object[] { fechaFinUnaSemanaDespuesQueFechaInicio, "la oferta debe durar al menos una semana" },
                 new object[] { ofertaSinFechaFinal, "Fecha Final es un campo obligatorio" },
                 new object[] { ofertaSinFechaInicio, "Fecha Inicio es un campo obligatorio" },
-
+                new object[] {ofertaPorcentajemayor, "¡Error!, no es rentable rebajar de precio tanto una herramienta" }
             };
 
             return allTests;
