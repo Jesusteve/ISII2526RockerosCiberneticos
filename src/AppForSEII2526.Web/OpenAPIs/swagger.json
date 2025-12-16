@@ -1113,10 +1113,6 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "apellidoCliente": {
             "minLength": 1,
             "type": "string"

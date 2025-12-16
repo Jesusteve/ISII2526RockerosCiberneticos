@@ -208,6 +208,7 @@ namespace AppForSEII2526.UIT.Compra_test
             Assert.True(_createCompra_PO.CheckError(errorEsperado));
         }
 
+        
         /*
          * CU3_FA2_Carrito
          */
